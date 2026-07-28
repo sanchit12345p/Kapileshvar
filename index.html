@@ -3,9 +3,9 @@
 <head>
     <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>MH Kapileshwar Mahadev Mandir Vilhale</title>
-    <!-- ॲपचा लोगो (Browser Tab Icon) -->
+    <!-- ॲपचा लोगो -->
     <link rel="icon" type="image/jpeg" href="images/logo.jpg">
     <style>
         :root {
@@ -17,7 +17,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 0 0 70px 0; /* खालील नेव्हिगेशन बारसाठी जागा सोडली */
             background-color: var(--bg-color);
             color: var(--text-color);
             scroll-behavior: smooth;
@@ -61,17 +61,78 @@
             margin: 0;
             font-size: 18px;
         }
-        /* मुख्य माहिती विभाग */
-        .content-section {
-            padding: 15px;
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        /* सेक्शन डिझाईन */
+        .section-box {
             background: white;
             margin: 15px;
+            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #f0d5ce;
         }
-        .content-section h3 {
+        .section-box h2 {
             color: var(--primary-color);
+            font-size: 16px;
             margin-top: 0;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+        }
+        /* गॅलरी ग्रीड */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        .gallery-item {
+            background: #fafafa;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .gallery-item p {
+            font-size: 11px;
+            color: #555;
+            margin: 5px 0 0 0;
+        }
+        /* बॉटन नेव्हिगेशन बार (तळटीप बार) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            border-top: 1px solid #ddd;
+            z-index: 1000;
+        }
+        .bottom-nav a {
+            text-align: center;
+            text-decoration: none;
+            color: #555;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .bottom-nav a div {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+        .bottom-nav a:hover, .bottom-nav a.active {
+            color: var(--primary-color);
         }
     </style>
 </head>
@@ -80,6 +141,7 @@
     <!-- भाषा बार -->
     <div class="lang-bar">
         <button>मराठी</button>
+        <button>हिंदी</button>
         <button>English</button>
     </div>
 
@@ -87,58 +149,76 @@
     <header>
         <img src="images/logo.jpg" alt="Logo" class="app-logo">
         <h1>MH Kapileshwar Mahadev Mandir Vilhale</h1>
+        <p>ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
     </header>
 
-    <!-- मंदिराची माहिती / जुने फिचर्स -->
-    <div class="content-section">
-        <h3>जय भोलेनाथ!</h3>
-        <p>श्री क्षेत्र कपिलेश्वर महादवे मंदिर, विल्होळे येथील अधिकृत ॲपमध्ये आपले स्वागत आहे. येथे आपल्याला मंदिराची माहिती, आरती आणि छायाचित्रे पाहायला मिळतील.</p>
+    <!-- १. मंदिर दर्शन गॅलरी -->
+    <div class="section-box" id="gallery">
+        <h2>१. मंदिर दर्शन गॅलरी</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="photo1.jpg" alt="Mandir Photo 1">
+                <p>मंदिर प्रवेशद्वार</p>
+            </div>
+            <div class="gallery-item">
+                <img src="photo2.jpg" alt="Mandir Photo 2">
+                <p>नंदी आणि सभामंडप</p>
+            </div>
+            <div class="gallery-item">
+                <img src="photo3.jpg" alt="Mandir Photo 3">
+                <p>प्राचीन नक्षीकाम छतावरील</p>
+            </div>
+            <div class="gallery-item">
+                <img src="photo4.jpg" alt="Mandir Photo 4">
+                <p>गाभारा दर्शन</p>
+            </div>
+            <div class="gallery-item">
+                <img src="photo5.jpg" alt="Mandir Photo 5">
+                <p>रात्रीची रोषणाई मंदिर</p>
+            </div>
+            <div class="gallery-item">
+                <img src="photo6.jpg" alt="Mandir Photo 6">
+                <p>शिवलिंग आणि सजावट</p>
+            </div>
+        </div>
     </div>
 
-    <!-- मंदिर गॅलरी (६ फोटो) -->
-    <div style="padding: 15px; text-align: center;">
-        <h2 style="color: #d84315; margin-bottom: 15px;">मंदिर गॅलरी</h2>
-        
-        <!-- ६ फोटो एकत्र एका ग्रीडमध्ये दिसण्यासाठी -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
-            
-            <!-- फोटो १ -->
-            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <img src="photo1.jpg" alt="Mandir Photo 1" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो १</p>
-            </div>
+    <!-- २. आरती आणि दर्शन वेळपत्रक -->
+    <div class="section-box" id="schedule">
+        <h2>२. आरती आणि दर्शन वेळपत्रक</h2>
+        <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.8;">
+            <li><strong>प्रातःकाळ आरती:</strong> सकाळी ७:१५ वाजता (7:15 AM)</li>
+            <li><strong>संध्याकाळची आरती:</strong> संध्याकाळी ७:१५ वाजता (7:15 PM)</li>
+        </ul>
+    </div>
 
-            <!-- फोटो २ -->
-            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <img src="photo2.jpg" alt="Mandir Photo 2" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो २</p>
-            </div>
+    <!-- ३. पत्ता व लोकेशन -->
+    <div class="section-box" id="location">
+        <h2>३. पत्ता व लोकेशन</h2>
+        <p style="font-size: 13px; margin: 0 0 10px 0;">श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.</p>
+        <a href="https://maps.google.com" target="_blank" style="display: inline-block; background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">गुगल मॅपवर पहा</a>
+    </div>
 
-            <!-- फोटो ३ -->
-            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <img src="photo3.jpg" alt="Mandir Photo 3" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ३</p>
-            </div>
+    <!-- ४. देणगी / सहकार्य -->
+    <div class="section-box" id="donation">
+        <h2>४. देणगी</h2>
+        <p style="font-size: 13px; margin: 0;">मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
+    </div>
 
-            <!-- फोटो ४ -->
-            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <img src="photo4.jpg" alt="Mandir Photo 4" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ४</p>
-            </div>
-
-            <!-- फोटो ५ -->
-'            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <img src="photo5.jpg" alt="Mandir Photo 5" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ५</p>
-            </div>
-
-            <!-- फोटो ६ -->
-            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <img src="photo6.jpg" alt="Mandir Photo 6" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ६</p>
-            </div>
-
-        </div>
+    <!-- खालील नेव्हिगेशन बार (Bottom Navigation) -->
+    <div class="bottom-nav">
+        <a href="#gallery" class="active">
+            <div>🖼️</div>गॅलरी
+        </a>
+        <a href="#schedule">
+            <div>⏰</div>वेळपत्रक
+        </a>
+        <a href="#location">
+            <div>📍</div>लोकेशन
+        </a>
+        <a href="#donation">
+            <div>🪙</div>देणगी
+        </a>
     </div>
 
 </body>
