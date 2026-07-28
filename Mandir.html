@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MH Kapileshwar Mahadev Mandir Vilhale</title>
+    <!-- ॲपचा लोगो (Browser Tab Icon) -->
+    <link rel="icon" type="image/jpeg" href="images/logo.jpg">
     <style>
         :root {
             --primary-color: #d84315;
@@ -37,13 +39,22 @@
             margin-left: 4px;
             font-weight: bold;
         }
-        /* हेडर */
+        /* हेडर आणि लोगो */
         header {
             background: linear-gradient(135deg, #e64a19, #bf360c);
             color: white;
             text-align: center;
-            padding: 18px 15px;
+            padding: 20px 15px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .app-logo {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
         }
         header h1 {
             margin: 0;
@@ -58,7 +69,7 @@
         .container {
             max-width: 600px;
             margin: 15px auto;
-            padding: 0 12px 70px 12px; /* खाली नेव्हिगेशन बारसाठी जागा सोडली आहे */
+            padding: 0 12px 70px 12px;
         }
         /* वेगळे सेक्शन कार्ड्स */
         .card {
@@ -128,7 +139,7 @@
             text-align: center;
         }
 
-        /* फोनच्या ॲपसारखा खाली नेव्हिगेशन बार (Bottom Nav Bar) */
+        /* मोबाईल ॲपसारखा खाली नेव्हिगेशन बार */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -168,8 +179,9 @@
         <button onclick="setLanguage('en')">English</button>
     </div>
 
-    <!-- मुख्य हेडर -->
+    <!-- मुख्य हेडर आणि लोगो -->
     <header>
+        <img src="images/logo.jpg" alt="Mandir Logo" class="app-logo">
         <h1 id="hdrTitle">MH Kapileshwar Mahadev Mandir Vilhale</h1>
         <p id="hdrSub">पुरातन श्री कपिलेश्वर महादेव मंदिर, वेल्हाळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
     </header>
@@ -217,7 +229,7 @@
 
     </div>
 
-    <!-- मोबाईल ॲपसारखा खाली नेव्हिगेशन बार (Bottom App Bar) -->
+    <!-- मोबाईल ॲपसारखा खाली नेव्हिगेशन बार -->
     <div class="bottom-nav">
         <a href="#gallery-section" class="nav-item">
             <span>🖼️</span><span id="nav1">गॅलरी</span>
@@ -269,7 +281,7 @@
                 document.getElementById('donText').innerText = 'Contribute voluntarily for the development and upgradation of the temple premises.';
                 document.getElementById('nav1').innerText = 'Gallery';
                 document.getElementById('nav2').innerText = 'Timings';
-                document.getElementById('nav3').innerText, document.getElementById('nav3').innerText = 'Location';
+                document.getElementById('nav3').innerText = 'Location';
                 document.getElementById('nav4').innerText = 'Donate';
             } else {
                 // Marathi Default
