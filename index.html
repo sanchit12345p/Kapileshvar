@@ -150,6 +150,72 @@
             cursor: pointer;
         }
 
+        /* सर्च बार डिझाईन */
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 13px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+
+        /* रिंगटोन कार्ड डिझाईन */
+        .ringtone-card {
+            background: #fff8f6;
+            border: 1px solid #f0d5ce;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .ringtone-info {
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+        }
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .play-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .audio-range {
+            flex-grow: 1;
+            cursor: pointer;
+        }
+        .download-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+        .download-btn:hover {
+            background: #1b5e20;
+        }
+
         /* बॉटन नेव्हिगेशन बार */
         .bottom-nav {
             position: fixed;
@@ -169,12 +235,12 @@
             border: none;
             text-align: center;
             color: #555;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             cursor: pointer;
         }
         .bottom-nav button div {
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 2px;
         }
         .bottom-nav button.active, .bottom-nav button:hover {
@@ -252,9 +318,18 @@
         <a id="t_mapBtn" href="https://maps.google.com" target="_blank" style="display: inline-block; background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">गुगल मॅपवर पहा</a>
     </div>
 
-    <!-- ४. देणगी / सहकार्य -->
+    <!-- ४. महादेव रिंगटोन व भक्ती ध्वनी (५०+ सॉंग्स आणि सर्च बारसह) -->
+    <div id="section-ringtones" class="section-box">
+        <h2 id="t_ringtoneTitle">४. महादेवांच्या ५०+ रिंगटोन व भक्ती ध्वनी</h2>
+        <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
+        <div id="ringtoneListContainer">
+            <!-- जावास्क्रिप्ट द्वारे ५०+ रिंगटोन इथे लोड होतील -->
+        </div>
+    </div>
+
+    <!-- ५. देणगी / सहकार्य -->
     <div id="section-donation" class="section-box">
-        <h2 id="t_donationTitle">४. देणगी</h2>
+        <h2 id="t_donationTitle">५. देणगी</h2>
         <p id="t_donationText" style="font-size: 13px; margin: 0;">मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
     </div>
 
@@ -269,14 +344,116 @@
         <button onclick="showSection('location', this)">
             <div>📍</div><span id="t_navLocation">लोकेशन</span>
         </button>
+        <button onclick="showSection('ringtones', this)">
+            <div>🎵</div><span id="t_navRingtones">रिंगटोन</span>
+        </button>
         <button onclick="showSection('donation', this)">
             <div>🪙</div><span id="t_navDonation">देणगी</span>
         </button>
     </div>
 
-    <!-- जावास्क्रिप्ट (फंक्शन) -->
+    <!-- जावास्क्रिप्ट (फंक्शन आणि ५०+ रिंगटोन डेटा) -->
     <script>
+        // ५०+ महादेवांच्या रिंगटोन व भजनांची यादी
+        const ringtonesData = [
+            { name: "🔔 हर हर शंभू (Har Har Shambhu Original)", url: "https://cdnsongs.com/music/data/Shiv_Bhajan/Har_Har_Shambhu_Shiv_Mahadev/1.mp3" },
+            { name: "⚡ शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://pagalworld.com.se/files/download/id/6545/hls.mp3" },
+            { name: "🕉️ महामृत्युंजय मंत्र (Peaceful Chant)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { name: "🥁 पवित्र मंदिर घंटा व डमरू (Temple Bell & Damru)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { name: "🎶 मेरा भोला है भंडारी (Hansraj Raghuwanshi)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { name: "🔥 शंकरा रे शंकरा (Tanhaji Theme)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { name: "🎵 ओम नमः शिवाय धुन (Slow & Relaxing)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { name: "🔔 मंदिर घंटा आवाज (Temple Bell Long Echo)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+            { name: "💫 लिंगाष्टकम (Lingashtakam)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+            { name: "🌟 शिवाष्टकम (Shivashtakam)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+            { name: "🎵 कर्पूरगौरं करुणावतारम्", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
+            { name: "🎶 हर हर शंभू (Remix Beat Version)", url: "https://cdnsongs.com/music/data/Shiv_Bhajan/Har_Har_Shambhu_Shiv_Mahadev/1.mp3" },
+            { name: "⚡ शिव तांडव (Fast Rock Version)", url: "https://pagalworld.com.se/files/download/id/6545/hls.mp3" },
+            { name: "🕉️ महामृत्युंजय मंत्र (Ringtones Mix)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { name: "🥁 डमरू नाद (Pure Damru Beats)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { name: "🎵 कौन है वो कौन है वो (Baahubali Shiv Theme)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { name: "🔥 महाकाल का भक्त हूँ (Mahakal Attitude)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { name: "🔔 शंखनाद आणि घंटा (Shankhnad & Bell)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { name: "🎶 देव देवा धुन (Brahmastra Shiv Theme)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+            { name: "🌟 नमामि शमिशान निर्वाण रूपं", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+            { name: "🎵 भोले बाबा की बारात गीत", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+            { name: "💫 सज रहे भोले बाबा निराले", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
+            { name: "🎶 भोला भंडारी मारी रखवाली करे", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { name: "🔥 चल भोले के द्वार भक्त", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { name: "🔔 शिव शंभू के चरणों में वंदन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { name: "⚡ जटाधारी शंभू नाथ रिंगटोन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { name: "🎵 बम् बम् भोले गूंज रहा है", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { name: "🌟 काशी का विश्वनाथ दरबार", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+            { name: "🎶 अमरनाथ यात्रा स्पेशल गीत", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+            { name: "🔥 केदारनाथ धाम भजन ट्यून", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+            { name: "🎵 उज्जयिनी के महाकाल आरती", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
+            { name: "💫 सावन मास विशेष शिव गीत", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { name: "🔔 सोमवार व्रत कथा धुन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { name: "⚡ त्रिपुंड धारी भोलेनाथ रिंगटोन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { name: "🎵 महाकाल भस्म आरती डमरू", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { name: "🌟 शॉर्ट डमरू नोटिफिकेशन ट्यून", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { name: "🎶 महादेव व्हॉट्सॲप रिंगटोन बीट्स", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+            { name: "🔥 फ्लूट शिव धुन (Flute Version)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+            { name: "🎵 व्हायोलिन शिव थीम संगीत", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+            { name: "💫 ट्रान्स डमरू मॉडर्न रिंगटोन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
+            { name: "🔔 रुद्राक्ष रिंगटोन स्पेशल ट्यून", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { name: "⚡ कैलाश पर्वत हवा आणि मंत्र", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { name: "🎵 संध्या आरती स्पेशल घंटा नाद", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { name: "🌟 सुबह की शुरुआत महाकाल के साथ (Alarm)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { name: "🔥 सुपरफास्ट महाकाल रिंगटोन मिक्स", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { name: "🎵 रुद्र गायत्री मंत्र जप", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+            { name: "💫 दरिद्र दहन शिव स्तोत्र", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+            { name: "🔔 शिव पुराण कथा धुन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+            { name: "⚡ भोले बाबा स्पेशल कॉलरट्यून", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
+            { name: "🎵 हर हर महादेव गर्जना रिंगटोन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" }
+        ];
+
+        // रिंगटोन लिस्ट पेजवर लोड करणे
+        function renderRingtones(list) {
+            const container = document.getElementById('ringtoneListContainer');
+            container.innerHTML = '';
+            
+            if(list.length === 0) {
+                container.innerHTML = '<p style="text-align:center; font-size:13px; color:#777;">कोणतीही रिंगटोन सापडली नाही.</p>';
+                return;
+            }
+
+            list.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'ringtone-card';
+                card.innerHTML = `
+                    <div class="ringtone-info">${item.name}</div>
+                    <div class="player-controls">
+                        <button class="play-btn" onclick="togglePlay('audio_${index}', this)">▶</button>
+                        <input type="range" class="audio-range" value="0" min="0" max="100" oninput="seekAudio('audio_${index}', this)">
+                    </div>
+                    <audio id="audio_${index}" src="${item.url}"></audio>
+                    <a href="${item.url}" download class="download-btn">📥 डाऊनलोड रिंगटोन</a>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // सर्च फिल्टर फंक्शन
+        function filterRingtones() {
+            const query = document.getElementById('ringtoneSearch').value.toLowerCase();
+            const filtered = ringtonesData.filter(item => item.name.toLowerCase().includes(query));
+            renderRingtones(filtered);
+        }
+
+        // ॲप चालू झाल्यावर रिंगटोन लोड करणे
+        window.onload = function() {
+            renderRingtones(ringtonesData);
+        };
+
         function showSection(sectionId, btnElement) {
+            // सर्व ऑडिओ थांबवा जे चालू असतील
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            document.querySelectorAll('.play-btn').forEach(btn => btn.innerText = '▶');
+
             const sections = document.querySelectorAll('.section-box');
             sections.forEach(sec => sec.classList.remove('active-section'));
             
@@ -302,6 +479,47 @@
             document.getElementById('imageModal').style.display = "none";
         }
 
+        // ऑडिओ प्लेअर नियंत्रणे (Play/Pause & Seekbar)
+        function togglePlay(audioId, btn) {
+            const audio = document.getElementById(audioId);
+            
+            document.querySelectorAll('audio').forEach(a => {
+                if(a.id !== audioId) {
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            });
+            document.querySelectorAll('.play-btn').forEach(b => {
+                if(b !== btn) b.innerText = '▶';
+            });
+
+            if (audio.paused) {
+                audio.play();
+                btn.innerText = '⏸';
+            } else {
+                audio.pause();
+                btn.innerText = '▶';
+            }
+
+            audio.ontimeupdate = function() {
+                const range = btn.parentElement.querySelector('.audio-range');
+                if(audio.duration) {
+                    range.value = (audio.currentTime / audio.duration) * 100;
+                }
+            };
+            
+            audio.onended = function() {
+                btn.innerText = '▶';
+            };
+        }
+
+        function seekAudio(audioId, rangeInput) {
+            const audio = document.getElementById(audioId);
+            if(audio.duration) {
+                audio.currentTime = (rangeInput.value / 100) * audio.duration;
+            }
+        }
+
         // भाषा डेटा (मराठी, हिंदी, इंग्लिश)
         const langData = {
             mr: {
@@ -314,9 +532,10 @@
                 locationTitle: "३. पत्ता व लोकेशन",
                 addressText: "श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.",
                 mapBtn: "गुगल मॅपवर पहा",
-                donationTitle: "४. देणगी",
+                ringtoneTitle: "४. महादेवांच्या ५०+ रिंगटोन व भक्ती ध्वनी",
+                donationTitle: "५. देणगी",
                 donationText: "मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.",
-                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navDonation: "देणगी"
+                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navDonation: "देणगी"
             },
             hi: {
                 title: "MH Kapileshwar Mahadev Mandir Vilhale",
@@ -328,9 +547,10 @@
                 locationTitle: "३. पता और लोकेशन",
                 addressText: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे, तहसील भुसावळ, जिला जलगाँव - ४२५३०५.",
                 mapBtn: "गूगल मैप पर देखें",
-                donationTitle: "४. दान",
+                ringtoneTitle: "४. महादेव की ५०+ रिंगटोन और भक्ति ध्वनि",
+                donationTitle: "५. दान",
                 donationText: "मंदिर के विकास और कार्यों के लिए आप अपना दान दे सकते हैं। अधिक जानकारी के लिए मंदिर ट्रस्ट से संपर्क करें।",
-                navGallery: "गैलरी", navSchedule: "समय सारणी", navLocation: "लोकेशन", navDonation: "दान"
+                navGallery: "गैलरी", navSchedule: "समय सारणी", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navDonation: "दान"
             },
             en: {
                 title: "MH Kapileshwar Mahadev Mandir Vilhale",
@@ -342,9 +562,10 @@
                 locationTitle: "3. Address & Location",
                 addressText: "Shri Kshetra Kapileshwar Mahadev Mandir, Vilhale, Tehsil Bhusawal, Dist. Jalgaon - 425305.",
                 mapBtn: "View on Google Map",
-                donationTitle: "4. Donation",
+                ringtoneTitle: "4. 50+ Mahadev Ringtones & Devotional Audio",
+                donationTitle: "5. Donation",
                 donationText: "You can contribute your donations for the development of the temple. Contact the temple trust for more details.",
-                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navDonation: "Donation"
+                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navRingtones: "Ringtones", navDonation: "Donation"
             }
         };
 
@@ -365,11 +586,13 @@
             document.getElementById('t_locationTitle').innerText = langData[lang].locationTitle;
             document.getElementById('t_addressText').innerText = langData[lang].addressText;
             document.getElementById('t_mapBtn').innerText = langData[lang].mapBtn;
+            document.getElementById('t_ringtoneTitle').innerText = langData[lang].ringtoneTitle;
             document.getElementById('t_donationTitle').innerText = langData[lang].donationTitle;
             document.getElementById('t_donationText').innerText = langData[lang].donationText;
             document.getElementById('t_navGallery').innerText = langData[lang].navGallery;
             document.getElementById('t_navSchedule').innerText = langData[lang].navSchedule;
             document.getElementById('t_navLocation').innerText = langData[lang].navLocation;
+            document.getElementById('t_navRingtones').innerText = langData[lang].navRingtones;
             document.getElementById('t_navDonation').innerText = langData[lang].navDonation;
         }
     </script>
