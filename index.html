@@ -61,252 +61,67 @@
             margin: 0;
             font-size: 18px;
         }
-        header p {
-            margin: 6px 0 0;
-            font-size: 12px;
-            opacity: 0.95;
-            line-height: 1.4;
-        }
-        .container {
-            max-width: 600px;
-            margin: 15px auto;
-            padding: 0 12px 70px 12px;
-        }
-        /* वेगळे सेक्शन कार्ड्स */
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-            border-top: 4px solid var(--primary-color);
-        }
-        .card h2 {
-            color: var(--primary-color);
-            font-size: 16px;
-            margin-top: 0;
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 8px;
-        }
-        /* गॅलरी ग्रिड */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .gallery-grid img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-        /* वेळापत्रक */
-        ul.timings-list {
-            padding-left: 20px;
-            margin: 5px 0 0;
-            line-height: 1.8;
-            font-size: 14px;
-        }
-        /* लोकेशन आणि देणगी */
-        .box-content {
-            text-align: center;
-            line-height: 1.6;
-        }
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 9px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 12px;
-            font-size: 13px;
-        }
-        .qr-placeholder {
-            width: 140px;
-            height: 140px;
-            background-color: #f9f9f9;
-            margin: 12px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed #ccc;
-            border-radius: 10px;
-            font-size: 11px;
-            color: #666;
-            text-align: center;
-        }
-
-        /* मोबाईल ॲपसारखा खाली नेव्हिगेशन बार */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #ffffff;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-        .nav-item {
-            text-decoration: none;
-            color: #666;
-            font-size: 11px;
-            text-align: center;
-            flex: 1;
-            font-weight: 600;
-        }
-        .nav-item span {
-            display: block;
-            font-size: 18px;
-            margin-bottom: 2px;
-        }
-        .nav-item:hover, .nav-item:active {
-            color: var(--primary-color);
-        }
     </style>
 </head>
 <body>
 
-    <!-- भाषा निवडीचे बटन्स -->
+    <!-- भाषा बार -->
     <div class="lang-bar">
-        <button onclick="setLanguage('mr')">मराठी</button>
-        <button onclick="setLanguage('hi')">हिंदी</button>
-        <button onclick="setLanguage('en')">English</button>
+        <button>मराठी</button>
+        <button>English</button>
     </div>
 
-    <!-- मुख्य हेडर आणि लोगो -->
+    <!-- हेडर -->
     <header>
-        <img src="images/logo.jpg" alt="Mandir Logo" class="app-logo">
-        <h1 id="hdrTitle">MH Kapileshwar Mahadev Mandir Vilhale</h1>
-        <p id="hdrSub">पुरातन श्री कपिलेश्वर महादेव मंदिर, वेल्हाळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
+        <img src="images/logo.jpg" alt="Logo" class="app-logo">
+        <h1>MH Kapileshwar Mahadev Mandir Vilhale</h1>
     </header>
 
-    <div class="container">
-
-        <!-- १. मंदिर दर्शन गॅलरी -->
-        <div id="gallery-section" class="card">
-            <h2 id="title1">१. मंदिर दर्शन गॅलरी</h2>
-            <div class="gallery-grid">
-                <img src="images/photo1.jpg" alt="मंदिर प्रवेशद्वार">
-                <img src="images/photo2.jpg" alt="नंदी आणि सभामंडप">
-                <img src="images/photo3.jpg" alt="प्राचीन नक्षीकाम छतावरील">
-                <img src="images/photo4.jpg" alt="गाभारा दर्शन">
-                <img src="images/photo5.jpg" alt="रात्रीची रोषणाई मंदिर">
-                <img src="images/photo6.jpg" alt="शिवलिंग आणि सजावट">
+    <!-- मंदिर गॅलरी (६ फोटो) -->
+    <div style="padding: 20px; text-align: center;">
+        <h2 style="color: #d84315; margin-bottom: 15px;">मंदिर गॅलरी</h2>
+        
+        <!-- ६ फोटो एकत्र एका ग्रीडमध्ये दिसण्यासाठी -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+            
+            <!-- फोटो १ -->
+            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <img src="photo1.jpg" alt="Mandir Photo 1" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
+                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो १</p>
             </div>
-        </div>
 
-        <!-- २. आरती आणि दर्शन वेळापत्रक -->
-        <div id="timings-section" class="card">
-            <h2 id="title2">२. आरती आणि दर्शन वेळापत्रक</h2>
-            <ul class="timings-list">
-                <li><strong id="mTimeLabel">प्रातःकाळ आरती:</strong> सकाळी ७:१५ वाजता (7:15 AM)</li>
-                <li><strong id="eTimeLabel">संध्याकाळची आरती:</strong> संध्याकाळी ७:१५ वाजता (7:15 PM)</li>
-            </ul>
-        </div>
-
-        <!-- ३. पत्ता व लोकेशन -->
-        <div id="location-section" class="card box-content">
-            <h2 id="title3" style="text-align: left;">३. पत्ता व लोकेशन</h2>
-            <p id="locText"><strong>पुरातन श्री कपिलेश्वर महादेव मंदिर</strong><br>मु. पोस्ट: वेल्हाळे, तहसील: भुसावळ,<br>जिल्हा: जळगाव - ४२५३०५</p>
-            <a href="https://maps.google.com/?q=Vilhare+Bhusawal+Jalgaon" target="_blank" class="btn" id="mapBtn">गुगल मॅपवर पहा</a>
-        </div>
-
-        <!-- ४. मंदिर विकास निधी / ट्रस्ट -->
-        <div id="donation-section" class="card box-content">
-            <h2 id="title4" style="text-align: left;">४. मंदिर विकास निधी (ट्रस्ट)</h2>
-            <p id="donText">मंदिर परिसराच्या विकासासाठी आणि अपग्रेड करण्यासाठी आपल्या स्वेच्छेने देणगी द्या.</p>
-            <div class="qr-placeholder">
-                [ देणगीसाठी QR कोड ]<br>(qr-code.png टाका)
+            <!-- फोटो २ -->
+            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <img src="photo2.jpg" alt="Mandir Photo 2" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
+                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो २</p>
             </div>
-            <p style="font-size: 12px; color: #555;">UPI ID: temple-trust@upi</p>
-        </div>
 
+            <!-- फोटो ३ -->
+            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <img src="photo3.jpg" alt="Mandir Photo 3" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
+                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ३</p>
+            </div>
+
+            <!-- फोटो ४ -->
+            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <img src="photo4.jpg" alt="Mandir Photo 4" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
+                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ४</p>
+            </div>
+
+            <!-- फोटो ५ -->
+            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <img src="photo5.jpg" alt="Mandir Photo 5" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
+                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ५</p>
+            </div>
+
+            <!-- फोटो ६ -->
+            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <img src="photo6.jpg" alt="Mandir Photo 6" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
+                <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ६</p>
+            </div>
+
+        </div>
     </div>
 
-    <!-- मोबाईल ॲपसारखा खाली नेव्हिगेशन बार -->
-    <div class="bottom-nav">
-        <a href="#gallery-section" class="nav-item">
-            <span>🖼️</span><span id="nav1">गॅलरी</span>
-        </a>
-        <a href="#timings-section" class="nav-item">
-            <span>⏰</span><span id="nav2">वेळापत्रक</span>
-        </a>
-        <a href="#location-section" class="nav-item">
-            <span>📍</span><span id="nav3">लोकेशन</span>
-        </a>
-        <a href="#donation-section" class="nav-item">
-            <span>🤝</span><span id="nav4">देणगी</span>
-        </a>
-    </div>
-
-    <!-- भाषा बदलण्याचे जावास्क्रिप्ट -->
-    <script>
-        function setLanguage(lang) {
-            localStorage.setItem('appLang', lang);
-            updateTexts(lang);
-        }
-
-        function updateTexts(lang) {
-            if(lang === 'hi') {
-                document.getElementById('hdrSub').innerHTML = 'पुरातन श्री कपिलेश्वर महादेव मंदिर, वेल्हाळे<br>तहसील भुसावळ, जिला जलगंव - ४२५३०५';
-                document.getElementById('title1').innerText = '१. मंदिर दर्शन गैलरी';
-                document.getElementById('title2').innerText = '२. आरती और दर्शन समय सारणी';
-                document.getElementById('mTimeLabel').innerText = 'प्रातःकाल आरती:';
-                document.getElementById('eTimeLabel').innerText = 'संध्याकाल की आरती:';
-                document.getElementById('title3').innerText = '३. पता और लोकेशन';
-                document.getElementById('locText').innerHTML = '<strong>पुरातन श्री कपिलेश्वर महादेव मंदिर</strong><br>मु. पोस्ट: वेल्हाळे, तहसील: भुसावळ,<br>जिला: जलगंव - ४२५३०५';
-                document.getElementById('mapBtn').innerText = 'गूगल मैप पर देखें';
-                document.getElementById('title4').innerText = '४. मंदिर विकास निधि (ट्रस्ट)';
-                document.getElementById('donText').innerText = 'मंदिर परिसर के विकास और अपग्रेड के लिए अपनी इच्छा से सहयोग दें।';
-                document.getElementById('nav1').innerText = 'गैलरी';
-                document.getElementById('nav2').innerText = 'समय सारणी';
-                document.getElementById('nav3').innerText = 'लोकेशन';
-                document.getElementById('nav4').innerText = 'सहयोग';
-            } else if(lang === 'en') {
-                document.getElementById('hdrSub').innerHTML = 'Ancient Shri Kapileshwar Mahadev Temple, Vilhale<br>Tahsildar Bhusawal, Dist. Jalgaon - 425305';
-                document.getElementById('title1').innerText = '1. Temple Darshan Gallery';
-                document.getElementById('title2').innerText = '2. Aarti & Darshan Timings';
-                document.getElementById('mTimeLabel').innerText = 'Morning Aarti:';
-                document.getElementById('eTimeLabel').innerText = 'Evening Aarti:';
-                document.getElementById('title3').innerText = '3. Address & Location';
-                document.getElementById('locText').innerHTML = '<strong>Ancient Shri Kapileshwar Mahadev Temple</strong><br>At Post: Vilhale, Tahsil: Bhusawal,<br>Dist: Jalgaon - 425305';
-                document.getElementById('mapBtn').innerText = 'View on Google Maps';
-                document.getElementById('title4').innerText = '4. Temple Development Fund (Trust)';
-                document.getElementById('donText').innerText = 'Contribute voluntarily for the development and upgradation of the temple premises.';
-                document.getElementById('nav1').innerText = 'Gallery';
-                document.getElementById('nav2').innerText = 'Timings';
-                document.getElementById('nav3').innerText = 'Location';
-                document.getElementById('nav4').innerText = 'Donate';
-            } else {
-                // Marathi Default
-                document.getElementById('hdrSub').innerHTML = 'पुरातन श्री कपिलेश्वर महादेव मंदिर, वेल्हाळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५';
-                document.getElementById('title1').innerText = '१. मंदिर दर्शन गॅलरी';
-                document.getElementById('title2').innerText = '२. आरती आणि दर्शन वेळापत्रक';
-                document.getElementById('mTimeLabel').innerText = 'प्रातःकाळ आरती:';
-                document.getElementById('eTimeLabel').innerText = 'संध्याकाळची आरती:';
-                document.getElementById('title3').innerText = '३. पत्ता व लोकेशन';
-                document.getElementById('locText').innerHTML = '<strong>पुरातन श्री कपिलेश्वर महादेव मंदिर</strong><br>मु. पोस्ट: वेल्हाळे, तहसील: भुसावळ,<br>जिल्हा: जळगाव - ४२५३०५';
-                document.getElementById('mapBtn').innerText = 'गुगल मॅपवर पहा';
-                document.getElementById('title4').innerText = '४. मंदिर विकास निधी (ट्रस्ट)';
-                document.getElementById('donText').innerText = 'मंदिर परिसराच्या विकासासाठी आणि अपग्रेड करण्यासाठी आपल्या स्वेच्छेने देणगी द्या.';
-                document.getElementById('nav1').innerText = 'गॅलरी';
-                document.getElementById('nav2').innerText = 'वेळापत्रक';
-                document.getElementById('nav3').innerText = 'लोकेशन';
-                document.getElementById('nav4').innerText = 'देणगी';
-            }
-        }
-
-        window.onload = function() {
-            let savedLang = localStorage.getItem('appLang') || 'mr';
-            updateTexts(savedLang);
-        }
-    </script>
 </body>
 </html>
