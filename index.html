@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html lang="mr" id="htmlRoot">
 <head>
     <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MH Kapileshwar Mahadev Mandir Vilhale</title>
+    <title id="appTitle">MH Kapileshwar Mahadev Mandir Vilhale</title>
     <!-- ॲपचा लोगो -->
     <link rel="icon" type="image/jpeg" href="images/logo.jpg">
     <style>
@@ -17,10 +17,9 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 0 0 70px 0; /* खालील नेव्हिगेशन बारसाठी जागा सोडली */
+            padding: 0 0 70px 0;
             background-color: var(--bg-color);
             color: var(--text-color);
-            scroll-behavior: smooth;
         }
         /* भाषा बार */
         .lang-bar {
@@ -68,12 +67,16 @@
         }
         /* सेक्शन डिझाईन */
         .section-box {
+            display: none;
             background: white;
             margin: 15px;
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             border: 1px solid #f0d5ce;
+        }
+        .section-box.active-section {
+            display: block;
         }
         .section-box h2 {
             color: var(--primary-color);
@@ -94,19 +97,60 @@
             border-radius: 6px;
             border: 1px solid #ddd;
             text-align: center;
+            cursor: pointer;
         }
         .gallery-item img {
             width: 100%;
             height: 110px;
             object-fit: cover;
             border-radius: 4px;
+            transition: transform 0.2s;
+        }
+        .gallery-item img:hover {
+            transform: scale(1.03);
         }
         .gallery-item p {
             font-size: 11px;
             color: #555;
             margin: 5px 0 0 0;
         }
-        /* बॉटन नेव्हिगेशन बार (तळटीप बार) */
+
+        /* मोठा फोटो दिसण्यासाठी (Modal Pop-up) */
+        #imageModal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            text-align: center;
+        }
+        #modalImg {
+            max-width: 90%;
+            max-height: 75vh;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        #modalCaption {
+            color: white;
+            font-size: 16px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* बॉटन नेव्हिगेशन बार */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -120,18 +164,20 @@
             border-top: 1px solid #ddd;
             z-index: 1000;
         }
-        .bottom-nav a {
+        .bottom-nav button {
+            background: none;
+            border: none;
             text-align: center;
-            text-decoration: none;
             color: #555;
             font-size: 11px;
             font-weight: bold;
+            cursor: pointer;
         }
-        .bottom-nav a div {
+        .bottom-nav button div {
             font-size: 18px;
             margin-bottom: 2px;
         }
-        .bottom-nav a:hover, .bottom-nav a.active {
+        .bottom-nav button.active, .bottom-nav button:hover {
             color: var(--primary-color);
         }
     </style>
@@ -140,86 +186,192 @@
 
     <!-- भाषा बार -->
     <div class="lang-bar">
-        <button>मराठी</button>
-        <button>हिंदी</button>
-        <button>English</button>
+        <button onclick="changeLanguage('mr')">मराठी</button>
+        <button onclick="changeLanguage('hi')">हिंदी</button>
+        <button onclick="changeLanguage('en')">English</button>
     </div>
 
     <!-- हेडर -->
     <header>
         <img src="images/logo.jpg" alt="Logo" class="app-logo">
-        <h1>MH Kapileshwar Mahadev Mandir Vilhale</h1>
-        <p>ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
+        <h1 id="t_headerTitle">MH Kapileshwar Mahadev Mandir Vilhale</h1>
+        <p id="t_headerSub">ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
     </header>
 
     <!-- १. मंदिर दर्शन गॅलरी -->
-    <div class="section-box" id="gallery">
-        <h2>१. मंदिर दर्शन गॅलरी</h2>
+    <div id="section-gallery" class="section-box active-section">
+        <h2 id="t_galleryTitle">१. मंदिर दर्शन गॅलरी</h2>
         <div class="gallery-grid">
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="openModal('photo1.jpg', 'मंदिर प्रवेशद्वार')">
                 <img src="photo1.jpg" alt="Mandir Photo 1">
-                <p>मंदिर प्रवेशद्वार</p>
+                <p id="t_p1">मंदिर प्रवेशद्वार</p>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="openModal('photo2.jpg', 'नंदी आणि सभामंडप')">
                 <img src="photo2.jpg" alt="Mandir Photo 2">
-                <p>नंदी आणि सभामंडप</p>
+                <p id="t_p2">नंदी आणि सभामंडप</p>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="openModal('photo3.jpg', 'प्राचीन नक्षीकाम छतावरील')">
                 <img src="photo3.jpg" alt="Mandir Photo 3">
-                <p>प्राचीन नक्षीकाम छतावरील</p>
+                <p id="t_p3">प्राचीन नक्षीकाम छतावरील</p>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="openModal('photo4.jpg', 'गाभारा दर्शन')">
                 <img src="photo4.jpg" alt="Mandir Photo 4">
-                <p>गाभारा दर्शन</p>
+                <p id="t_p4">गाभारा दर्शन</p>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="openModal('photo5.jpg', 'रात्रीची रोषणाई मंदिर')">
                 <img src="photo5.jpg" alt="Mandir Photo 5">
-                <p>रात्रीची रोषणाई मंदिर</p>
+                <p id="t_p5">रात्रीची रोषणाई मंदिर</p>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="openModal('photo6.jpg', 'शिवलिंग आणि सजावट')">
                 <img src="photo6.jpg" alt="Mandir Photo 6">
-                <p>शिवलिंग आणि सजावट</p>
+                <p id="t_p6">शिवलिंग आणि सजावट</p>
             </div>
         </div>
     </div>
 
+    <!-- फोटो मोठा करून दाखवणारी स्क्रीन (Modal) -->
+    <div id="imageModal" onclick="closeModal()">
+        <span class="close-btn">&times;</span>
+        <img id="modalImg">
+        <div id="modalCaption"></div>
+    </div>
+
     <!-- २. आरती आणि दर्शन वेळपत्रक -->
-    <div class="section-box" id="schedule">
-        <h2>२. आरती आणि दर्शन वेळपत्रक</h2>
+    <div id="section-schedule" class="section-box">
+        <h2 id="t_scheduleTitle">२. आरती आणि दर्शन वेळपत्रक</h2>
         <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.8;">
-            <li><strong>प्रातःकाळ आरती:</strong> सकाळी ७:१५ वाजता (7:15 AM)</li>
-            <li><strong>संध्याकाळची आरती:</strong> संध्याकाळी ७:१५ वाजता (7:15 PM)</li>
+            <li><strong id="t_aartiMorning">प्रातःकाळ आरती:</strong> सकाळी ७:१५ वाजता (7:15 AM)</li>
+            <li><strong id="t_aartiEvening">संध्याकाळची आरती:</strong> संध्याकाळी ७:१५ वाजता (7:15 PM)</li>
         </ul>
     </div>
 
     <!-- ३. पत्ता व लोकेशन -->
-    <div class="section-box" id="location">
-        <h2>३. पत्ता व लोकेशन</h2>
-        <p style="font-size: 13px; margin: 0 0 10px 0;">श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.</p>
-        <a href="https://maps.google.com" target="_blank" style="display: inline-block; background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">गुगल मॅपवर पहा</a>
+    <div id="section-location" class="section-box">
+        <h2 id="t_locationTitle">३. पत्ता व लोकेशन</h2>
+        <p id="t_addressText" style="font-size: 13px; margin: 0 0 10px 0;">श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.</p>
+        <a id="t_mapBtn" href="https://maps.google.com" target="_blank" style="display: inline-block; background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">गुगल मॅपवर पहा</a>
     </div>
 
     <!-- ४. देणगी / सहकार्य -->
-    <div class="section-box" id="donation">
-        <h2>४. देणगी</h2>
-        <p style="font-size: 13px; margin: 0;">मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
+    <div id="section-donation" class="section-box">
+        <h2 id="t_donationTitle">४. देणगी</h2>
+        <p id="t_donationText" style="font-size: 13px; margin: 0;">मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
     </div>
 
-    <!-- खालील नेव्हिगेशन बार (Bottom Navigation) -->
+    <!-- खालील नेव्हिगेशन बार -->
     <div class="bottom-nav">
-        <a href="#gallery" class="active">
-            <div>🖼️</div>गॅलरी
-        </a>
-        <a href="#schedule">
-            <div>⏰</div>वेळपत्रक
-        </a>
-        <a href="#location">
-            <div>📍</div>लोकेशन
-        </a>
-        <a href="#donation">
-            <div>🪙</div>देणगी
-        </a>
+        <button onclick="showSection('gallery', this)" class="active">
+            <div>🖼️</div><span id="t_navGallery">गॅलरी</span>
+        </button>
+        <button onclick="showSection('schedule', this)">
+            <div>⏰</div><span id="t_navSchedule">वेळपत्रक</span>
+        </button>
+        <button onclick="showSection('location', this)">
+            <div>📍</div><span id="t_navLocation">लोकेशन</span>
+        </button>
+        <button onclick="showSection('donation', this)">
+            <div>🪙</div><span id="t_navDonation">देणगी</span>
+        </button>
     </div>
 
+    <!-- जावास्क्रिप्ट (फंक्शन) -->
+    <script>
+        function showSection(sectionId, btnElement) {
+            const sections = document.querySelectorAll('.section-box');
+            sections.forEach(sec => sec.classList.remove('active-section'));
+            
+            document.getElementById('section-' + sectionId).classList.add('active-section');
+            
+            const buttons = document.querySelectorAll('.bottom-nav button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        // फोटो मोठा करण्यासाठीचे फंक्शन्स
+        function openModal(imgSrc, captionText) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            const modalCaption = document.getElementById('modalCaption');
+            
+            modal.style.display = "block";
+            modalImg.src = imgSrc;
+            modalCaption.innerText = captionText;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+
+        // भाषा डेटा (मराठी, हिंदी, इंग्लिश)
+        const langData = {
+            mr: {
+                title: "MH Kapileshwar Mahadev Mandir Vilhale",
+                headerSub: "ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५",
+                galleryTitle: "१. मंदिर दर्शन गॅलरी",
+                p1: "मंदिर प्रवेशद्वार", p2: "नंदी आणि सभामंडप", p3: "प्राचीन नक्षीकाम छतावरील", p4: "गाभारा दर्शन", p5: "रात्रीची रोषणाई मंदिर", p6: "शिवलिंग आणि सजावट",
+                scheduleTitle: "२. आरती आणि दर्शन वेळपत्रक",
+                aartiMorning: "प्रातःकाळ आरती:", aartiEvening: "संध्याकाळची आरती:",
+                locationTitle: "३. पत्ता व लोकेशन",
+                addressText: "श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.",
+                mapBtn: "गुगल मॅपवर पहा",
+                donationTitle: "४. देणगी",
+                donationText: "मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.",
+                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navDonation: "देणगी"
+            },
+            hi: {
+                title: "MH Kapileshwar Mahadev Mandir Vilhale",
+                headerSub: "ट्रस्ट श्री कपिलेश्वर महादेव मंदिर, विल्होळे<br>तहसील भुसावळ, जिला जलगाँव - ४२५३०५",
+                galleryTitle: "१. मंदिर दर्शन गैलरी",
+                p1: "मंदिर प्रवेशद्वार", p2: "नंदी और सभामंडप", p3: "प्राचीन नक्काशी छत पर", p4: "गर्भ गृह दर्शन", p5: "रात की रोशनी मंदिर", p6: "शिवलिंग और सजावट",
+                scheduleTitle: "२. आरती और दर्शन समय सारणी",
+                aartiMorning: "प्रातःकाल आरती:", aartiEvening: "संध्याकाल की आरती:",
+                locationTitle: "३. पता और लोकेशन",
+                addressText: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे, तहसील भुसावळ, जिला जलगाँव - ४२५३०५.",
+                mapBtn: "गूगल मैप पर देखें",
+                donationTitle: "४. दान",
+                donationText: "मंदिर के विकास और कार्यों के लिए आप अपना दान दे सकते हैं। अधिक जानकारी के लिए मंदिर ट्रस्ट से संपर्क करें।",
+                navGallery: "गैलरी", navSchedule: "समय सारणी", navLocation: "लोकेशन", navDonation: "दान"
+            },
+            en: {
+                title: "MH Kapileshwar Mahadev Mandir Vilhale",
+                headerSub: "Trust Shri Kapileshwar Mahadev Mandir, Vilhale<br>Tehsil Bhusawal, Dist. Jalgaon - 425305",
+                galleryTitle: "1. Mandir Darshan Gallery",
+                p1: "Mandir Entrance", p2: "Nandi & Sabha Mandap", p3: "Ancient Ceiling Carvings", p4: "Gabhara Darshan", p5: "Night Lighting Mandir", p6: "Shivling & Decoration",
+                scheduleTitle: "2. Aarti & Darshan Schedule",
+                aartiMorning: "Morning Aarti:", aartiEvening: "Evening Aarti:",
+                locationTitle: "3. Address & Location",
+                addressText: "Shri Kshetra Kapileshwar Mahadev Mandir, Vilhale, Tehsil Bhusawal, Dist. Jalgaon - 425305.",
+                mapBtn: "View on Google Map",
+                donationTitle: "4. Donation",
+                donationText: "You can contribute your donations for the development of the temple. Contact the temple trust for more details.",
+                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navDonation: "Donation"
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.getElementById('appTitle').innerText = langData[lang].title;
+            document.getElementById('t_headerTitle').innerText = langData[lang].title;
+            document.getElementById('t_headerSub').innerHTML = langData[lang].headerSub;
+            document.getElementById('t_galleryTitle').innerText = langData[lang].galleryTitle;
+            document.getElementById('t_p1').innerText = langData[lang].p1;
+            document.getElementById('t_p2').innerText = langData[lang].p2;
+            document.getElementById('t_p3').innerText = langData[lang].p3;
+            document.getElementById('t_p4').innerText = langData[lang].p4;
+            document.getElementById('t_p5').innerText = langData[lang].p5;
+            document.getElementById('t_p6').innerText = langData[lang].p6;
+            document.getElementById('t_scheduleTitle').innerText = langData[lang].scheduleTitle;
+            document.getElementById('t_aartiMorning').innerText = langData[lang].aartiMorning;
+            document.getElementById('t_aartiEvening').innerText = langData[lang].aartiEvening;
+            document.getElementById('t_locationTitle').innerText = langData[lang].locationTitle;
+            document.getElementById('t_addressText').innerText = langData[lang].addressText;
+            document.getElementById('t_mapBtn').innerText = langData[lang].mapBtn;
+            document.getElementById('t_donationTitle').innerText = langData[lang].donationTitle;
+            document.getElementById('t_donationText').innerText = langData[lang].donationText;
+            document.getElementById('t_navGallery').innerText = langData[lang].navGallery;
+            document.getElementById('t_navSchedule').innerText = langData[lang].navSchedule;
+            document.getElementById('t_navLocation').innerText = langData[lang].navLocation;
+            document.getElementById('t_navDonation').innerText = langData[lang].navDonation;
+        }
+    </script>
 </body>
 </html>
