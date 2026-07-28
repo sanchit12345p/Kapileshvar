@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MH Kapileshwar Mahadev Mandir Vilhale</title>
+    <style>
+        :root {
+            --primary-color: #d84315;
+            --secondary-color: #fbe9e7;
+            --text-color: #333333;
+            --bg-color: #fafafa;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        header {
+            background: linear-gradient(135deg, #e64a19, #bf360c);
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+        header p {
+            margin: 8px 0 0;
+            font-size: 13px;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .card h2 {
+            color: var(--primary-color);
+            font-size: 17px;
+            margin-top: 0;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+        }
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .gallery-grid img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        /* Timings */
+        ul.timings-list {
+            padding-left: 20px;
+            margin: 0;
+            line-height: 1.8;
+        }
+        /* Location */
+        .location-box {
+            text-align: center;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 12px;
+            box-shadow: 0 2px 4px rgba(216, 67, 21, 0.3);
+        }
+        /* Donation */
+        .donation-box {
+            text-align: center;
+        }
+        .qr-placeholder {
+            width: 160px;
+            height: 160px;
+            background-color: #f5f5f5;
+            margin: 12px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>MH Kapileshwar Mahadev Mandir Vilhale</h1>
+        <p>पुरातन श्री कपिलेश्वर महादेव मंदिर, वेल्हाळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
+    </header>
+
+    <div class="container">
+
+        <!-- फिचर १: फोटो गॅलरी (प्रवेशद्वारापासून ते सर्वे/पिंड पर्यंत) -->
+        <div class="card">
+            <h2>१. मंदिर दर्शन गॅलरी</h2>
+            <div class="gallery-grid">
+                <img src="photo1.jpg" alt="मंदिर प्रवेशद्वार">
+                <img src="photo2.jpg" alt="नंदी आणि सभामंडप">
+                <img src="photo3.jpg" alt="प्राचीन नक्षीकाम छतावरील">
+                <img src="photo4.jpg" alt="गाभारा दर्शन">
+                <img src="photo5.jpg" alt="रात्रीची रोषणाई मंदिर">
+                <img src="photo6.jpg" alt="शिवलिंग आणि सजावट (सर्वे)">
+            </div>
+        </div>
+
+        <!-- फिचर २: आरती आणि वेळापत्रक -->
+        <div class="card">
+            <h2>२. आरती आणि दर्शन वेळापत्रक</h2>
+            <ul class="timings-list">
+                <li><strong>प्रातःकाळ आरती (Aarti Time):</strong> सकाळी ७:१५ वाजता</li>
+                <li><strong>संध्याकाळची आरती (Sandhyakalacha Time):</strong> संध्याकाळी ७:१५ वाजता</li>
+            </ul>
+        </div>
+
+        <!-- फिचर ३: पत्ता व लोकेशन -->
+        <div class="card location-box">
+            <h2>३. पत्ता व लोकेशन</h2>
+            <p><strong>पुरातन श्री कपिलेश्वर महादेव मंदिर</strong><br>मु. पोस्ट: वेल्हाळे, तहसील: भुसावळ,<br>जिल्हा: जळगाव - ४२५३०५</p>
+            <a href="https://maps.google.com/?q=Vilhare+Bhusawal+Jalgaon" target="_blank" class="btn">गुगल मॅपवर पहा</a>
+        </div>
+
+        <!-- फिचर ४: मंदिर विकास निधी / ट्रस्ट क्यूआर -->
+        <div class="card donation-box">
+            <h2>४. मंदिर विकास निधी (ट्रस्ट)</h2>
+            <p>मंदिर परिसराच्या विकासासाठी आणि अपग्रेड करण्यासाठी आपल्या स्वेच्छेने देणगी द्या.</p>
+            <div class="qr-placeholder">
+                [ देणगीसाठी QR कोड ]<br>(qr-code.png टाका)
+            </div>
+            <p style="font-size: 13px; color: #555;">UPI ID: temple-trust@upi</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 MH Kapileshwar Mahadev Mandir Vilhale</p>
+    </footer>
+
+</body>
+</html>
