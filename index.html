@@ -23,112 +23,6 @@
             scroll-behavior: smooth;
         }
         /* भाषा बार */
-        .lang-bar {<div style="padding: 20px; text-align: center;">
-    <h2 style="color: #d84315; margin-bottom: 15px;">मंदिर गॅलरी</h2>
-    
-    <!-- ६ फोटो एकत्र एका ग्रीडमध्ये दिसण्यासाठी -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
-        
-        <!-- फोटो १ -->
-        <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <img src="photo1.jpg" alt="Mandir Photo 1" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-            <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो १</p>
-        </div>
-
-        <!-- फोटो २ -->
-        <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <img src="photo2.jpg" alt="Mandir Photo 2" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-            <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो २</p>
-        </div>
-
-        <!-- फोटो ३ -->
-        <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <img src="photo3.jpg" alt="Mandir Photo 3" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-            <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ३</p>
-        </div>
-
-        <!-- फोटो ४ -->
-        <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <img src="photo4.jpg" alt="Mandir Photo 4" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-            <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ४</p>
-        </div>
-
-        <!-- फोटो ५ -->
-        <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <img src="photo5.jpg" alt="Mandir Photo 5" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-            <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ५</p>
-        </div>
-
-        <!-- फोटो ६ -->
-        <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <img src="photo6.jpg" alt="Mandir Photo 6" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
-            <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ६</p>
-        </div>
-
-    </div>
-</div>
-            text-align: right;
-            padding: 6px 15px;
-            background: #ffffff;
-            border-bottom: 1px solid #ddd;
-        }
-        .lang-bar button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-            margin-left: 4px;
-            font-weight: bold;
-        }
-        /* हेडर आणि लोगो */
-        header {
-            background: linear-gradient(135deg, #e64a19, #bf360c);
-            color: white;
-            text-align: center;
-            padding: 20px 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .app-logo {
-            width: 75px;
-            height: 75px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid white;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-            margin-bottom: 10px;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 18px;
-        }
-<!DOCTYPE html>
-<html lang="mr">
-<head>
-    <link rel="manifest" href="manifest.json">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MH Kapileshwar Mahadev Mandir Vilhale</title>
-    <!-- ॲपचा लोगो (Browser Tab Icon) -->
-    <link rel="icon" type="image/jpeg" href="images/logo.jpg">
-    <style>
-        :root {
-            --primary-color: #d84315;
-            --secondary-color: #fbe9e7;
-            --text-color: #333333;
-            --bg-color: #f4f4f4;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            scroll-behavior: smooth;
-        }
-        /* भाषा बार */
         .lang-bar {
             text-align: right;
             padding: 6px 15px;
@@ -167,6 +61,18 @@
             margin: 0;
             font-size: 18px;
         }
+        /* मुख्य माहिती विभाग */
+        .content-section {
+            padding: 15px;
+            background: white;
+            margin: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .content-section h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -183,8 +89,14 @@
         <h1>MH Kapileshwar Mahadev Mandir Vilhale</h1>
     </header>
 
+    <!-- मंदिराची माहिती / जुने फिचर्स -->
+    <div class="content-section">
+        <h3>जय भोलेनाथ!</h3>
+        <p>श्री क्षेत्र कपिलेश्वर महादवे मंदिर, विल्होळे येथील अधिकृत ॲपमध्ये आपले स्वागत आहे. येथे आपल्याला मंदिराची माहिती, आरती आणि छायाचित्रे पाहायला मिळतील.</p>
+    </div>
+
     <!-- मंदिर गॅलरी (६ फोटो) -->
-    <div style="padding: 20px; text-align: center;">
+    <div style="padding: 15px; text-align: center;">
         <h2 style="color: #d84315; margin-bottom: 15px;">मंदिर गॅलरी</h2>
         
         <!-- ६ फोटो एकत्र एका ग्रीडमध्ये दिसण्यासाठी -->
@@ -215,7 +127,7 @@
             </div>
 
             <!-- फोटो ५ -->
-            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+'            <div style="background: white; padding: 8px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                 <img src="photo5.jpg" alt="Mandir Photo 5" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">
                 <p style="font-size: 12px; color: #555; margin-top: 5px;">फोटो ५</p>
             </div>
