@@ -79,7 +79,6 @@
             border: 1px solid #d84315;
         }
 
-        /* ग्लोबल लाईव्ह बझर / फ्लॅश बार */
         .global-live-alert {
             background: #ffebee;
             border: 1px solid #ffcdd2;
@@ -446,6 +445,26 @@
         .btn-play { background: #2e7d32; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 11px; }
         .btn-delete { background: #c62828; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 11px; }
 
+        .video-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .video-tab-btn {
+            flex: 1;
+            padding: 8px;
+            background: #ddd;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .video-tab-btn.active-tab {
+            background: #b71c1c;
+            color: white;
+        }
+
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -576,7 +595,6 @@
         .btn-cancel { background: #aaa; color: white; }
         .btn-save { background: #b71c1c; color: white; }
 
-        /* लॉगिन / प्रवेश गेट मॉडेल */
         #nameGateModal {
             display: flex;
             position: fixed;
@@ -660,7 +678,7 @@
 </head>
 <body>
 
-    <!-- लॉगिन / प्रवेश गेट मॉडेल (Public & Admin Login) -->
+    <!-- लॉगिन / प्रवेश गेट मॉडेल -->
     <div id="nameGateModal">
         <div class="name-gate-card">
             <h3 style="color:#b71c1c; margin-top:0;">🙏 स्वागत आहे!</h3>
@@ -835,7 +853,17 @@
             </div>
         </div>
 
-        <!-- हिस्ट्री सेक्शन -->
+        <!-- व्हिडिओज आणि शॉर्ट्स सेक्शन -->
+        <div id="section-videos" class="section-box">
+            <h2 id="t_videosTitle">🎥 व्हिडिओज आणि शॉर्ट्स</h2>
+            <div class="video-tabs">
+                <button class="video-tab-btn active-tab" onclick="switchVideoTab('full', this)" id="t_tabFull">📁 फुल व्हिडिओज</button>
+                <button class="video-tab-btn" onclick="switchVideoTab('short', this)" id="t_tabShort">⚡ शॉर्ट्स</button>
+            </div>
+            <div id="videosListContainer"></div>
+        </div>
+
+        <!-- हिस्ट्री / अपलोड्स सेक्शन -->
         <div id="section-history" class="section-box">
             <h2 id="t_historyTitle">📂 माझी अपलोड व लाईव्ह हिस्ट्री</h2>
             <p id="t_historySub" style="font-size:11px; color:#666;">सर्व युझर्सचे अपलोड केलेले व्हिडिओ व लाईव्ह स्ट्रीम त्यांच्या डीपी आणि नावासाहित येथे दिसतील.</p>
@@ -904,8 +932,8 @@
         <button onclick="showSection('schedule', this)"><span id="t_iconSchedule">⏰</span><span id="t_navSchedule">वेळपत्रक</span></button>
         <button onclick="showSection('location', this)"><span id="t_iconLocation">📍</span><span id="t_navLocation">लोकेशन</span></button>
         <button class="nav-center-create" onclick="toggleCreateMenu(event)">+</button>
+        <button onclick="showSection('videos', this)"><span id="t_iconVideos">🎥</span><span id="t_navVideos">व्हिडिओज</span></button>
         <button onclick="showSection('ringtones', this)"><span id="t_iconRingtones">🔔</span><span id="t_navRingtones">रिंगटोन</span></button>
-        <button onclick="showSection('texts', this)"><span id="t_iconTexts">📖</span><span id="t_navTexts">ग्रंथ व आरत्या</span></button>
         <button onclick="showSection('history', this)"><span id="t_iconHistory">📂</span><span id="t_navHistory">हिस्ट्री</span></button>
     </div>
 
@@ -916,6 +944,8 @@
         let loggedInUserDp = '';
         let tempDpBase64 = '';
         let currentLang = 'mr';
+        let globalHistoryList = [];
+        let currentVideoTab = 'full';
 
         window.onload = function() {
             let savedName = localStorage.getItem('mandir_app_username');
@@ -1043,14 +1073,16 @@
             const { collection, onSnapshot } = window.firebaseCols;
 
             onSnapshot(collection(window.db, "mandir_history"), (snapshot) => {
-                let historyList = [];
+                globalHistoryList = [];
                 snapshot.forEach((docSnap) => {
-                    historyList.push({ id: docSnap.id, ...docSnap.data() });
+                    globalHistoryList.push({ id: docSnap.id, ...docSnap.data() });
                 });
-                historyList.sort((a, b) => b.id - a.id);
-                renderHistoryUI(historyList);
+                globalHistoryList.sort((a, b) => b.id - a.id);
+                
+                renderHistoryUI(globalHistoryList);
+                renderVideosUI();
 
-                let activeLive = historyList.find(item => item.type === "🔴 लाईव्ह स्ट्रीम" && item.isLive === true);
+                let activeLive = globalHistoryList.find(item => item.type === "🔴 लाईव्ह स्ट्रीम" && item.isLive === true);
                 let alertBar = document.getElementById('globalLiveAlertBar');
                 let dismissed = sessionStorage.getItem('live_alert_dismissed') === 'true';
 
@@ -1113,9 +1145,16 @@
                 const item = document.createElement('div');
                 item.className = 'notif-item';
                 item.innerHTML = `<strong>${n.title}</strong><br>${n.message} <span style="font-size:9px; color:#888; float:right;">${n.time}</span>`;
+                
+                // नोटिफिकेशनवर क्लिक केल्यावर संबंधित सेक्शनवर जाण्याची सुविधा
                 item.onclick = function() {
-                    if(n.title.includes('लाईव्ह') || n.title.includes('Live') || n.title.includes('स्वागत')) {
+                    document.getElementById('notificationDropdown').style.display = 'none';
+                    if(n.title.includes('लाईव्ह') || n.title.includes('Live')) {
                         jumpToLiveSection();
+                    } else if(n.title.includes('अपलोड') || n.title.includes('व्हिडिओ')) {
+                        showSection('videos', document.querySelectorAll('.bottom-nav button')[4]);
+                    } else {
+                        showSection('history', document.querySelectorAll('.bottom-nav button')[6]);
                     }
                 };
                 container.appendChild(item);
@@ -1209,6 +1248,50 @@
                     });
                 } catch(e) { console.error("Delete error:", e); }
             }
+        }
+
+        function switchVideoTab(tabType, btnElem) {
+            currentVideoTab = tabType;
+            const buttons = document.querySelectorAll('.video-tab-btn');
+            buttons.forEach(b => b.classList.remove('active-tab'));
+            if(btnElem) btnElem.classList.add('active-tab');
+            renderVideosUI();
+        }
+
+        function renderVideosUI() {
+            const container = document.getElementById('videosListContainer');
+            container.innerHTML = '';
+            
+            let filtered = globalHistoryList.filter(item => {
+                if(currentVideoTab === 'full') return item.type === 'फुल व्हिडिओ';
+                if(currentVideoTab === 'short') return item.type === 'शॉर्ट व्हिडिओ';
+                return false;
+            });
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<p style="font-size:12px; color:#777; text-align:center; padding:20px;">येथे कोणतेही ${currentVideoTab === 'full' ? 'फुल व्हिडिओ' : 'शॉर्ट्स'} उपलब्ध नाहीत.</p>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'history-item-card';
+                card.innerHTML = `
+                    <div class="history-info">
+                        <h4>${item.title}</h4>
+                        <div class="history-uploader-row">
+                            <img class="comment-dp" src="${item.dp || 'photo1.jpg'}" alt="DP">
+                            <p style="margin:0;"><strong>टाकणारे:</strong> <span style="color:#2e7d32; font-weight:bold;">${item.uploader || 'Unknown'}</span></p>
+                        </div>
+                        <p style="margin:2px 0;"><strong>वर्णन:</strong> ${item.desc}</p>
+                        <p style="margin:2px 0;"><strong>हॅशटॅग:</strong> <span style="color:#d84315;">${item.tags}</span></p>
+                    </div>
+                    <div class="history-actions">
+                        ${item.url ? `<button class="btn-play" onclick="playHistoryVideo('${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}')">▶ प्ले</button>` : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
         function renderHistoryUI(history) {
@@ -1444,9 +1527,10 @@
                 ringtoneTitle: "४. महादेवांच्या रिंगटोन व भक्ती ध्वनी",
                 textsTitle: "५. पवित्र ग्रंथ, आरत्या व श्लोक",
                 liveMainTitle: "🔴 मंदिर लाईव्ह दर्शन व आरती",
+                videosTitle: "🎥 व्हिडिओज आणि शॉर्ट्स",
                 historyTitle: "📂 माझी अपलोड व लाईव्ह हिस्ट्री",
                 donationTitle: "७. देणगी",
-                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ व आरत्या", navHistory: "हिस्ट्री"
+                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navVideos: "व्हिडिओज", navRingtones: "रिंगटोन", navHistory: "हिस्ट्री"
             },
             hi: {
                 appName: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
@@ -1461,9 +1545,10 @@
                 ringtoneTitle: "४. महादेव रिंगटोन व भक्ति ध्वनि",
                 textsTitle: "५. पवित्र ग्रंथ, आरतियाँ व श्लोक",
                 liveMainTitle: "🔴 मंदिर लाइव दर्शन व आरती",
+                videosTitle: "🎥 वीडियोज़ और शॉर्ट्स",
                 historyTitle: "📂 मेरी अपलोड व लाइव हिस्ट्री",
                 donationTitle: "७. दान",
-                navGallery: "गॅलरी", navSchedule: "समय", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ", navHistory: "हिस्ट्री"
+                navGallery: "गॅलरी", navSchedule: "समय", navLocation: "लोकेशन", navVideos: "वीडियोज़", navRingtones: "रिंगटोन", navHistory: "हिस्ट्री"
             },
             en: {
                 appName: "MH Kapileshwar Mahadev Mandir Vilhale",
@@ -1478,9 +1563,10 @@
                 ringtoneTitle: "4. Mahadev Ringtones & Bhakti Sounds",
                 textsTitle: "5. Sacred Texts, Aartis & Verses",
                 liveMainTitle: "🔴 Temple Live Darshan & Aarti",
+                videosTitle: "🎥 Videos & Shorts",
                 historyTitle: "📂 My Upload & Live History",
                 donationTitle: "7. Donation",
-                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navRingtones: "Ringtones", navTexts: "Texts", navHistory: "History"
+                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navVideos: "Videos", navRingtones: "Ringtones", navHistory: "History"
             }
         };
 
@@ -1501,13 +1587,14 @@
             document.getElementById('t_ringtoneTitle').innerText = t.ringtoneTitle;
             document.getElementById('t_textsTitle').innerText = t.textsTitle;
             document.getElementById('t_liveMainTitle').innerText = t.liveMainTitle;
+            document.getElementById('t_videosTitle').innerText = t.videosTitle;
             document.getElementById('t_historyTitle').innerText = t.historyTitle;
             document.getElementById('t_donationTitle').innerText = t.donationTitle;
             document.getElementById('t_navGallery').innerText = t.navGallery;
             document.getElementById('t_navSchedule').innerText = t.navSchedule;
             document.getElementById('t_navLocation').innerText = t.navLocation;
+            document.getElementById('t_navVideos').innerText = t.navVideos;
             document.getElementById('t_navRingtones').innerText = t.navRingtones;
-            document.getElementById('t_navTexts').innerText = t.navTexts;
             document.getElementById('t_navHistory').innerText = t.navHistory;
         }
 
