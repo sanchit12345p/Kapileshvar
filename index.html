@@ -1,1668 +1,314 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="appTitle">MH कपिलेश्वर महादेव मंदिर विल्होळे</title>
+    <title>कपिलेश्वर महादेव मंदिर</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f6f9;
-            color: #333;
-            padding-bottom: 70px;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        header {
-            background: linear-gradient(135deg, #b71c1c, #d84315);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            position: relative;
+        body {
+            background: #111318;
+            color: #ffffff;
+            min-height: 100vh;
         }
 
-        .menu-hamburger-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
+        /* Login Section */
+        #loginSection {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        header img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 2px solid white;
-            object-fit: cover;
-        }
-
-        .admin-brand {
-            font-size: 11px;
-            color: #ffccbc;
-            margin-top: 4px;
-            letter-spacing: 1px;
-            font-weight: bold;
-        }
-
-        .lang-switcher {
-            margin-top: 10px;
-        }
-
-        .lang-switcher button {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid white;
-            color: white;
-            padding: 4px 10px;
+        .login-container {
+            background: #1a1e29;
+            padding: 30px;
             border-radius: 15px;
-            cursor: pointer;
-            font-size: 11px;
-            margin: 0 2px;
-            font-weight: bold;
-        }
-
-        .user-top-bar {
-            background: #fff3e0;
-            padding: 8px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #ffe0b2;
-            font-size: 13px;
-        }
-
-        .user-profile-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .user-profile-info img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid #d84315;
-        }
-
-        .global-live-alert {
-            background: #ffebee;
-            border: 1px solid #ffcdd2;
-            padding: 8px 15px;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #c62828;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .live-pulse-dot {
-            width: 12px;
-            height: 12px;
-            background-color: red;
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulse-animation 1.5s infinite;
-        }
-
-        @keyframes pulse-animation {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(255, 0, 0, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
-        }
-
-        .top-bar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notification-bell-btn {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: red;
-            color: white;
-            font-size: 9px;
-            padding: 2px 5px;
-            border-radius: 50%;
-            display: none;
-        }
-
-        .notification-dropdown, .side-drawer-menu {
-            display: none;
-            position: absolute;
-            background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border-radius: 8px;
-            z-index: 1000;
-            border: 1px solid #ddd;
-        }
-
-        .notification-dropdown {
-            right: 15px;
-            top: 130px;
-            width: 280px;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .side-drawer-menu {
-            left: 15px;
-            top: 60px;
-            width: 240px;
-            padding: 10px;
-            text-align: left;
-        }
-
-        .side-drawer-menu button {
-            width: 100%;
-            padding: 8px;
-            background: none;
-            border: none;
-            text-align: left;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-            color: #333;
-        }
-        .side-drawer-menu button:hover {
-            background: #f9f9f9;
-            color: #b71c1c;
-        }
-
-        .notif-item {
-            padding: 8px;
-            border-bottom: 1px solid #eee;
-            font-size: 12px;
-            text-align: left;
-            cursor: pointer;
-        }
-        .notif-item:hover {
-            background: #fff5f5;
-        }
-
-        .container {
-            padding: 15px;
-            max-width: 800px;
-            margin: auto;
-        }
-
-        .section-box {
-            display: none;
-        }
-
-        .active-section {
-            display: block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            width: 380px;
+            text-align: center;
+            border: 1px solid #ff9900;
         }
 
         h2 {
-            color: #b71c1c;
-            border-bottom: 2px solid #ffccbc;
-            padding-bottom: 5px;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .gallery-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .gallery-card img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-        }
-
-        .gallery-card p {
-            margin: 8px 0;
-            font-size: 12px;
-            font-weight: bold;
-            color: #444;
-        }
-
-        .info-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-top: 10px;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .map-btn {
-            display: inline-block;
-            background: #2e7d32;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 10px;
-            font-size: 12px;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 12px;
-            font-size: 13px;
-            box-sizing: border-box;
-        }
-
-        .ringtone-card, .scripture-card {
-            background: white;
-            padding: 12px;
-            border-radius: 6px;
             margin-bottom: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            color: #ff9900;
+            font-size: 24px;
         }
 
-        .ringtone-top {
+        .subtitle {
+            font-size: 13px;
+            color: #b0b3c1;
+            margin-bottom: 20px;
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: #111318;
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid #2a2e3d;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: #b0b3c1;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: #ff9900;
+            color: #111318;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #ffcc66;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #111318;
+            border: 1px solid #2a2e3d;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            border-color: #ff9900;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff9900;
+            border: none;
+            border-radius: 8px;
+            color: #111318;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #e68a00;
+        }
+
+        /* Main Website Section */
+        #appSection {
+            display: none;
+            padding: 20px;
+        }
+
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 15px 30px;
+            background: #1a1e29;
+            border-bottom: 2px solid #ff9900;
+            border-radius: 10px;
         }
 
-        .ringtone-info {
-            font-size: 13px;
-            font-weight: bold;
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .yt-listen-btn {
-            background: #c62828;
-            color: white;
+        .logout-btn {
+            padding: 8px 15px;
+            background: #ff4757;
             border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .scripture-category {
-            background: #ffccbc;
-            color: #b71c1c;
-            padding: 5px 10px;
-            font-weight: bold;
-            border-radius: 4px;
-            margin-top: 15px;
-            margin-bottom: 8px;
-            font-size: 13px;
-        }
-
-        .scripture-title {
-            font-weight: bold;
-            color: #d84315;
-            font-size: 13px;
-            margin-bottom: 5px;
-        }
-
-        .scripture-text {
-            font-size: 12px;
-            white-space: pre-line;
-            color: #444;
-            line-height: 1.7;
-        }
-
-        .live-container {
-            background: black;
-            border-radius: 8px;
-            overflow: hidden;
-            text-align: center;
-            position: relative;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        #liveVideoElement {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            display: none;
-            background: #111;
-        }
-
-        .live-placeholder {
-            padding: 50px 20px;
+            border-radius: 6px;
             color: white;
+            font-weight: bold;
+            cursor: pointer;
         }
 
-        .live-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: red;
+        .logout-btn:hover {
+            background: #ff6b81;
+        }
+
+        .content {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .content h1 {
+            color: #ff9900;
+            margin-bottom: 15px;
+        }
+
+        .admin-badge {
+            background: #ff4757;
             color: white;
             padding: 3px 8px;
-            font-size: 10px;
-            font-weight: bold;
-            border-radius: 4px;
-            display: none;
-            animation: pulse-animation 1.5s infinite;
-        }
-
-        .live-controls {
-            padding: 10px;
-            background: #222;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .live-controls button {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .btn-stop-live { background: #c62828; color: white; }
-        .btn-switch-cam { background: #555; color: white; }
-
-        .chat-box {
-            background: white;
-            border-radius: 8px;
-            margin-top: 10px;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .comment-area {
-            height: 100px;
-            overflow-y: auto;
-            border: 1px solid #eee;
-            padding: 5px;
-            font-size: 12px;
-            margin-bottom: 8px;
-            background: #fafafa;
-        }
-
-        .comment-item-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 5px;
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 3px;
-        }
-
-        .comment-dp {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .comment-input-row {
-            display: flex;
-            gap: 5px;
-        }
-
-        .comment-input-row input {
-            flex: 1;
-            padding: 6px;
-            font-size: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .comment-input-row button {
-            background: #b71c1c;
-            color: white;
-            border: none;
-            padding: 6px 12px;
             border-radius: 4px;
             font-size: 12px;
-            cursor: pointer;
-        }
-
-        .youtube-video-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .youtube-video-card:hover {
-            transform: translateY(-2px);
-        }
-        .yt-thumb-container {
-            width: 100%;
-            height: 180px;
-            position: relative;
-            background: #000;
-        }
-        .yt-thumb-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .yt-card-details {
-            display: flex;
-            padding: 10px;
-            gap: 10px;
-        }
-        .yt-card-meta {
-            flex: 1;
-        }
-        .yt-card-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #222;
-            margin: 0 0 4px 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .yt-card-channel {
-            font-size: 12px;
-            color: #555;
-            margin: 0;
-        }
-        .yt-card-time {
-            font-size: 11px;
-            color: #888;
-            margin: 2px 0 0 0;
-        }
-
-        .history-actions {
-            display: flex;
-            gap: 6px;
-            padding: 0 10px 10px 10px;
-        }
-
-        .btn-play { background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; flex: 1; }
-        .btn-delete { background: #c62828; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
-
-        .video-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .video-tab-btn {
-            flex: 1;
-            padding: 8px;
-            background: #ddd;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .video-tab-btn.active-tab {
-            background: #b71c1c;
-            color: white;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-            z-index: 999;
-            border-top: 1px solid #ddd;
-        }
-
-        .bottom-nav button {
-            background: none;
-            border: none;
-            font-size: 10px;
-            color: #666;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            gap: 2px;
-        }
-
-        .bottom-nav button span {
-            font-size: 16px;
-        }
-
-        .bottom-nav button.active {
-            color: #b71c1c;
-            font-weight: bold;
-        }
-
-        .nav-center-create {
-            background: #b71c1c !important;
-            color: white !important;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px !important;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            margin-top: -8px;
-        }
-
-        .create-menu {
-            display: none;
-            position: fixed;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            width: 250px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border-radius: 8px;
-            z-index: 1000;
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-
-        .create-menu button {
-            width: 100%;
-            padding: 8px;
-            margin: 4px 0;
-            background: #f4f6f9;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #333;
-            text-align: left;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content-box {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 350px;
-            text-align: left;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-content-box input, .modal-content-box textarea {
-            width: 100%;
-            padding: 8px;
-            margin: 6px 0 12px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 12px;
-            box-sizing: border-box;
-        }
-
-        .thumbnail-upload-box {
-            width: 100%;
-            height: 110px;
-            border: 2px dashed #b71c1c;
-            border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            background: #fafafa;
-            margin-bottom: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-        .thumbnail-upload-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-
-        .modal-buttons button {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-cancel { background: #aaa; color: white; }
-        .btn-save { background: #b71c1c; color: white; }
-
-        #nameGateModal, #blockedModal {
-            display: flex;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .name-gate-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            width: 85%;
-            max-width: 320px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .dp-upload-circle {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: #eee;
-            margin: 0 auto 12px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px dashed #b71c1c;
-            cursor: pointer;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .dp-upload-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-        }
-        
-        .login-type-btn {
-            width: 100%;
-            padding: 10px;
-            margin: 6px 0;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .btn-public-type { background: #ff9800; color: white; }
-        .btn-admin-type { background: #c62828; color: white; }
-
-        .youtube-player-modal {
-            display: none;
-            position: fixed;
-            z-index: 3000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.95);
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .yt-player-header {
-            padding: 12px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0,0,0,0.8);
-            color: white;
-        }
-        .yt-player-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            background: black;
-        }
-        .yt-player-body video {
-            width: 100%;
-            max-height: 60vh;
-            background: black;
-            outline: none;
-        }
-        .yt-player-footer {
-            background: #181818;
-            color: white;
-            padding: 15px;
-            max-height: 35vh;
-            overflow-y: auto;
-        }
-        .yt-action-bar {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-top: 10px;
-            border-top: 1px solid #333;
-            padding-top: 10px;
-        }
-        .yt-action-btn {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .yt-action-btn.liked {
-            background: #b71c1c;
+            margin-left: 10px;
         }
     </style>
-
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyDdoTltT76q_owd7-fFiMMPypbFdioAyiM",
-          authDomain: "kapileshwar-mandir.firebaseapp.com",
-          projectId: "kapileshwar-mandir",
-          storageBucket: "kapileshwar-mandir.firebasestorage.app",
-          messagingSenderId: "607915355395",
-          appId: "1:607915355395:web:fc1b297448bf345a350d36",
-          measurementId: "G-3P5K83XWNP"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.db = db;
-        window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc };
-    </script>
 </head>
 <body>
 
-    <!-- ब्लॉक केलेले युझरसाठी मेसेज मॉडेल -->
-    <div id="blockedModal" style="display:none;">
-        <div class="name-gate-card">
-            <h3 style="color:#c62828; margin-top:0;">⛔ ॲपवरून ब्लॉक केले आहे</h3>
-            <p style="font-size:12px; color:#666;">तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.</p>
-        </div>
-    </div>
-
-    <!-- लॉगिन / प्रवेश गेट मॉडेल -->
-    <div id="nameGateModal">
-        <div class="name-gate-card">
-            <h3 style="color:#b71c1c; margin-top:0;">🙏 स्वागत आहे!</h3>
-            <div class="admin-brand" style="color:#666; margin-bottom:12px;">Admin By : Sanchit Vikas Patil</div>
-            <p style="font-size:12px; color:#666; margin-bottom:15px;">लॉगिन प्रकार निवडा:</p>
+    <!-- Login Section -->
+    <div id="loginSection">
+        <div class="login-container">
+            <h2>ॐ कपिलेश्वर महादेव</h2>
+            <div class="subtitle">मंदिर अधिकृत पोर्टल</div>
             
-            <div id="loginChoiceView">
-                <button class="login-type-btn btn-public-type" onclick="selectLoginMode('public')">👤 Public (पब्लिक)</button>
-                <button class="login-type-btn btn-admin-type" onclick="selectLoginMode('admin')">👑 Private Admin (ॲडमिन)</button>
+            <!-- Mode Selection Buttons -->
+            <div class="mode-selector">
+                <button type="button" id="publicBtn" class="mode-btn active" onclick="switchMode('public')">Public</button>
+                <button type="button" id="privateBtn" class="mode-btn" onclick="switchMode('private')">Private</button>
             </div>
 
-            <!-- पब्लिक फॉर्म -->
-            <div id="publicFormView" style="display:none; text-align:left;">
-                <label style="font-size:11px; font-weight:bold;">प्रोफाईल फोटो (DP) निवडा:</label>
-                <div class="dp-upload-circle" onclick="document.getElementById('dpFileInput').click()">
-                    <span id="dpPlaceholderText" style="font-size:10px; color:#666;">➕ फोटो</span>
-                    <img id="dpPreviewImg" src="" alt="DP">
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <!-- Public Input Field -->
+                <div id="publicField" class="input-group">
+                    <label for="username">तुमचे नाव प्रविष्ट करा:</label>
+                    <input type="text" id="username" placeholder="उदा. राहुल पाटील">
                 </div>
-                <input type="file" id="dpFileInput" accept="image/*" style="display:none;" onchange="previewDP(this)">
 
-                <label style="font-size:11px; font-weight:bold;">तुमचे नाव:</label>
-                <input type="text" id="enteredUserName" placeholder="पूर्ण नाव टाका..." style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:10px; box-sizing:border-box;">
-                
-                <button onclick="verifyPublicLogin()" style="width:100%; background:#ff9800; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">प्रवेश करा</button>
-                <button onclick="backToLoginChoice()" style="width:100%; background:#aaa; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
-            </div>
-
-            <!-- ॲडमिन फॉर्म -->
-            <div id="adminFormView" style="display:none; text-align:left;">
-                <label style="font-size:11px; font-weight:bold;">ॲडमिन कोड टाका:</label>
-                <input type="password" id="adminCodeInput" placeholder="Enter Admin Code..." style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:5px; box-sizing:border-box;">
-                <div id="adminErrorMsg" style="color:red; font-size:11px; margin-bottom:8px;"></div>
-                
-                <button onclick="verifyAdminLogin()" style="width:100%; background:#c62828; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">ॲडमिन लॉगिन करा</button>
-                <button onclick="backToLoginChoice()" style="width:100%; background:#aaa; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- युझर बार -->
-    <div class="user-top-bar">
-        <div class="user-profile-info">
-            <img id="headerUserDp" src="photo1.jpg" alt="DP">
-            <span><strong id="t_userLabel">युझर:</strong> <span id="displayUserName" style="color:#b71c1c; font-weight:bold;">भक्त</span></span>
-        </div>
-        <div class="top-bar-right">
-            <button class="notification-bell-btn" onclick="toggleNotifications()">🔔<span id="notifBadge" class="notification-badge">0</span></button>
-            <button onclick="logoutUser()" style="background:none; border:1px solid #b71c1c; color:#b71c1c; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;" id="t_logoutText">लॉग आउट</button>
-        </div>
-    </div>
-
-    <!-- ग्लोबल लाईव्ह बझर बार -->
-    <div id="globalLiveAlertBar" class="global-live-alert">
-        <div style="display:flex; align-items:center; gap:8px; cursor:pointer; flex:1;" onclick="jumpToLiveSection()">
-            <span class="live-pulse-dot"></span>
-            <span id="globalLiveText">मंदिर लाईव्ह सुरू आहे! पाहण्यासाठी येथे क्लिक करा 🔴</span>
-        </div>
-        <button onclick="dismissGlobalLiveAlert(event)" style="background:none; border:none; font-size:14px; cursor:pointer; color:#c62828;">✖</button>
-    </div>
-
-    <!-- नोटिफिकेशन ड्रॉपडाऊन -->
-    <div id="notificationDropdown" class="notification-dropdown">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; padding-bottom:5px; margin-bottom:5px;">
-            <strong id="t_notifTitle" style="font-size:12px; color:#b71c1c;">🔔 अपडेट्स व नोटीस</strong>
-            <button onclick="clearNotifications()" style="background:none; border:none; color:red; font-size:10px; cursor:pointer;" id="t_clearNotif">सर्व हटवा</button>
-        </div>
-        <div id="notifListContainer"></div>
-    </div>
-
-    <!-- ॲडमिन सेटिंग्स व ब्लॉक लिस्ट ड्राव्हर मेनू -->
-    <div id="sideDrawerMenu" class="side-drawer-menu">
-        <div style="font-size:13px; font-weight:bold; color:#b71c1c; border-bottom:1px solid #ddd; padding-bottom:5px; margin-bottom:5px;">⚙️ ॲप सेटिंग्ज</div>
-        <button onclick="openBlockManager()">🚫 युझर ब्लॉक लिस्ट मॅनेज करा</button>
-        <button onclick="togglePublicPrivateMode()">🔄 स्विच पब्लिक/प्रायव्हेट मोड</button>
-        <button onclick="logoutUser()">🚪 लॉग आउट</button>
-    </div>
-
-    <header>
-        <button class="menu-hamburger-btn" onclick="toggleSideDrawer(event)">☰</button>
-        <img src="photo1.jpg" alt="Mandir Logo">
-        <h1 id="appTitle" style="font-size: 16px; margin: 8px 0 2px 0;">MH कपिलेश्वर महादेव मंदिर विल्होळे</h1>
-        <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
-        <p id="t_headerSub" style="font-size: 11px; margin: 4px 0 0 0; opacity: 0.9;">ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
-        
-        <div class="lang-switcher">
-            <button onclick="changeLanguage('mr')">मराठी</button>
-            <button onclick="changeLanguage('hi')">हिंदी</button>
-            <button onclick="changeLanguage('en')">English</button>
-        </div>
-    </header>
-
-    <div class="container">
-
-        <!-- १. गॅलरी -->
-        <div id="section-gallery" class="section-box active-section">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 id="t_galleryTitle" style="margin:0;">१. मंदिर दर्शन गॅलरी</h2>
-                <button id="addGalleryPhotoBtn" style="display:none; background:#b71c1c; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो जोडा</button>
-                <input type="file" id="galleryImageInput" accept="image/*" style="display:none;" onchange="uploadNewGalleryPhoto(this)">
-            </div>
-            <div id="galleryGridContainer" class="gallery-grid">
-                <!-- गॅलरी कार्ड्स डायनॅमिकली लोड होतील -->
-            </div>
-        </div>
-
-        <!-- २. वेळपत्रक -->
-        <div id="section-schedule" class="section-box">
-            <h2 id="t_scheduleTitle">२. आरती आणि दर्शन वेळपत्रक</h2>
-            <div class="info-card">
-                <p><strong id="t_aartiMorning">प्रातःकाळ आरती:</strong> <span id="t_morningTime">सकाळी ७:१५ वाजता (7:15 AM)</span></p>
-                <p><strong id="t_aartiEvening">संध्याकाळची आरती:</strong> <span id="t_eveningTime">संध्याकाळी ७:१५ वाजता (7:15 PM)</span></p>
-            </div>
-        </div>
-
-        <!-- ३. लोकेशन -->
-        <div id="section-location" class="section-box">
-            <h2 id="t_locationTitle">३. पत्ता व लोकेशन</h2>
-            <div class="info-card">
-                <p id="t_addressText">श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.</p>
-                <a href="https://maps.google.com/?q=Kapileshwar+Mahadev+Mandir+Vilhale+Bhusawal" target="_blank" class="map-btn" id="t_mapBtn">गुगल मॅपवर पहा</a>
-            </div>
-        </div>
-
-        <!-- ४. रिंगटोन -->
-        <div id="section-ringtones" class="section-box">
-            <h2 id="t_ringtoneTitle">४. महादेवांच्या रिंगटोन व भक्ती ध्वनी</h2>
-            <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
-            <div id="ringtoneListContainer"></div>
-        </div>
-
-        <!-- ५. ग्रंथ व मंदिर निबंध माहिती -->
-        <div id="section-texts" class="section-box">
-            <h2 id="t_textsTitle">५. पवित्र ग्रंथ, आरत्या, श्लोक व मंदिराचा निबंध माहिती</h2>
-            <input type="text" id="textSearch" class="search-box" placeholder="🔍 आरती, भजन, श्लोक किंवा निबंध येथे सर्च करा..." onkeyup="filterTexts()">
-            <div id="textsListContainer"></div>
-        </div>
-
-        <!-- ६. लाईव्ह सेक्शन -->
-        <div id="section-live" class="section-box">
-            <h2 id="t_liveMainTitle">🔴 मंदिर लाईव्ह दर्शन व आरती</h2>
-            <div class="live-container">
-                <div id="liveBadge" class="live-badge">🔴 LIVE</div>
-                <video id="liveVideoElement" autoplay playsinline muted></video>
-                <div id="livePlaceholderText" class="live-placeholder">
-                    <h3 id="t_mandirLiveTitle" style="margin:0 0 5px 0; color:white; font-size:14px;">श्री कपिलेश्वर महादेव मंदिर लाईव्ह</h3>
-                    <p id="t_liveSubText" style="font-size:11px; color:#aaa; margin:0;">कॅमेरा सुरू करण्यासाठी खालील (+) वर क्लिक करा</p>
+                <!-- Private (Admin) Input Field -->
+                <div id="privateField" class="input-group hidden">
+                    <label for="adminCode">अ‍ॅडमिन कोड टाка:</label>
+                    <input type="password" id="adminCode" placeholder="गुप्त कोड प्रविष्ट करा">
                 </div>
-                <div id="liveControlsRow" class="live-controls" style="display:none;">
-                    <button class="btn-stop-live" onclick="stopLiveCameraStream()" id="t_stopLiveBtn">⏹️ Stop Live</button>
-                    <button class="btn-switch-cam" onclick="switchCamera()" id="t_switchCamBtn">🔄 Switch Camera</button>
-                </div>
-            </div>
 
-            <div class="chat-box">
-                <p id="displayLiveTitle" style="font-weight:bold; font-size:12px; margin:0 0 5px 0; color:#b71c1c;"></p>
-                <p id="viewerStatusText" style="font-size:11px; color:#666; margin:0 0 8px 0;">👁️ 156 Viewers Watching Live</p>
-                <div id="commentArea" class="comment-area"></div>
-                <div class="comment-input-row">
-                    <input type="text" id="userCommentInput" placeholder="कमेंट लिहा...">
-                    <button onclick="sendComment()" id="t_sendBtn">पाठवा</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- व्हिडिओज आणि शॉर्ट्स सेक्शन -->
-        <div id="section-videos" class="section-box">
-            <h2 id="t_videosTitle">🎥 व्हिडिओज आणि शॉर्ट्स</h2>
-            <div class="video-tabs">
-                <button class="video-tab-btn active-tab" onclick="switchVideoTab('full', this)" id="t_tabFull">📁 फुल व्हिडिओज</button>
-                <button class="video-tab-btn" onclick="switchVideoTab('short', this)" id="t_tabShort">⚡ शॉर्ट्स</button>
-            </div>
-            <div id="videosListContainer"></div>
-        </div>
-
-        <!-- हिस्ट्री / अपलोड्स सेक्शन -->
-        <div id="section-history" class="section-box">
-            <h2 id="t_historyTitle">📂 माझी अपलोड व लाईव्ह हिस्ट्री</h2>
-            <p id="t_historySub" style="font-size:11px; color:#666;">सर्व युझर्सचे अपलोड केलेले व्हिडिओ व लाईव्ह स्ट्रीम त्यांच्या डीपी आणि नावासाहित येथे दिसतील.</p>
-            <div id="historyListContainer"></div>
-        </div>
-
-        <!-- ७. देणगी -->
-        <div id="section-donation" class="section-box">
-            <h2 id="t_donationTitle">७. देणगी</h2>
-            <div class="info-card">
-                <p id="t_donationText">मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- क्रिएटिंग मेनू पॉपअप -->
-    <div id="createMenuBox" class="create-menu">
-        <button onclick="openUploadModal('live')" id="t_menuLive">🔴 मंदिर आरती लाईव्ह सुरू करा</button>
-        <button onclick="document.getElementById('fullVideoFileInput').click()" id="t_menuFull">📁 फुल व्हिडिओ टाका</button>
-        <input type="file" id="fullVideoFileInput" accept="video/*" style="display:none;" onchange="prepareVideoUpload(this, 'full')">
-        <button onclick="document.getElementById('shortVideoFileInput').click()" id="t_menuShort">⚡ शॉर्ट व्हिडिओ टाका</button>
-        <input type="file" id="shortVideoFileInput" accept="video/*" style="display:none;" onchange="prepareVideoUpload(this, 'short')">
-    </div>
-
-    <!-- अपलोड मॉडेल -->
-    <div id="uploadModal" class="modal">
-        <div class="modal-content-box">
-            <h3 id="modalHeaderTitle" style="color:#b71c1c; margin-top:0; font-size:14px;">माहिती भरा</h3>
-            
-            <label style="font-size:11px; font-weight:bold;">थंबनेल (Thumbnail) अपलोड करा:</label>
-            <div class="thumbnail-upload-box" onclick="document.getElementById('thumbnailFileInput').click()">
-                <span id="thumbPlaceholderText" style="font-size:11px; color:#666;">📸 थंबनेल फोटो निवडा</span>
-                <img id="thumbPreviewImg" src="" alt="Thumbnail">
-            </div>
-            <input type="file" id="thumbnailFileInput" accept="image/*" style="display:none;" onchange="previewThumbnail(this)">
-
-            <label id="t_titleLabel" style="font-size:11px; font-weight:bold;">टायटल (Title):</label>
-            <input type="text" id="inputVideoTitle" placeholder="उदा. महाकाल आरती दर्शन">
-            
-            <label id="t_descLabel" style="font-size:11px; font-weight:bold;">वर्णन (Description):</label>
-            <textarea id="inputVideoDesc" rows="2" placeholder="थोडक्यात माहिती लिहा..."></textarea>
-            
-            <label id="t_tagsLabel" style="font-size:11px; font-weight:bold;">हॅशटॅग (Hashtags):</label>
-            <input type="text" id="inputVideoTags" placeholder="#Mahadev #Vilhale">
-
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeUploadModal()" id="t_cancelBtn">रद्द करा</button>
-                <button class="btn-save" onclick="confirmAndUpload()" id="t_saveBtn">सेव्ह करा</button>
-            </div>
+                <button type="submit" class="submit-btn" id="submitBtn">प्रवेश करा</button>
+            </form>
         </div>
     </div>
 
-    <!-- युझर ब्लॉक मॅनेजर मॉडेल (फक्त ॲडमिनसाठी) -->
-    <div id="blockManagerModal" class="modal">
-        <div class="modal-content-box">
-            <h3 style="color:#b71c1c; margin-top:0; font-size:14px;">🚫 युझर ब्लॉक मॅनेजर</h3>
-            <p style="font-size:11px; color:#666;">ज्या युझरला ब्लॉक करायचे आहे त्याचे नाव खाली टाका:</p>
-            <input type="text" id="blockUserNameInput" placeholder="युझरचे अचूक नाव टाका...">
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="document.getElementById('blockManagerModal').style.display='none'">बंद करा</button>
-                <button class="btn-save" style="background:#c62828;" onclick="blockUserAction()">ब्लॉक करा</button>
+    <!-- Main Website Section -->
+    <div id="appSection">
+        <header>
+            <div class="user-info">
+                <h2 id="welcomeText" style="margin:0; font-size: 20px;">स्वागत आहे</h2>
+                <span id="roleBadge"></span>
             </div>
-            <div id="blockedUsersListContainer" style="margin-top:15px; font-size:11px;"></div>
-        </div>
-    </div>
+            <button class="logout-btn" onclick="handleLogout()">बाहेर पडा (Logout)</button>
+        </header>
 
-    <!-- इमेज फुलव्ह्यू मॉडेल -->
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <div style="text-align:center; padding:10px;">
-            <img id="modalImg" style="max-width:90%; max-height:80vh; border-radius:5px; border:2px solid white;">
-            <p id="modalCaption" style="color:white; font-size:13px; margin-top:8px;"></p>
+        <div class="content">
+            <h1>श्री कपिलेश्वर महादेव मंदिर</h1>
+            <p style="color: #b0b3c1; font-size: 18px;">हर हर महादेवा! तुम्ही यशस्वीरित्या पोर्टलमध्ये प्रवेश केला आहे.</p>
         </div>
-    </div>
-
-    <!-- युट्यूब सारखा ॲडव्हान्स व्हिडिओ प्लेअर मॉडेल -->
-    <div id="youtubePlayerModal" class="youtube-player-modal">
-        <div class="yt-player-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <img id="playerUploaderDp" class="comment-dp" src="photo1.jpg" alt="DP">
-                <span id="playerUploaderName" style="font-size:13px; font-weight:bold;">नावा</span>
-            </div>
-            <button onclick="closeYoutubePlayer()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✖</button>
-        </div>
-        
-        <div class="yt-player-body">
-            <video id="advancedVideoElement" controls autoplay playsinline></video>
-        </div>
-
-        <div class="yt-player-footer">
-            <h3 id="ytPlayerTitle" style="margin:0 0 5px 0; font-size:14px; color:#ffccbc;">शीर्षक</h3>
-            <p id="ytPlayerDesc" style="margin:0; font-size:11px; color:#aaa;"></p>
-            <p id="ytPlayerTags" style="margin:4px 0 0 0; font-size:11px; color:#ff9800;"></p>
-            
-            <div class="yt-action-bar">
-                <button id="ytLikeBtn" class="yt-action-btn" onclick="toggleVideoLike()">👍 <span id="ytLikeCount">0</span></button>
-                <button class="yt-action-btn" onclick="document.getElementById('ytCommentInput').focus()">💬 कमेंट</button>
-            </div>
-
-            <div style="margin-top:10px;">
-                <div id="ytCommentList" style="max-height:80px; overflow-y:auto; font-size:11px; background:#222; padding:5px; border-radius:4px; margin-bottom:5px;"></div>
-                <div class="comment-input-row">
-                    <input type="text" id="ytCommentInput" placeholder="सार्वजनिक कमेंट लिहा...">
-                    <button onclick="sendYtComment()">पाठवा</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- बॉटम नेव्हिगेशन बार -->
-    <div class="bottom-nav">
-        <button onclick="showSection('gallery', this)" class="active"><span id="t_iconGallery">🖼️</span><span id="t_navGallery">गॅलरी</span></button>
-        <button onclick="showSection('schedule', this)"><span id="t_iconSchedule">⏰</span><span id="t_navSchedule">वेळपत्रक</span></button>
-        <button onclick="showSection('location', this)"><span id="t_iconLocation">📍</span><span id="t_navLocation">लोकेशन</span></button>
-        <button class="nav-center-create" onclick="toggleCreateMenu(event)">+</button>
-        <button onclick="showSection('videos', this)"><span id="t_iconVideos">🎥</span><span id="t_navVideos">व्हिडिओज</span></button>
-        <button onclick="showSection('ringtones', this)"><span id="t_iconRingtones">🔔</span><span id="t_navRingtones">रिंगटोन</span></button>
-        <button onclick="showSection('history', this)"><span id="t_iconHistory">📂</span><span id="t_navHistory">हिस्ट्री</span></button>
     </div>
 
     <script>
-        let currentUploadType = '';
-        let pendingVideoObjectUrl = '';
-        let pendingThumbnailBase64 = '';
-        let loggedInUserName = '';
-        let loggedInUserDp = '';
-        let tempDpBase64 = '';
-        let currentLang = 'mr';
-        let globalHistoryList = [];
-        let globalGalleryList = [];
-        let globalBlockedUsers = [];
-        let currentVideoTab = 'full';
-        let currentPlayingVideoId = null;
-        let isAdminLoggedIn = false;
+        let currentMode = 'public';
 
-        const defaultGallery = [
-            { id: 1, url: 'photo1.jpg', caption: 'मंदिर प्रवेशद्वार' },
-            { id: 2, url: 'photo2.jpg', caption: 'नंदी आणि सभामंडप' },
-            { id: 3, url: 'photo3.jpg', caption: 'प्राचीन नक्षीकाम छतावरील' },
-            { id: 4, url: 'photo4.jpg', caption: 'गाभारा दर्शन' },
-            { id: 5, url: 'photo5.jpg', caption: 'रात्रीची रोषणाई मंदिर' },
-            { id: 6, url: 'photo6.jpg', caption: 'शिवलिंग आणि सजावट' }
-        ];
-
+        // Check if user is already logged in
         window.onload = function() {
-            let savedName = localStorage.getItem('mandir_app_username');
-            let savedDp = localStorage.getItem('mandir_app_userdp');
-            let savedLang = localStorage.getItem('mandir_app_lang');
-            let adminStatus = localStorage.getItem('mandir_is_admin') === 'true';
+            const savedUser = localStorage.getItem('templeUser');
+            const savedRole = localStorage.getItem('templeRole');
             
-            if (savedLang) currentLang = savedLang;
-            isAdminLoggedIn = adminStatus;
-
-            if (savedName && savedName.trim() !== '') {
-                loggedInUserName = savedName;
-                loggedInUserDp = savedDp || 'photo1.jpg';
-                document.getElementById('displayUserName').innerText = loggedInUserName;
-                document.getElementById('headerUserDp').src = loggedInUserDp;
-                document.getElementById('nameGateModal').style.display = 'none';
-                checkIfBlockedAndProceed(loggedInUserName);
-            } else {
-                document.getElementById('nameGateModal').style.display = 'flex';
+            if (savedUser || savedRole) {
+                showApp(savedUser || 'Admin', savedRole);
             }
-
-            applyLanguage(currentLang);
-            renderRingtones(ringtonesData);
-            renderTexts(sacredTextsData);
-            initFirebaseRealtimeListeners();
         };
 
-        function checkIfBlockedAndProceed(username) {
-            if(!window.db) return;
-            const { collection, getDocs } = window.firebaseCols;
-            getDocs(collection(window.db, "mandir_blocked")).then(snapshot => {
-                let blocked = [];
-                snapshot.forEach(docSnap => blocked.push(docSnap.data().name));
-                if(blocked.includes(username)) {
-                    document.getElementById('blockedModal').style.display = 'flex';
-                }
-            });
-        }
+        function switchMode(mode) {
+            currentMode = mode;
+            const publicBtn = document.getElementById('publicBtn');
+            const privateBtn = document.getElementById('privateBtn');
+            const publicField = document.getElementById('publicField');
+            const privateField = document.getElementById('privateField');
 
-        function selectLoginMode(mode) {
-            document.getElementById('loginChoiceView').style.display = 'none';
-            if(mode === 'public') {
-                document.getElementById('publicFormView').style.display = 'block';
-                document.getElementById('adminFormView').style.display = 'none';
+            if (mode === 'public') {
+                publicBtn.classList.add('active');
+                privateBtn.classList.remove('active');
+                publicField.classList.remove('hidden');
+                privateField.classList.add('hidden');
             } else {
-                document.getElementById('publicFormView').style.display = 'none';
-                document.getElementById('adminFormView').style.display = 'block';
+                privateBtn.classList.add('active');
+                publicBtn.classList.remove('active');
+                privateField.classList.remove('hidden');
+                publicField.classList.add('hidden');
             }
         }
 
-        function backToLoginChoice() {
-            document.getElementById('loginChoiceView').style.display = 'block';
-            document.getElementById('publicFormView').style.display = 'none';
-            document.getElementById('adminFormView').style.display = 'none';
-            document.getElementById('adminErrorMsg').innerText = '';
-        }
+        function handleLogin(event) {
+            event.preventDefault();
 
-        function previewDP(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    tempDpBase64 = e.target.result;
-                    const preview = document.getElementById('dpPreviewImg');
-                    preview.src = tempDpBase64;
-                    preview.style.display = 'block';
-                    document.getElementById('dpPlaceholderText').style.display = 'none';
+            if (currentMode === 'public') {
+                const name = document.getElementById('username').value.trim();
+                if (name === '') {
+                    alert('कृपया तुमचे नाव प्रविष्ट करा!');
+                    return;
                 }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function previewThumbnail(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingThumbnailBase64 = e.target.result;
-                    const preview = document.getElementById('thumbPreviewImg');
-                    preview.src = pendingThumbnailBase64;
-                    preview.style.display = 'block';
-                    document.getElementById('thumbPlaceholderText').style.display = 'none';
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function verifyPublicLogin() {
-            let inputName = document.getElementById('enteredUserName').value.trim();
-            if (inputName === '') {
-                alert('कृपया तुमचे पूर्ण नाव टाका!');
-                return;
-            }
-            if (tempDpBase64 === '') tempDpBase64 = 'photo1.jpg';
-            
-            localStorage.setItem('mandir_app_username', inputName);
-            localStorage.setItem('mandir_app_userdp', tempDpBase64);
-            localStorage.setItem('mandir_is_admin', 'false');
-            loggedInUserName = inputName;
-            loggedInUserDp = tempDpBase64;
-            isAdminLoggedIn = false;
-
-            document.getElementById('displayUserName').innerText = loggedInUserName;
-            document.getElementById('headerUserDp').src = loggedInUserDp;
-            document.getElementById('nameGateModal').style.display = 'none';
-            addFirebaseNotification('स्वागत आहे!', `${loggedInUserName} यांनी ॲपमध्ये प्रवेश केला आहे.`);
-            checkIfBlockedAndProceed(loggedInUserName);
-        }
-
-        function verifyAdminLogin() {
-            let code = document.getElementById('adminCodeInput').value.trim();
-            if(code === "SANCHIT9129") {
-                let adminName = "Sanchit Vikas Patil";
-                let adminDp = "photo1.jpg";
-                
-                localStorage.setItem('mandir_app_username', adminName);
-                localStorage.setItem('mandir_app_userdp', adminDp);
-                localStorage.setItem('mandir_is_admin', 'true');
-                loggedInUserName = adminName;
-                loggedInUserDp = adminDp;
-                isAdminLoggedIn = true;
-
-                document.getElementById('displayUserName').innerText = loggedInUserName;
-                document.getElementById('headerUserDp').src = loggedInUserDp;
-                document.getElementById('nameGateModal').style.display = 'none';
-                document.getElementById('addGalleryPhotoBtn').style.display = 'block';
-                addFirebaseNotification('ॲडमिन प्रवेश!', `ॲडमिन (Sanchit Vikas Patil) यांनी ॲपमध्ये प्रवेश केला आहे.`);
+                localStorage.setItem('templeUser', name);
+                localStorage.setItem('templeRole', 'public');
+                showApp(name, 'public');
             } else {
-                document.getElementById('adminErrorMsg').innerText = "Incorrect Code! चुकीचा कोड आहे.";
-            }
-        }
-
-        function logoutUser() {
-            localStorage.removeItem('mandir_app_username');
-            localStorage.removeItem('mandir_app_userdp');
-            localStorage.removeItem('mandir_is_admin');
-            location.reload();
-        }
-
-        function toggleSideDrawer(event) {
-            if(event) event.stopPropagation();
-            const drawer = document.getElementById('sideDrawerMenu');
-            drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function toggleCreateMenu(event) {
-            if(event) event.stopPropagation();
-            const menu = document.getElementById('createMenuBox');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu') && !event.target.closest('.notification-bell-btn') && !event.target.closest('#notificationDropdown') && !event.target.closest('.menu-hamburger-btn') && !event.target.closest('#sideDrawerMenu')) {
-                document.getElementById('createMenuBox').style.display = 'none';
-                document.getElementById('notificationDropdown').style.display = 'none';
-                document.getElementById('sideDrawerMenu').style.display = 'none';
-            }
-        }
-
-        function toggleNotifications() {
-            const dropdown = document.getElementById('notificationDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function openBlockManager() {
-            document.getElementById('sideDrawerMenu').style.display = 'none';
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            document.getElementById('blockManagerModal').style.display = 'flex';
-            renderBlockedUsersUI();
-        }
-
-        function togglePublicPrivateMode() {
-            document.getElementById('sideDrawerMenu').style.display = 'none';
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            alert('ॲडमिन मोड सक्रिय आहे.');
-        }
-
-        async function blockUserAction() {
-            let nameToBlock = document.getElementById('blockUserNameInput').value.trim();
-            if(nameToBlock !== "" && window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                try {
-                    await addDoc(collection(window.db, "mandir_blocked"), { name: nameToBlock, id: Date.now() });
-                    alert(`${nameToBlock} यशस्वीरित्या ब्लॉक केला आहे.`);
-                    document.getElementById('blockUserNameInput').value = '';
-                    renderBlockedUsersUI();
-                } catch(e) { console.error("Block error:", e); }
-            }
-        }
-
-        function renderBlockedUsersUI() {
-            if(!window.db) return;
-            const { collection, getDocs } = window.firebaseCols;
-            getDocs(collection(window.db, "mandir_blocked")).then(snapshot => {
-                let container = document.getElementById('blockedUsersListContainer');
-                container.innerHTML = '<strong>सध्या ब्लॉक केलेले युझर्स:</strong><br>';
-                snapshot.forEach(docSnap => {
-                    let data = docSnap.data();
-                    container.innerHTML += `- ${data.name}<br>`;
-                });
-            });
-        }
-
-        function initFirebaseRealtimeListeners() {
-            if(!window.db) return;
-            const { collection, onSnapshot } = window.firebaseCols;
-
-            onSnapshot(collection(window.db, "mandir_history"), (snapshot) => {
-                globalHistoryList = [];
-                snapshot.forEach((docSnap) => {
-                    globalHistoryList.push({ id: docSnap.id, docFirebaseId: docSnap.id, ...docSnap.data() });
-                });
-                globalHistoryList.sort((a, b) => b.id - a.id);
-                
-                renderHistoryUI(globalHistoryList);
-                renderVideosUI();
-
-                let activeLive = globalHistoryList.find(item => item.type === "🔴 लाईव्ह स्ट्रीम" && item.isLive === true);
-                let alertBar = document.getElementById('globalLiveAlertBar');
-                let dismissed = sessionStorage.getItem('live_alert_dismissed') === 'true';
-
-                if (activeLive && !dismissed) {
-                    alertBar.style.display = 'flex';
-                    document.getElementById('globalLiveText').innerText = `${activeLive.uploader} मंदिर लाईव्ह सुरू करत आहे! पाहण्यासाठी क्लिक करा 🔴`;
+                const code = document.getElementById('adminCode').value.trim();
+                // इथे तुमचा अ‍ॅडमिन कोड तपासेल (उदा. SANCHIT9129 किंवा हवा असलेला दुसरा कोड)
+                if (code === 'SANCHIT9129') {
+                    localStorage.setItem('templeUser', 'संचित (Admin)');
+                    localStorage.setItem('templeRole', 'admin');
+                    showApp('संचित (Admin)', 'admin');
                 } else {
-                    alertBar.style.display = 'none';
+                    alert('चुकीचा कोड! कृपया योग्य अ‍ॅडमिन कोड टाका.');
                 }
-            });
-
-            onSnapshot(collection(window.db, "mandir_gallery"), (snapshot) => {
-                globalGalleryList = [];
-                snapshot.forEach((docSnap) => {
-                    globalGalleryList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
-                });
-                renderGalleryUI();
-            });
-
-            onSnapshot(collection(window.db, "mandir_notifications"), (snapshot) => {
-                let notifs = [];
-                snapshot.forEach((docSnap) => {
-                    notifs.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                notifs.sort((a, b) => b.id - a.id);
-                renderNotificationsUI(notifs);
-            });
-
-            onSnapshot(collection(window.db, "mandir_comments"), (snapshot) => {
-                let comments = [];
-                snapshot.forEach((docSnap) => {
-                    comments.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                comments.sort((a, b) => a.id - b.id);
-                renderCommentsUI(comments);
-            });
-
-            onSnapshot(collection(window.db, "mandir_videocomments"), (snapshot) => {
-                let vcomments = [];
-                snapshot.forEach((docSnap) => {
-                    vcomments.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                renderYtCommentsUI(vcomments);
-            });
-        }
-
-        async function uploadNewGalleryPhoto(input) {
-            if(!isAdminLoggedIn) {
-                alert('फक्त ॲडमिन गॅलरीमध्ये फोटो जोडू शकतो!');
-                return;
-            }
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    let base64Img = e.target.result;
-                    let caption = prompt('फोटोचे टायटल किंवा माहिती लिहा:', 'मंदिर दर्शन');
-                    if(caption && window.db) {
-                        const { collection, addDoc } = window.firebaseCols;
-                        await addDoc(collection(window.db, "mandir_gallery"), {
-                            id: Date.now(),
-                            url: base64Img,
-                            caption: caption
-                        });
-                        alert('फोटो गॅलरीत यशस्वीरित्या जोडला गेला!');
-                    }
-                };
-                reader.readAsDataURL(input.files[0]);
             }
         }
 
-        function renderGalleryUI() {
-            const container = document.getElementById('galleryGridContainer');
-            container.innerHTML = '';
+        function showApp(username, role) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('appSection').style.display = 'block';
+            document.getElementById('welcomeTextinnerText', 'स्वागत आहे, ' + username);
             
-            let combinedGallery = [...defaultGallery, ...globalGalleryList];
-            if(isAdminLoggedIn) {
-                document.getElementById('addGalleryPhotoBtn').style.display = 'block';
-            }
-
-            combinedGallery.forEach((item) => {
-                const card = document.createElement('div');
-                card.className = 'gallery-card';
-                card.innerHTML = `
-                    <img src="${item.url}" alt="Gallery" onclick="openModal('${item.url}', '${item.caption}')">
-                    <p>${item.caption}</p>
-                    ${isAdminLoggedIn && item.docFirebaseId ? `<button onclick="deleteGalleryPhoto('${item.docFirebaseId}')" style="background:red; color:white; border:none; font-size:9px; padding:2px 6px; border-radius:3px; cursor:pointer; margin-bottom:5px;">डिलीट</button>` : ''}
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        async function deleteGalleryPhoto(docId) {
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            if(confirm('हा फोटो गॅलरीमधून डिलीट करायचा का?')) {
-                if(!window.db) return;
-                const { doc, deleteDoc } = window.firebaseCols;
-                await deleteDoc(doc(window.db, "mandir_gallery", docId));
-                alert('फोटो डिलीट केला आहे.');
-            }
-        }
-
-        async function addFirebaseNotification(title, message) {
-            if(!window.db) return;
-            const { collection, addDoc } = window.firebaseCols;
-            try {
-                await addDoc(collection(window.db, "mandir_notifications"), {
-                    id: Date.now(),
-                    title: title,
-                    message: message,
-                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                });
-            } catch(e) { console.error("Notif error:", e); }
-        }
-
-        async function clearNotifications() {
-            document.getElementById('notifListContainer').innerHTML = '';
-        }
-
-        function renderNotificationsUI(notifs) {
-            const container = document.getElementById('notifListContainer');
-            const badge = document.getElementById('notifBadge');
-            container.innerHTML = '';
-            if(notifs.length === 0) {
-                container.innerHTML = `<div class="notif-item" style="color:#777; text-align:center;">कोणतीही नवीन नोटिफिकेशन नाही.</div>`;
-                badge.style.display = 'none';
-                return;
-            }
-            badge.style.display = 'inline-block';
-            badge.innerText = notifs.length;
-            notifs.forEach(n => {
-                const item = document.createElement('div');
-                item.className = 'notif-item';
-                item.innerHTML = `<strong>${n.title}</strong><br>${n.message} <span style="font-size:9px; color:#888; float:right;">${n.time}</span>`;
-                item.onclick = function() {
-                    document.getElementById('notificationDropdown').style.display = 'none';
-                    if(n.title.includes('लाईव्ह')) jumpToLiveSection();
-                    else showSection('videos', document.querySelectorAll('.bottom-nav button')[4]);
-                };
-                container.appendChild(item);
-            });
-        }
-
-        function dismissGlobalLiveAlert(event) {
-            if(event) event.stopPropagation();
-            document.getElementById('globalLiveAlertBar').style.display = 'none';
-            sessionStorage.setItem('live_alert_dismissed', 'true');
-        }
-
-        function jumpToLiveSection() {
-            showSection('live', document.querySelectorAll('.bottom-nav button')[5]);
-            document.getElementById('globalLiveAlertBar').style.display = 'none';
-        }
-
-        function openUploadModal(typeKey) {
-            document.getElementById('createMenuBox').style.display = 'none';
-            currentUploadType = typeKey;
-            document.getElementById('inputVideoTitle').value = '';
-            document.getElementById('inputVideoDesc').value = '';
-            document.getElementById('inputVideoTags').value = '';
-            document.getElementById('thumbPreviewImg').style.display = 'none';
-            document.getElementById('thumbPlaceholderText').style.display = 'block';
-            pendingThumbnailBase64 = '';
-            document.getElementById('uploadModal').style.display = 'flex';
-        }
-
-        function closeUploadModal() {
-            document.getElementById('uploadModal').style.display = 'none';
-            pendingThumbnailBase64 = '';
-        }
-
-        function prepareVideoUpload(input, typeKey) {
-            document.getElementById('createMenuBox').style.display = 'none';
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingVideoObjectUrl = e.target.result;
-                    openUploadModal(typeKey);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        async function confirmAndUpload() {
-            const title = document.getElementById('inputVideoTitle').value.trim() || 'शिवालय दर्शन';
-            const desc = document.getElementById('inputVideoDesc').value.trim() || 'भक्तीमय व्हिडिओ';
-            const tags = document.getElementById('inputVideoTags').value.trim() || '#Mahadev';
-            let finalThumbnail = pendingThumbnailBase64 || 'photo1.jpg';
-            
-            closeUploadModal();
-
-            if (currentUploadType === 'live') {
-                startLiveCameraStream(title, desc, tags);
+            const badge = document.getElementById('roleBadge');
+            if (role === 'admin') {
+                badge.innerHTML = '<span class="admin-badge">ADMIN</span>';
             } else {
-                let typeNameText = currentUploadType === 'full' ? 'फुल व्हिडिओ' : 'शॉर्ट व्हिडिओ';
-                await saveHistoryItemToFirebase(typeNameText, title, desc, tags, pendingVideoObjectUrl, finalThumbnail, loggedInUserName, loggedInUserDp, false);
-                addFirebaseNotification('नवीन अपलोड!', `${loggedInUserName} "${title}" (${typeNameText}) अपलोड केला आहे.`);
-                alert('यशस्वी! तुमचे व्हिडिओ यशस्वीरित्या ऑनलाईन सेव्ह झाले आहे.');
+                badge.innerHTML = '';
             }
         }
 
-        async function saveHistoryItemToFirebase(type, title, desc, tags, url, thumbnail, uploaderName, uploaderDp, isLive) {
-            if(!window.db) return;
-            const { collection, addDoc } = window.firebaseCols;
-            try {
-                await addDoc(collection(window.db, "mandir_history"), {
-                    id: Date.now(),
-                    type: type,
-                    title: title,
-                    desc: desc,
-                    tags: tags,
-                    url: url,
-                    thumbnail: thumbnail,
-                    uploader: uploaderName,
-                    dp: uploaderDp,
-                    isLive: isLive,
-                    likes: []
-                });
-            } catch(e) { console.error("Firebase save error:", e); }
+        function handleLogout() {
+            localStorage.removeItem('templeUser');
+            localStorage.removeItem('templeRole');
+            document.getElementById('appSection').style.display = 'none';
+            document.getElementById('loginSection').style.display = 'flex';
+            document.getElementById('username').value = '';
+            document.getElementById('adminCode').value = '';
+            switchMode('public');
         }
-
-        async function deleteHistoryItem(firebaseDocId) {
-            if(!isAdminLoggedIn) {
-                alert('⛔ हा अधिकार फक्त ॲडमिनसाठी (Sanchit Vikas Patil) आहे!');
-                return;
-            }
-            if(confirm('तुम्हाला हा व्हिडिओ पूर्णपणे डिलीट करायची आहे का?')) {
-                if(!window.db) return;
-                const { doc, deleteDoc } = window.firebaseCols;
-                try {
-                    await deleteDoc(doc(window.db, "mandir_history", firebaseDocId));
-                    alert('व्हिडिओ यशस्वीरित्या डिलीट केला आहे.');
-                } catch(e) { console.error("Delete error:", e); }
-            }
-        }
-
-        function switchVideoTab(tabType, btnElem) {
-            currentVideoTab = tabType;
-            const buttons = document.querySelectorAll('.video-tab-btn');
-            buttons.forEach(b => b.classList.remove('active-tab'));
-            if(btnElem) btnElem.classList.add('active-tab');
-            renderVideosUI();
-        }
-
-        function renderVideosUI() {
-            const container = document.getElementById('videosListContainer');
-            container.innerHTML = '';
-            
-            let filtered = globalHistoryList.filter(item => {
-                if(currentVideoTab === 'full') return item.type === 'फुल व्हिडिओ';
-                if(currentVideoTab === 'short') return item.type === 'शॉर्ट व्हिडिओ';
-                return false;
-            });
-
-            if(filtered.length === 0) {
-                container.innerHTML = `<p style="font-size:12px; color:#777; text-align:center; padding:20px;">येथे कोणतेही ${currentVideoTab === 'full' ? 'फुल व्हिडिओ' : 'शॉर्ट्स'} उपलब्ध नाहीत.</p>`;
-                return;
-            }
-
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'youtube-video-card';
-                card.innerHTML = `
-                    <div class="yt-thumb-container" onclick="openYoutubePlayer('${item.id}', '${item.url || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">
-                        <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
-                    </div>
-                    <div class="yt-card-details">
-                        <img class="comment-dp" src="${item.dp || 'photo1.jpg'}" alt="DP">
-                        <div class="yt-card-meta">
-                            <h4 class="yt-card-title">${item.title}</h4>
-                            <p class="yt-card-channel">${item.uploader || 'Unknown'}</p>
-                            <p class="yt-card-time">${item.tags}</p>
-                        </div>
-                    </div>
-                `;
-                contai
+    </script>
+</body>
+</html>
