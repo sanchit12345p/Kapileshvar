@@ -1,4 +1,3 @@
-<script src="script.js"></script>
 async function startScreenSharing() {
     try {
         const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
@@ -12,7 +11,7 @@ async function startScreenSharing() {
     }
 }
 
-const shareButton = document.getElementById('shareBtn');
+const shareBtn = document.getElementById('shareBtn');
 if (shareButton) {
     shareButton.addEventListener('click', startScreenSharing);
 }
