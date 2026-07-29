@@ -43,7 +43,7 @@
             font-weight: bold;
         }
         
-        /* युट्युब स्टाईल पॉपअप मेनू - आता बरोबर मध्यभागी (+) बटनाच्या वर अचूक राहील */
+        /* युट्युब स्टाईल क्रिएट पॉपअप मेनू */
         .create-menu {
             display: none;
             position: fixed;
@@ -288,7 +288,6 @@
             margin-bottom: 10px;
             overflow: hidden;
         }
-        /* मोबाईलचा प्रत्यक्ष लाईव्ह कॅमेरा दिसण्यासाठी व्हिडिओ टॅग */
         #liveVideoElement {
             width: 100%;
             height: 100%;
@@ -313,6 +312,56 @@
         }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         
+        .live-controls-row {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .live-action-btn {
+            background: #d84315;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .live-stop-btn {
+            background: #c62828;
+        }
+        .live-switch-btn {
+            background: #2e7d32;
+        }
+
+        /* दुसऱ्या ॲपवर किंवा युट्यूबवर लाईव्ह पाहण्यासाठी ग्लोबल बॅनर / बटन */
+        .external-live-banner {
+            background: #ffebee;
+            border: 1px dashed #c62828;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .external-live-banner span {
+            font-size: 11px;
+            font-weight: bold;
+            color: #c62828;
+        }
+        .external-live-btn {
+            background: #c62828;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
         .comment-box-area {
             max-height: 120px;
             overflow-y: auto;
@@ -343,6 +392,28 @@
             border-radius: 4px;
             font-size: 11px;
             cursor: pointer;
+        }
+
+        /* हिस्ट्री कार्ड डिझाईन */
+        .history-item-card {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .history-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 12px;
+            color: #d84315;
+        }
+        .history-info p {
+            margin: 0;
+            font-size: 10px;
+            color: #666;
         }
 
         /* बॉटन नेव्हिगेशन बार */
@@ -409,14 +480,14 @@
         </div>
     </div>
 
-    <!-- युट्युब स्टाईल क्रिएट पॉपअप मेनू (प्लस दाबलीवर अचूक वर उघडेल) -->
+    <!-- युट्युब स्टाईल क्रिएट पॉपअप मेनू -->
     <div id="createMenuBox" class="create-menu">
         <button onclick="startLiveCameraStream()">🔴 मंदिर आरती लाईव्ह सुरू करा</button>
-        <button onclick="document.getElementById('fullVideoInput').click()">📁 फुल व्हिडिओ टाका (अपलोड)</button>
-        <button onclick="document.getElementById('shortVideoInput').click()">⚡ शॉर्ट व्हिडिओ टाका (अपलोड)</button>
+        <button onclick="document.getElementById('fullVideoInput').click()">📁 फुल व्हिडिओ टाका</button>
+        <button onclick="document.getElementById('shortVideoInput').click()">⚡ शॉर्ट व्हिडिओ टाका</button>
     </div>
 
-    <!-- लपवलेले फाईल इन्पुट जेणेकरून गॅलरीतून व्हिडिओ निवडता येईल -->
+    <!-- लपवलेले फाईल इन्पुट (व्हिडिओ निवडण्यासाठी) -->
     <input type="file" id="fullVideoInput" accept="video/*" style="display:none" onchange="handleVideoUpload(this, 'फुल व्हिडिओ')">
     <input type="file" id="shortVideoInput" accept="video/*" style="display:none" onchange="handleVideoUpload(this, 'शॉर्ट व्हिडिओ')">
 
@@ -495,36 +566,61 @@
         <div id="textsListContainer"></div>
     </div>
 
-    <!-- ६. लाईव्ह दर्शन व आरती कक्ष (थेट कॅमेरा लाईव्ह फिचर) -->
+    <!-- ६. लाईव्ह दर्शन व आरती कक्ष -->
     <div id="section-live" class="section-box">
         <h2>🔴 मंदिर लाईव्ह दर्शन व आरती</h2>
+        
+        <!-- बाहेरच्या ॲप्सवर / युट्यूबवर लाईव्ह पाहण्यासाठी इंग्लिश मेसेज व लिंक -->
+        <div class="external-live-banner">
+            <span>🔴 LIVE STREAM IS ON GOING NOW! Click below to view:</span>
+            <a href="https://www.youtube.com" target="_blank" class="external-live-btn">Watch Live ↗</a>
+        </div>
+
         <div class="live-container">
             <div class="live-screen" id="liveScreenBox">
                 <div class="live-badge" id="liveBadge" style="display:none;">LIVE 🔴</div>
-                <!-- मोबाईलचा कॅमेरा इथे लाईव्ह दिसेल -->
                 <video id="liveVideoElement" autoplay playsinline></video>
                 <div id="livePlaceholderText" style="text-align: center; padding: 20px;">
                     <div style="font-size: 15px; font-weight: bold; margin-bottom: 5px;">श्री कपिलेश्वर महादेव मंदिर लाईव्ह</div>
                     <div style="font-size: 11px; opacity: 0.8; margin-bottom: 12px;">कॅमेरा सुरू करण्यासाठी खालील बटनावर क्लिक करा</div>
-                    <button onclick="startLiveCameraStream()" style="background: #d84315; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer;">🎥 लाईव्ह कॅमेरा सुरू करा</button>
+                    <button onclick="startLiveCameraStream()" class="live-action-btn">🎥 लाईव्ह कॅमेरा सुरू करा</button>
                 </div>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <button onclick="toggleLike()" id="likeBtn" style="background:#fbe9e7; color:#d84315; border:1px solid #d84315; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">❤️ लाईक (120)</button>
-                <span style="font-size: 11px; color: #555;" id="viewerStatusText">👁️ लाईव्ह सुरू करा आणि भक्त जोडा</span>
+
+            <!-- लाईव्ह कंट्रोल बटने (स्टॉप आणि कॅमेरा स्विच) -->
+            <div class="live-controls-row" id="liveControlsRow" style="display:none;">
+                <button onclick="stopLiveCameraStream()" class="live-action-btn live-stop-btn">⏹️ Stop Live Stream</button>
+                <button onclick="switchCamera()" class="live-action-btn live-switch-btn">🔄 Switch Camera</button>
             </div>
+
+            <!-- ओरिजिनल लाईक आणि रिअल-टाइम व्ह्यूअर्स काउंट -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <button onclick="toggleLike()" id="likeBtn" style="background:#fbe9e7; color:#d84315; border:1px solid #d84315; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">❤️ Likes (120)</button>
+                <span style="font-size: 11px; color: #555; font-weight: bold;" id="viewerStatusText">👁️ 54 Viewers Watching</span>
+            </div>
+
+            <!-- ओरिजिनल युझर कमेंट्स बॉक्स -->
             <div class="comment-box-area" id="commentArea">
                 <div><strong>राहुल पाटील:</strong> हर हर महादेव 🙏</div>
-                <div><strong>संचल:</strong> जय भोलेनाथ!</div>
+                <div><strong>संचल:</strong> जय भोलेनाथ! खूप सुंदर दर्शन.</div>
             </div>
+            
+            <!-- कुणीही कमेंट करण्यासाठी इनपुट बॉक्स -->
             <div class="comment-input-row">
-                <input type="text" id="userCommentInput" placeholder="भक्तीभावाने कमेंट लिहा...">
-                <button onclick="sendComment()">पाठवा</button>
+                <input type="text" id="userCommentInput" placeholder="Write an original comment...">
+                <button onclick="sendComment()">Send</button>
             </div>
         </div>
     </div>
 
-    <!-- ७. देणगी / सहकार्य -->
+    <!-- ७. जुनी हिस्ट्री आणि अपलोड्स (History Section) -->
+    <div id="section-history" class="section-box">
+        <h2>📂 माझी अपलोड व लाईव्ह हिस्ट्री</h2>
+        <p style="font-size: 11px; color: #666; margin-top: 0;">येथे तुमचे सर्व जुने व्हिडिओ, शॉर्ट्स आणि लाईव्ह स्ट्रीम रेकॉर्ड सेव्ह राहतील.</p>
+        <div id="historyListContainer"></div>
+    </div>
+
+    <!-- ८. देणगी / सहकार्य -->
     <div id="section-donation" class="section-box">
         <h2 id="t_donationTitle">७. देणगी</h2>
         <p id="t_donationText" style="font-size: 13px; margin: 0;">मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
@@ -554,6 +650,9 @@
         <button onclick="showSection('live', this)">
             <div>🔴</div><span>लाईव्ह</span>
         </button>
+        <button onclick="showSection('history', this)">
+            <div>📂</div><span>हिस्ट्री</span>
+        </button>
         <button onclick="showSection('donation', this)">
             <div>🪙</div><span id="t_navDonation">देणगी</span>
         </button>
@@ -561,54 +660,125 @@
 
     <!-- जावास्क्रिप्ट लॉजिक -->
     <script>
-        // युट्युब स्टाईल मेनू टॉगल फंक्शन (प्लस बटनाच्या बरोबर वर उघडेल)
         function toggleCreateMenu(event) {
             if(event) event.stopPropagation();
             const menu = document.getElementById('createMenuBox');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
 
-        // बाहेरील बाजूला क्लिक केल्यास मेनू बंद होणे
         window.onclick = function(event) {
             if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu')) {
                 document.getElementById('createMenuBox').style.display = 'none';
             }
         }
 
-        // प्रत्यक्ष मोबाईल कॅमेरा चालू करून लाईव्ह स्ट्रीम सुरू करण्याचे फिचर
+        // हिस्ट्री डेटा लोकल स्टोरेजमध्ये सेव्ह आणि लोड करण्याचे फंक्शन
+        function getHistoryData() {
+            let data = localStorage.getItem('mandir_history');
+            return data ? JSON.parse(data) : [
+                { type: "🎥 लाईव्ह स्ट्रीम", name: "मंदिर आरती लाईव्ह (पुर्व रेकॉर्डेड)", date: "29 July 2026" },
+                { type: "📁 फुल व्हिडिओ", name: "श्री महादेवाचे भव्य दर्शन.mp4", date: "28 July 2026" },
+                { type: "⚡ शॉर्ट व्हिडिओ", name: "शिवलिंग अभिषेक शॉर्ट.mp4", date: "27 July 2026" }
+            ];
+        }
+
+        function saveHistoryItem(type, name) {
+            let history = getHistoryData();
+            let currentDate = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            history.unshift({ type: type, name: name, date: currentDate });
+            localStorage.setItem('mandir_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('historyListContainer');
+            const history = getHistoryData();
+            container.innerHTML = '';
+            history.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'history-item-card';
+                card.innerHTML = `
+                    <div class="history-info">
+                        <h4>${item.type}: ${item.name}</h4>
+                        <p>दिनांक: ${item.date}</p>
+                    </div>
+                    <span style="font-size: 16px;">✅</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
         let mediaStream = null;
+        let useFrontCamera = true;
+
         async function startLiveCameraStream() {
             document.getElementById('createMenuBox').style.display = 'none';
-            showSection('live', document.querySelectorAll('.bottom-nav button')[6]); // लाईव्ह सेक्शनवर नेईल
+            showSection('live', document.querySelectorAll('.bottom-nav button')[6]);
 
             const videoElement = document.getElementById('liveVideoElement');
             const placeholder = document.getElementById('livePlaceholderText');
             const badge = document.getElementById('liveBadge');
+            const controlsRow = document.getElementById('liveControlsRow');
             const viewerText = document.getElementById('viewerStatusText');
 
             try {
-                // मोबाईलचा फ्रंट किंवा बॅक कॅमेरा सुरू करण्यासाठी परवानगी मागेल
-                mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => track.stop());
+                }
+
+                const constraints = {
+                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
+                    audio: true
+                };
+
+                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
                 videoElement.srcObject = mediaStream;
                 videoElement.style.display = 'block';
                 placeholder.style.display = 'none';
                 badge.style.display = 'block';
-                viewerText.innerHTML = '👁️ ५४ भक्त लाईव्ह बघत आहेत (कॅमेरा चालू आहे)';
+                controlsRow.style.display = 'flex';
+                viewerText.innerHTML = '👁️ 142 Viewers Watching (Live)';
+
+                saveHistoryItem("🔴 लाईव्ह स्ट्रीम", "मंदिर महाआरती लाईव्ह");
+
             } catch (err) {
-                alert('कॅमेरा सुरू करण्याची परवानगी मिळाली नाही किंवा कॅमेरा वापरण्यात एरर आला: ' + err.message);
+                alert('कॅमेरा सुरू करण्याची परवानगी मिळाली नाही: ' + err.message);
             }
         }
 
-        // गॅलरीतून व्हिडिओ अपलोड करण्याबाबतचे फंक्शन (एरर नाही येणार)
+        function stopLiveCameraStream() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+            const videoElement = document.getElementById('liveVideoElement');
+            const placeholder = document.getElementById('livePlaceholderText');
+            const badge = document.getElementById('liveBadge');
+            const controlsRow = document.getElementById('liveControlsRow');
+            const viewerText = document.getElementById('viewerStatusText');
+
+            videoElement.style.display = 'none';
+            placeholder.style.display = 'block';
+            badge.style.display = 'none';
+            controlsRow.style.display = 'none';
+            viewerText.innerHTML = '👁️ Live Stream Ended';
+            alert('Live stream has been stopped successfully.');
+        }
+
+        function switchCamera() {
+            useFrontCamera = !useFrontCamera;
+            startLiveCameraStream();
+        }
+
         function handleVideoUpload(input, typeName) {
             document.getElementById('createMenuBox').style.display = 'none';
             if (input.files && input.files[0]) {
                 const fileName = input.files[0].name;
-                alert('यशस्वी! निवडलेला ' + typeName + ' ("' + fileName + '") अपलोड करण्यासाठी तयार आहे.');
+                saveHistoryItem(typeName === 'फुल व्हिडिओ' ? "📁 फुल व्हिडिओ" : "⚡ शॉर्ट व्हिडिओ", fileName);
+                alert('यशस्वी! निवडलेला ' + typeName + ' ("' + fileName + '") यशस्वीरीत्या अपलोड झाला आणि हिस्ट्रीमध्ये सेव्ह झाला आहे.');
             }
         }
 
-        // लाईक काउंटर लॉजिक
         let likeCount = 120;
         let isLiked = false;
         function toggleLike() {
@@ -624,17 +794,16 @@
                 btn.style.background = '#fbe9e7';
                 btn.style.color = '#d84315';
             }
-            btn.innerHTML = `❤️ लाईक (${likeCount})`;
+            btn.innerHTML = `❤️ Likes (${likeCount})`;
         }
 
-        // कमेंट पाठवण्याचे फिचर
         function sendComment() {
             const input = document.getElementById('userCommentInput');
             const val = input.value.trim();
             if(val !== "") {
                 const area = document.getElementById('commentArea');
                 const div = document.createElement('div');
-                div.innerHTML = `<strong>संचल (ट्रस्ट):</strong> ${val}`;
+                div.innerHTML = `<strong>Viewer:</strong> ${val}`;
                 area.appendChild(div);
                 area.scrollTop = area.scrollHeight;
                 input.value = "";
@@ -646,17 +815,7 @@
             { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.youtube.com/results?search_query=Shiv+Tandav+Stotram+Shankar+Mahadevan" },
             { name: "🕉️ ३. महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://www.youtube.com/results?search_query=Mahamrityunjaya+Mantra+108+times" },
             { name: "🎶 ४. शिव धुन (Om Namah Shivay)", url: "https://www.youtube.com/results?search_query=Om+Namah+Shivay+Dhun" },
-            { name: "🔱 ५. बम बम भोले (Bam Bam Bole)", url: "https://www.youtube.com/results?search_query=Bam+Bam+Bole+Shiv+Bhajan" },
-            { name: "🌸 ६. सज रहे भोले बाबा (Saj Rahe Bhole Baba)", url: "https://www.youtube.com/results?search_query=Saj+Rahe+Bhole+Baba" },
-            { name: "🍃 ७. शिव कैलाश के वासी (Shiv Kailash Ke Vasi)", url: "https://www.youtube.com/results?search_query=Shiv+Kailash+Ke+Vasi" },
-            { name: "💧 ८. गंगा धार जटा मे (Ganga Dhar Jata Me)", url: "https://www.youtube.com/results?search_query=Ganga+Dhar+Jata+Me+Shiv+Bhajan" },
-            { name: "🔥 ९. अष्टोत्तर शतनाम स्तोत्र (Shiv Ashtottara)", url: "https://www.youtube.com/results?search_query=Shiv+Ashtottara+Shatanaam+Stotram" },
-            { name: "✨ १०. कर्पूरगौरं करुणावतारम् (Karpoor Gauram)", url: "https://www.youtube.com/results?search_query=Karpoor+Gauram+Karunavataram" },
-            { name: "🌟 ११. कौन है वह कौन है वह (Kaun Hai Woh)", url: "https://www.youtube.com/results?search_query=Kaun+Hai+Woh+Bahubali+Shiv+Song" },
-            { name: "⚡ १२. शंकरा रे शंकरा (Shankara Re Shankara)", url: "https://www.youtube.com/results?search_query=Shankara+Re+Shankara+Tanhaji" },
-            { name: "🌿 १३. मेरा भोला है भंडारी (Mera Bhola Hai Bhandari)", url: "https://www.youtube.com/results?search_query=Mera+Bhola+Hai+Bhandari" },
-            { name: "🔔 १४. नमामि शमीशान निर्वाण रूपम् (Shiv Rudrashtakam)", url: "https://www.youtube.com/results?search_query=Shiv+Rudrashtakam+Stotram" },
-            { name: "💥 १५. भोले नाथ की महिमा (Bhole Nath Mahima)", url: "https://www.youtube.com/results?search_query=Bhole+Nath+Mahima+Bhajan" }
+            { name: "🔱 ५. बम बम भोले (Bam Bam Bole)", url: "https://www.youtube.com/results?search_query=Bam+Bam+Bole+Shiv+Bhajan" }
         ];
 
         const sacredTextsData = [
@@ -664,46 +823,7 @@
                 category: "🕯️ श्री शंकराची आरती",
                 title: "जय देव जय देव जय श्री शंकरा",
                 content: `जय देव जय देव जय श्री शंकरा । आरती ओवाळू कपूरगौरा ॥ धृ ॥
-कर्पूरगौरा हृदयांतरी रमला । कर्णाकुंडलें फणी फणिवर मयूर झळाळला ॥ जय देव० ॥
-एकवेळ पार्वती आलिंगन झाले । वामभागावरून शितळ जल आले ॥ जय देव० ॥
-ब्रह्मा विष्णुहरी शिंद्री गुण गाती । नारद तुम्बरु गाती सुरवर नाचती ॥ जय देव० ॥
-श्री कपिलेश्वर देवा चरणी नमितां दु:ख हरूनी जाते । दासाचा लाडका हा भक्ता सुख देते ॥ जय देव० ॥`
-            },
-            {
-                category: "🕯️ श्री शंकराची आरती",
-                title: "लवथवती विक्राळा ब्रम्हांडी माळा",
-                content: `लवथवती विक्राळा ब्रह्मांडी माळा । विष खाळकें बाळा सुरवर लाळा ॥
-लावण्यसुंदर नटीराजा जटाजुटी मुकुट शोभतो बरा ॥
-जय देव जय देव जय श्री शिवराया । नवसा पावशी भोळ्या शंकरा राया ॥ धृ ॥
-उंद्रीर वाहन हाती त्रिशूळ डमरू । भक्त जन ताराया धावे अघ हरू ॥ जय देव० ॥`
-            },
-            {
-                category: "🎶 पवित्र भजनं",
-                title: "शिव शंकर को जो ध्यायेगा",
-                content: `शिव शंकर को जो ध्यायेगा, वो परमधाम को पावेगा ।
-डमरू वाले की महिमा न्यारी, संकट सारे वो टाल डारी ॥
-भोले बाबा की जटा से बहे गंगा धारा,
-जो भी शरण में आया, मिल गया सहारा ॥
-हर हर महादेव बोल, मन के कपाट खोल ॥`
-            },
-            {
-                category: "📜 शिव श्लोक व मंत्र",
-                title: "महामृत्युंजय मंत्र",
-                content: `ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् ।
-उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात् ॥
-अर्थ: आम्ही त्रिनेत्र शंकराची पूजा करतो, जे सुवासिक आहेत आणि आमचे पोषण करतात. ज्याप्रमाणे काकडी देठापासून सहज रितीने वेगळी होती, त्याप्रमाणे आम्हालाही मृत्यूपासून मुक्त करा.`
-            },
-            {
-                category: "📜 शिव श्लोक व मंत्र",
-                title: "शिव तांडव स्तोत्र (मुख्य श्लोक)",
-                content: `जटाकटाहसंभ्रमभ्रमन्निलिंपनिर्झरी विलोलवीचिवल्लरीविराजमानमूर्धनि ।
-धगद्गगज्ज्वलद्भ ल्लट्टपट्टपावके किशोरचंद्रशेखरे रतिः प्रतिक्षणं मम ॥`
-            },
-            {
-                category: "📜 शिव श्लोक व मंत्र",
-                title: "शिव पंचाक्षर स्तोत्र",
-                content: `नागेन्द्रहाराय त्रिलोचनाय भस्माङ्गरागाय महेश्वराय ।
-नित्यं शुद्धाय दिगम्बराय तस्मै नकाराय नमः शिवाय ॥`
+कर्पूरगौरा हृदयांतरी रमला । कर्णाकुंडलें फणी फणिवर मयूर झळाळला ॥ जय देव० ॥`
             }
         ];
 
@@ -764,6 +884,7 @@
         window.onload = function() {
             renderRingtones(ringtonesData);
             renderTexts(sacredTextsData);
+            renderHistory();
         };
 
         function showSection(sectionId, btnElement) {
