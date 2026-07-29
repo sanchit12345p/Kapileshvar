@@ -107,7 +107,7 @@
             cursor: pointer;
         }
 
-        /* युझर स्वागत पट्टी (Top User Bar with DP) */
+        /* युझर स्वागत पट्टी (Top User Bar with DP & Notification Bell) */
         .user-welcome-bar {
             background: #333;
             color: white;
@@ -128,6 +128,65 @@
             border-radius: 50%;
             object-fit: cover;
             border: 1px solid white;
+        }
+        .user-info-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .notification-bell-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+        }
+        .notif-badge-count {
+            position: absolute;
+            top: -4px;
+            right: -6px;
+            background: red;
+            color: white;
+            font-size: 9px;
+            padding: 1px 4px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        /* नोटिफिकेशन पॉपअप बॉक्स */
+        #notificationDropdown {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 15px;
+            background: white;
+            color: #333;
+            width: 280px;
+            max-height: 320px;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 6000;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .notif-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        .notif-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 11px;
+        }
+        .notif-item:hover {
+            background: #f9f9f9;
         }
 
         /* भाषा बार */
@@ -650,7 +709,7 @@
     <div id="nameGateModal">
         <div class="name-gate-card">
             <h2>🙏 स्वागत आहे!</h2>
-            <p>ॲप वापरण्यासाठी तुमचा प्रोफाईल फोटो (DP) आणि पूर्ण नाव टाка:</p>
+            <p>ॲप वापरण्यासाठी तुमचा प्रोफाईल फोटो (DP) आणि पूर्ण नाव टाका:</p>
             
             <!-- डीपी निवडण्यासाठी बॉक्स -->
             <div class="dp-upload-box" onclick="document.getElementById('dpFileInput').click()">
@@ -664,13 +723,31 @@
         </div>
     </div>
 
-    <!-- युझर स्वागत पट्टी (DP सह) -->
+    <!-- युझर स्वागत पट्टी (DP व नोटिफिकेशन बेल सह) -->
     <div class="user-welcome-bar">
         <div class="user-info-left">
             <img id="headerUserDp" class="small-user-dp" src="" alt="DP">
             <span>युझर: <strong id="displayUserName">भक्त</strong></span>
         </div>
-        <span onclick="logoutUser()" style="cursor:pointer; text-decoration:underline; font-size:10px;">नाव बदला</span>
+        <div class="user-info-right">
+            <!-- नोटिफिकेशन बेल आयकॉन -->
+            <button class="notification-bell-btn" onclick="toggleNotifications()">
+                🔔
+                <span id="notifBadge" class="notif-badge-count" style="display:none;">0</span>
+            </button>
+            <span onclick="logoutUser()" style="cursor:pointer; text-decoration:underline; font-size:10px;">नाव बदला</span>
+        </div>
+    </div>
+
+    <!-- नोटिफिकेशन ड्रॉपडाऊन बॉक्स -->
+    <div id="notificationDropdown">
+        <div class="notif-header">
+            <span>🔔 अपडेट्स व नोटीस</span>
+            <span onclick="clearNotifications()" style="cursor:pointer; font-size:10px; text-decoration:underline;">सर्व हटवा</span>
+        </div>
+        <div id="notifListContainer">
+            <div class="notif-item" style="color:#777; text-align:center;">कोणतीही नवीन नोटिफिकेशन नाही.</div>
+        </div>
     </div>
 
     <!-- भाषा बार -->
@@ -891,6 +968,7 @@
             renderRingtones(ringtonesData);
             renderTexts(sacredTextsData);
             renderHistory();
+            renderNotifications();
         };
 
         // डीपी प्रिव्ह्यू करणे
@@ -915,7 +993,6 @@
                 return;
             }
             if (tempDpBase64 === '') {
-                // डिफॉल्ट फोटो सेट करणे जर युझरने फोटो नाही निवडला तर
                 tempDpBase64 = 'photo1.jpg';
             }
 
@@ -928,6 +1005,8 @@
             document.getElementById('displayUserName').innerText = loggedInUserName;
             document.getElementById('headerUserDp').src = loggedInUserDp;
             document.getElementById('nameGateModal').style.display = 'none';
+
+            addNotification("स्वागत आहे!", `${loggedInUserName} यांनी ॲपमध्ये प्रवेश केला आहे.`);
         }
 
         function logoutUser() {
@@ -943,9 +1022,64 @@
         }
 
         window.onclick = function(event) {
-            if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu')) {
+            if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu') && !event.target.closest('.notification-bell-btn') && !event.target.closest('#notificationDropdown')) {
                 document.getElementById('createMenuBox').style.display = 'none';
+                document.getElementById('notificationDropdown').style.display = 'none';
             }
+        }
+
+        // नोटिफिकेशन बेल टॉगल करणे
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // नोटिफिकेशन्स मॅनेज करणे
+        function getNotificationsData() {
+            let data = localStorage.getItem('mandir_notifications_v1');
+            return data ? JSON.parse(data) : [
+                { id: 1, title: "मंदिर अपडेट", message: "ट्रस्ट ॲडमिनने संध्याकाळची आरती लाईव्ह शेड्यूल केली आहे.", time: "आज" }
+            ];
+        }
+
+        function addNotification(title, message) {
+            let notifs = getNotificationsData();
+            notifs.unshift({
+                id: Date.now(),
+                title: title,
+                message: message,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+            localStorage.setItem('mandir_notifications_v1', JSON.stringify(notifs));
+            renderNotifications();
+        }
+
+        function clearNotifications() {
+            localStorage.setItem('mandir_notifications_v1', JSON.stringify([]));
+            renderNotifications();
+        }
+
+        function renderNotifications() {
+            const container = document.getElementById('notifListContainer');
+            const badge = document.getElementById('notifBadge');
+            const notifs = getNotificationsData();
+
+            container.innerHTML = '';
+            if(notifs.length === 0) {
+                container.innerHTML = '<div class="notif-item" style="color:#777; text-align:center;">कोणतीही नवीन नोटिफिकेशन नाही.</div>';
+                badge.style.display = 'none';
+                return;
+            }
+
+            badge.style.display = 'inline-block';
+            badge.innerText = notifs.length;
+
+            notifs.forEach(n => {
+                const item = document.createElement('div');
+                item.className = 'notif-item';
+                item.innerHTML = `<strong>${n.title}</strong><br>${n.message} <span style="font-size:9px; color:#888; float:right;">${n.time}</span>`;
+                container.appendChild(item);
+            });
         }
 
         // मॉडेल ओपन करणे
@@ -989,7 +1123,11 @@
             } else {
                 let fileUrl = pendingFileObject ? URL.createObjectURL(pendingFileObject) : 'photo1.jpg';
                 saveHistoryItem(currentUploadType, title, desc, tags, fileUrl, loggedInUserName, loggedInUserDp);
-                alert('यशस्वी! तुमचे ' + currentUploadType + ' यशस्वीरित्या अपलोड झाले आणि हिस्ट्रीमध्ये सेव्ह झाले आहे.');
+                
+                // नोटिफिकेशन जनरेट करणे (नाव आणि अपलोडरसह)
+                addNotification("नवीन अपलोड!", `${loggedInUserName} यांनी "${title}" (${currentUploadType}) अपलोड केला आहे.`);
+                
+                alert('यशस्वी! तुमचे ' + currentUploadType + ' यशस्वीरित्या अपलोड झाले आणि सर्वांना नोटिफिकेशन पाठवण्यात आले आहे.');
             }
         }
 
@@ -1106,6 +1244,7 @@
                 viewerText.innerHTML = '👁️ 156 Viewers Watching Live';
 
                 saveHistoryItem("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", loggedInUserName, loggedInUserDp);
+                addNotification("🔴 लाईव्ह सुरू!", `${loggedInUserName} यांनी "${title}" लाईव्ह स्ट्रीम सुरू केली आहे.`);
 
             } catch (err) {
                 alert('कॅमेरा सुरू करण्याची परवानगी मिळाली नाही: ' + err.message);
@@ -1338,7 +1477,7 @@
             document.getElementById('t_locationTitle').innerText = l.locationTitle;
             document.getElementById('t_addressText').innerText = l.addressText;
             document.getElementById('t_mapBtn').innerText = l.mapBtn;
-            document.getElementById('t_ringtoneTitle').innerText, document.getElementById('t_ringtoneTitle').innerText = l.ringtoneTitle;
+            document.getElementById('t_ringtoneTitle').innerText = l.ringtoneTitle;
             document.getElementById('t_textsTitle').innerText = l.textsTitle;
             document.getElementById('t_donationTitle').innerText = l.donationTitle;
             document.getElementById('t_donationText').innerText = l.donationText;
