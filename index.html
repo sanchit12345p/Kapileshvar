@@ -1024,8 +1024,11 @@
 
         <!-- हिस्ट्री / अपलोड्स सेक्शन -->
         <div id="section-history" class="section-box">
-            <h2 id="t_historyTitle">📂 माझी अपलोड व लाईव्ह हिस्ट्री</h2>
-            <p id="t_historySub" style="font-size:11px; color:#666;">सर्व युझर्सचे अपलोड केलेले व्हिडिओ व लाईव्ह स्ट्रीम त्यांच्या डीपी आणि नावासाहित येथे दिसतील.</p>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 id="t_historyTitle" style="margin:0;">📂 माझी अपलोड व लाईव्ह हिस्ट्री</h2>
+                <button id="clearAllHistoryBtn" style="display:none; background:#c62828; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="clearAllHistory()">🗑️ सर्व हिस्ट्री पुसा</button>
+            </div>
+            <p id="t_historySub" style="font-size:11px; color:#666; margin-top:5px;">सर्व युझर्सचे अपलोड केलेले व्हिडिओ व लाईव्ह स्ट्रीम त्यांच्या डीपी आणि नावासाहित येथे दिसतील.</p>
             <div id="historyListContainer"></div>
         </div>
 
@@ -1187,6 +1190,11 @@
                 document.getElementById('nameGateModal').style.display = 'flex';
             }
 
+            if(isAdminLoggedIn) {
+                document.getElementById('clearAllHistoryBtn').style.display = 'block';
+                document.getElementById('addGalleryPhotoBtn').style.display = 'block';
+            }
+
             applyLanguage(currentLang);
             renderRingtones(ringtonesData);
             renderTexts(sacredTextsData);
@@ -1290,6 +1298,7 @@
                 document.getElementById('headerUserDp').src = loggedInUserDp;
                 document.getElementById('nameGateModal').style.display = 'none';
                 document.getElementById('addGalleryPhotoBtn').style.display = 'block';
+                document.getElementById('clearAllHistoryBtn').style.display = 'block';
                 addFirebaseNotification('ॲडमिन प्रवेश!', `ॲडमिन (Sanchit Vikas Patil) यांनी ॲपमध्ये प्रवेश केला आहे.`);
             } else {
                 document.getElementById('adminErrorMsg').innerText = "Incorrect Code! चुकीचा कोड आहे.";
@@ -1626,6 +1635,21 @@
             }
         }
 
+        async function clearAllHistory() {
+            if(!isAdminLoggedIn) {
+                alert('⛔ हा अधिकार फक्त ॲडमिनसाठी आहे!');
+                return;
+            }
+            if(confirm('सर्व हिस्ट्री आणि व्हिडिओ डिलीट करायचे आहेत का?')) {
+                if(!window.db) return;
+                const { doc, deleteDoc } = window.firebaseCols;
+                for(let item of globalHistoryList) {
+                    await deleteDoc(doc(window.db, "mandir_history", item.docFirebaseId));
+                }
+                alert('सर्व हिस्ट्री पुसून टाकली आहे.');
+            }
+        }
+
         function switchVideoTab(tabType, btnElem) {
             currentVideoTab = tabType;
             const buttons = document.querySelectorAll('.video-tab-btn');
@@ -1822,10 +1846,13 @@
 
             try {
                 if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+                
+                // मोबाईल आणि इतर उपकरणांवर कॅमेरा व ऑडिओ सुरळीत चालण्यासाठी अचूक कॉन्फिगरेशन
                 mediaStream = await navigator.mediaDevices.getUserMedia({
                     video: { facingMode: useFrontCamera ? 'user' : 'environment' },
                     audio: true
                 });
+                
                 videoElement.srcObject = mediaStream;
                 videoElement.style.display = 'block';
                 placeholder.style.display = 'none';
@@ -1836,7 +1863,7 @@
                 await saveHistoryItemToFirebase("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", pendingThumbnailBase64 || 'photo1.jpg', loggedInUserName, loggedInUserDp, true);
                 addFirebaseNotification("🔴 लाईव्ह सुरू!", `${loggedInUserName} यांनी "${title}" लाईव्ह सुरू केली आहे!`);
             } catch (err) {
-                alert("कॅमेरा सुरू करण्याची परवानगी मिळाली नाही: " + err.message);
+                alert("कॅमेरा व ऑडिओ सुरू करण्याची परवानगी मिळाली नाही: " + err.message);
             }
         }
 
@@ -1912,7 +1939,7 @@
 या मंदिराची वास्तुकला आणि प्राचीन नक्षीकाम लक्षवेधून घेणारे आहे. मंदिराच्या गाभाऱ्यात सुंदर पिंडी विराजमान असून, येथे वर्षभर भाविकांची अफाट गर्दी असते. विशेषतः महाशिवरात्री, श्रावण महिना आणि प्रत्येक सोमवारी येथे परिसरातील व दूरदूरवरून भाविक महादेवाचे दर्शन घेण्यासाठी आणि अभिषेक करण्यासाठी येतात.
 
 धार्मिक व सांस्कृतिक महत्त्व:
-मंदिरामध्ये नियमितपणे प्रातःकाळ व संध्याकाळची आरती, भजन, कीर्तन आणि धार्मिक अनुष्ठान पार पडतात. विल्होळे गावाच्या या पवित्र तीर्थक्षेत्रामुळे गावाला एक वेगळी आध्यात्मिक ओळख मिळाली आहे. येथे येणाऱ्या प्रत्येक भक्ताला असीम शांतता आणि मानसिक समाधान लाभते. ट्रस्टच्या वतीने मंदिराचा विकास, स्वच्छता आणि येणाऱ्या भाविकांच्या सुविधांची उत्तम काळजी घेतली जाते.`
+मंदिरामध्ये नियमितपणे प्रातःकाळ व संध्याकाळची आरती, भजन, कीर्तन आणि धार्मिक अनुष्ठान पार पडतात. विल्होळे गावाच्या या पवित्र तीर्थक्षेत्रामुळे गावाला एक वेगळी आध्यात्मिक ओळख मिळाली आहे. येथे येणाऱ्या प्रत्येक भक्ताला असीम शांतता आणि मानसिक समाधान लाभते. ट्रस्टच्या वतीने मंदिराचा विकास, स्वच्छता आणि येणाऱ्या भाविकांच्या सुविधांची उत्तम काळजी घेतली जाती.`
             }
         ];
 
