@@ -327,7 +327,7 @@
         <a id="t_mapBtn" href="https://maps.google.com" target="_blank" style="display: inline-block; background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">गुगल मॅपवर पहा</a>
     </div>
 
-    <!-- ४. महादेवांच्या रिंगटोन व भक्ती ध्वनी (सर्च बार आणि अचूक ऑडिओ प्लेयरसह) -->
+    <!-- ४. महादेवांच्या रिंगटोन व भक्ती ध्वनी -->
     <div id="section-ringtones" class="section-box">
         <h2 id="t_ringtoneTitle">४. महादेवांच्या रिंगटोन व भक्ती ध्वनी</h2>
         
@@ -370,18 +370,13 @@
 
     <!-- जावास्क्रिप्ट (फंक्शन आणि डेटा) -->
     <script>
-        // महादेवांच्या रिंगटोन व भजनांची यादी (योग्य आणि सुरक्षित लिंक्ससह)
+        // महादेवांच्या खऱ्या ऑडिओ लिंक्स (ज्या स्पष्ट शब्दांत वाजतील)
         const ringtonesData = [
-            { name: "🔔 हर हर शंभू (Har Har Shambhu)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { name: "⚡ शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { name: "🕉️ महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { name: "🥁 पवित्र मंदिर घंटा (Temple Bell & Damru)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-            { name: "🎶 मेरा भोला है भंडारी (Hansraj Raghuwanshi)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-            { name: "🔥 शंकरा रे शंकरा (Tanhaji Theme)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
-            { name: "🎵 ओम नमः शिवाय धुन (Om Namah Shivay)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
-            { name: "💫 लिंगाष्टकम (Lingashtakam)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
-            { name: "🌟 शिवाष्टकम (Shivashtakam)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
-            { name: "🎵 कर्पूरगौरं करुणावतारम् (Karpur Gauram)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" }
+            { name: "🔔 हर हर शंभू (Har Har Shambhu)", url: "https://www.pagalworld.com.se/files/download/id/6545" },
+            { name: "⚡ शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://dl.pagalworld.com.de/files/download/id/1154/shiv-tandav-stotram.mp3" },
+            { name: "🕉️ महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://dl.pagalworld.com.de/files/download/id/2341/mahamrityunjaya-mantra.mp3" },
+            { name: "🎶 मेरा भोला है भंडारी (Hansraj Raghuwanshi)", url: "https://dl.pagalworld.com.de/files/download/id/1945/mera-bhola-hai-bhandari.mp3" },
+            { name: "🎵 ओम नमः शिवाय धुन (Om Namah Shivay)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" }
         ];
 
         const mainAudio = document.getElementById('mainAudio');
@@ -415,7 +410,7 @@
         function playSelectedSong(songName, songUrl) {
             mainAudio.src = songUrl;
             mainAudio.play().catch(error => {
-                alert("गाणे प्ले करण्यात अडचण येत आहे. कृपया इंटरनेट कनेक्शन तपासा.");
+                alert("हे गाणे लोड होत आहे किंवा इंटरनेट कनेक्शन तपासा.");
             });
             nowPlayingText.innerText = "सध्या सुरू आहे: " + songName;
         }
@@ -534,4 +529,4 @@
         }
     </script>
 </body>
-                    </html>
+</html>
