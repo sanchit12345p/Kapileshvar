@@ -506,7 +506,7 @@
         }
 
         /* मॉडाल्स */
-        .modal, .custom-modal {
+        .modal {
             display: none;
             position: fixed;
             z-index: 2000;
@@ -536,6 +536,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 12px;
+            box-sizing: border-box;
         }
 
         .modal-buttons {
@@ -617,7 +618,7 @@
             </div>
             <input type="file" id="dpFileInput" accept="image/*" style="display:none;" onchange="previewDP(this)">
 
-            <input type="text" id="enteredUserName" placeholder="तुमचे पूर्ण नाव टाका..." style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:12px; text-align:center;">
+            <input type="text" id="enteredUserName" placeholder="तुमचे पूर्ण नाव टाका..." style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:12px; text-align:center; box-sizing:border-box;">
             
             <button onclick="verifyAndOpenApp()" style="width:100%; background:#b71c1c; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">ॲपमध्ये प्रवेश करा</button>
         </div>
@@ -641,9 +642,7 @@
             <strong id="t_notifTitle" style="font-size:12px; color:#b71c1c;">🔔 अपडेट्स व नोटीस</strong>
             <button onclick="clearNotifications()" style="background:none; border:none; color:red; font-size:10px; cursor:pointer;" id="t_clearNotif">सर्व हटवा</button>
         </div>
-        <div id="notifListContainer">
-            <!-- नोटिफिकेशन्स येथे येतील -->
-        </div>
+        <div id="notifListContainer"></div>
     </div>
 
     <header>
@@ -805,12 +804,12 @@
         </div>
     </div>
 
-    <!-- व्हिडिओ प्लेअर मॉडेल -->
+    <!-- व्हिडिओ प्लेअर मॉडेल (बग दुरुस्त केलेला) -->
     <div id="videoPlayerModal" class="modal">
         <div class="modal-content-box" style="text-align:center;">
             <h3 id="playerVideoTitle" style="color:#b71c1c; margin-top:0; font-size:14px;"></h3>
-            <video id="historyVideoElement" controls style="width:100%; max-height:250px; background:black; border-radius:4px;"></video>
-            <button onclick="closeVideoPlayer()" style="margin-top:10px; background:#b71c1c; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">बंद करा</button>
+            <video id="historyVideoElement" controls autoplay style="width:100%; max-height:250px; background:black; border-radius:4px;"></video>
+            <button onclick="closeVideoPlayer()" style="margin-top:10px; background:#b71c1c; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;" id="t_closePlayerBtn">बंद करा</button>
         </div>
     </div>
 
@@ -822,7 +821,7 @@
         <button class="nav-center-create" onclick="toggleCreateMenu(event)">+</button>
         <button onclick="showSection('ringtones', this)"><span id="t_iconRingtones">🔔</span><span id="t_navRingtones">रिंगटोन</span></button>
         <button onclick="showSection('texts', this)"><span id="t_iconTexts">📖</span><span id="t_navTexts">ग्रंथ व आरत्या</span></button>
-        <button onclick="showSection('donation', this)"><span id="t_iconDonation">🎁</span><span id="t_navDonation">देणगी</span></button>
+        <button onclick="showSection('history', this)"><span id="t_iconHistory">📂</span><span id="t_navHistory">हिस्ट्री</span></button>
     </div>
 
     <!-- जाॅवास्क्रिप्ट कोड -->
@@ -1059,7 +1058,7 @@
                         <p style="margin:2px 0;"><strong>${translations[currentLang].tagsLabel}</strong> <span style="color:#d84315;">${item.tags}</span></p>
                     </div>
                     <div class="history-actions">
-                        ${item.url ? `<button class="btn-play" onclick="playHistoryVideo('${item.url}', '${item.title}')">${translations[currentLang].playBtn}</button>` : ''}
+                        ${item.url ? `<button class="btn-play" onclick="playHistoryVideo('${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}')">${translations[currentLang].playBtn}</button>` : ''}
                         <button class="btn-delete" onclick="deleteHistoryItem(${item.id})">${translations[currentLang].deleteBtn}</button>
                     </div>
                 `;
@@ -1071,13 +1070,15 @@
             document.getElementById('playerVideoTitle').innerText = title;
             const videoElem = document.getElementById('historyVideoElement');
             videoElem.src = url;
-            document.getElementById('videoPlayerModal').style.display = 'block';
-            videoElem.play();
+            document.getElementById('videoPlayerModal').style.display = 'flex';
+            videoElem.play().catch(e => console.log("Autoplay prevented:", e));
         }
 
         function closeVideoPlayer() {
             document.getElementById('videoPlayerModal').style.display = 'none';
-            document.getElementById('historyVideoElement').pause();
+            const videoElem = document.getElementById('historyVideoElement');
+            videoElem.pause();
+            videoElem.src = "";
         }
 
         let mediaStream = null;
@@ -1405,7 +1406,6 @@
             const t = translations[lang];
 
             document.getElementById('appTitle').innerText = t.appName;
-            document.getElementById('t_headerTitle').innerText = t.appName;
             document.getElementById('t_headerSub').innerHTML = t.headerSub;
             document.getElementById('t_userLabel').innerText = t.userLabel;
             document.getElementById('t_logoutText').innerText = t.logoutText;
@@ -1463,7 +1463,7 @@
             document.getElementById('t_navLocation').innerText = t.navLocation;
             document.getElementById('t_navRingtones').innerText = t.navRingtones;
             document.getElementById('t_navTexts').innerText = t.navTexts;
-            document.getElementById('t_navDonation').innerText = t.navDonation;
+            document.getElementById('t_navHistory').innerText = t.navHistory;
 
             renderNotifications();
             renderHistory();
