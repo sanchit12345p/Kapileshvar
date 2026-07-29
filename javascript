@@ -1,33 +1,19 @@
-// ग्लोबल व्हेरिएबल मेमरी ट्रॅक करण्यासाठी
-let activeVideoUrl = null;
+const fileInput = document.getElementById('yourFileInputId'); // तुझ्या फाइल इनपुटची आयडी इथे टाक
+const videoElement = document.getElementById('myVideoPlayer');
 
-// जेव्हा युजर व्हिडिओ निवडेल किंवा प्ले करेल तेव्हा हे फंक्शन वापर:
-function loadAndPlayVideo(videoFile) {
-    const videoElement = document.getElementById('myVideoPlayer'); // तुझ्या व्हिडिओ टॅगची ID इथे टाक
-    
-    if (!videoElement) return;
-
-    // आधीची मेमरी पूर्णपणे मोकळी करा (महत्त्वाचे: यामुळे 'Aw, Snap!' एरर येत नाही)
-    if (activeVideoUrl) {
-        URL.revokeObjectURL(activeVideoUrl);
-        activeVideoUrl = null;
-    }
-
-    try {
-        // नवीन व्हिडिओसाठी सुरक्षित URL तयार करा
-        activeVideoUrl = URL.createObjectURL(videoFile);
-        videoElement.src = activeVideoUrl;
+fileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        // जुनी मेमरी पूर्ण साफ करा
+        videoElement.src = "";
         
-        // व्हिडिओ लोड करा
-        videoElement.load();
-    } catch (error) {
-        console.error("व्हिडिओ लोड करताना एरर आला:", error);
-    }
-}
-
-// पेज बंद करताना किंवा व्हिडिओ बदलताना मेमरी आपोआप साफ होईल
-window.addEventListener('beforeunload', function() {
-    if (activeVideoUrl) {
-        URL.revokeObjectURL(activeVideoUrl);
+        // सुरक्षितपणे नवीन URL बनवा
+        const videoUrl = URL.createObjectURL(file);
+        videoElement.src = videoUrl;
+        
+        // व्हिडिओ प्ले झाल्यावर किंवा बदलल्यावर जुनी लिंक मेमरीतून उडवून लावण्यासाठी
+        videoElement.onended = function() {
+            URL.revokeObjectURL(videoUrl);
+        };
     }
 });
