@@ -1365,16 +1365,18 @@
 
         function closeUploadModal() {
             document.getElementById('uploadModal').style.display = 'none';
-            pendingVideoObjectUrl = '';
             pendingThumbnailBase64 = '';
         }
 
         function prepareVideoUpload(input, typeKey) {
             document.getElementById('createMenuBox').style.display = 'none';
             if (input.files && input.files[0]) {
-                // युट्यूब सारखा व्हिडिओ प्ले होण्यासाठी ऑब्जेक्ट URL वापरली आहे
-                pendingVideoObjectUrl = URL.createObjectURL(input.files[0]);
-                openUploadModal(typeKey);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    pendingVideoObjectUrl = e.target.result; // डेटा URL मध्ये रूपांतरित केल्यामुळे व्हिडिओ गायब होणार नाही
+                    openUploadModal(typeKey);
+                };
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
