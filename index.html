@@ -23,17 +23,6 @@
             position: relative;
         }
 
-        .menu-hamburger-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
-        }
-
         header img {
             width: 70px;
             height: 70px;
@@ -144,48 +133,20 @@
             display: none;
         }
 
-        .notification-dropdown, .side-drawer-menu {
+        .notification-dropdown {
             display: none;
             position: absolute;
+            right: 15px;
+            top: 130px;
             background: white;
+            width: 280px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             border-radius: 8px;
             z-index: 1000;
-            border: 1px solid #ddd;
-        }
-
-        .notification-dropdown {
-            right: 15px;
-            top: 130px;
-            width: 280px;
             max-height: 300px;
             overflow-y: auto;
             padding: 10px;
-        }
-
-        .side-drawer-menu {
-            left: 15px;
-            top: 60px;
-            width: 240px;
-            padding: 10px;
-            text-align: left;
-        }
-
-        .side-drawer-menu button {
-            width: 100%;
-            padding: 8px;
-            background: none;
-            border: none;
-            text-align: left;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-            color: #333;
-        }
-        .side-drawer-menu button:hover {
-            background: #f9f9f9;
-            color: #b71c1c;
+            border: 1px solid #ddd;
         }
 
         .notif-item {
@@ -235,7 +196,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
             cursor: pointer;
-            position: relative;
         }
 
         .gallery-card img {
@@ -335,7 +295,6 @@
             font-size: 12px;
             white-space: pre-line;
             color: #444;
-            line-height: 1.7;
         }
 
         .live-container {
@@ -452,6 +411,7 @@
             cursor: pointer;
         }
 
+        /* युट्यूब सारखा हुबेहूब व्हिडिओ कार्ड डिझाईन */
         .youtube-video-card {
             background: white;
             border-radius: 10px;
@@ -690,7 +650,7 @@
         .btn-cancel { background: #aaa; color: white; }
         .btn-save { background: #b71c1c; color: white; }
 
-        #nameGateModal, #blockedModal {
+        #nameGateModal {
             display: flex;
             position: fixed;
             z-index: 9999;
@@ -748,6 +708,7 @@
         .btn-public-type { background: #ff9800; color: white; }
         .btn-admin-type { background: #c62828; color: white; }
 
+        /* युट्यूब सारखा ॲडव्हान्स व्हिडिओ प्लेअर मॉडेल डिझाईन */
         .youtube-player-modal {
             display: none;
             position: fixed;
@@ -839,14 +800,6 @@
 </head>
 <body>
 
-    <!-- ब्लॉक केलेले युझरसाठी मेसेज मॉडेल -->
-    <div id="blockedModal" style="display:none;">
-        <div class="name-gate-card">
-            <h3 style="color:#c62828; margin-top:0;">⛔ ॲपवरून ब्लॉक केले आहे</h3>
-            <p style="font-size:12px; color:#666;">तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.</p>
-        </div>
-    </div>
-
     <!-- लॉगिन / प्रवेश गेट मॉडेल -->
     <div id="nameGateModal">
         <div class="name-gate-card">
@@ -917,16 +870,7 @@
         <div id="notifListContainer"></div>
     </div>
 
-    <!-- ॲडमिन सेटिंग्स व ब्लॉक लिस्ट ड्राव्हर मेनू -->
-    <div id="sideDrawerMenu" class="side-drawer-menu">
-        <div style="font-size:13px; font-weight:bold; color:#b71c1c; border-bottom:1px solid #ddd; padding-bottom:5px; margin-bottom:5px;">⚙️ ॲप सेटिंग्ज</div>
-        <button onclick="openBlockManager()">🚫 युझर ब्लॉक लिस्ट मॅनेज करा</button>
-        <button onclick="togglePublicPrivateMode()">🔄 स्विच पब्लिक/प्रायव्हेट मोड</button>
-        <button onclick="logoutUser()">🚪 लॉग आउट</button>
-    </div>
-
     <header>
-        <button class="menu-hamburger-btn" onclick="toggleSideDrawer(event)">☰</button>
         <img src="photo1.jpg" alt="Mandir Logo">
         <h1 id="appTitle" style="font-size: 16px; margin: 8px 0 2px 0;">MH कपिलेश्वर महादेव मंदिर विल्होळे</h1>
         <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
@@ -943,13 +887,32 @@
 
         <!-- १. गॅलरी -->
         <div id="section-gallery" class="section-box active-section">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 id="t_galleryTitle" style="margin:0;">१. मंदिर दर्शन गॅलरी</h2>
-                <button id="addGalleryPhotoBtn" style="display:none; background:#b71c1c; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो जोडा</button>
-                <input type="file" id="galleryImageInput" accept="image/*" style="display:none;" onchange="uploadNewGalleryPhoto(this)">
-            </div>
-            <div id="galleryGridContainer" class="gallery-grid">
-                <!-- गॅलरी कार्ड्स डायनॅमिकली लोड होतील -->
+            <h2 id="t_galleryTitle">१. मंदिर दर्शन गॅलरी</h2>
+            <div class="gallery-grid">
+                <div class="gallery-card" onclick="openModal('photo1.jpg', 'मंदिर प्रवेशद्वार')">
+                    <img src="photo1.jpg" alt="Gate">
+                    <p id="t_p1">मंदिर प्रवेशद्वार</p>
+                </div>
+                <div class="gallery-card" onclick="openModal('photo2.jpg', 'नंदी आणि सभामंडप')">
+                    <img src="photo2.jpg" alt="Nandi">
+                    <p id="t_p2">नंदी आणि सभामंडप</p>
+                </div>
+                <div class="gallery-card" onclick="openModal('photo3.jpg', 'प्राचीन नक्षीकाम छतावरील')">
+                    <img src="photo3.jpg" alt="Roof">
+                    <p id="t_p3">प्राचीन नक्षीकाम छतावरील</p>
+                </div>
+                <div class="gallery-card" onclick="openModal('photo4.jpg', 'गाभारा दर्शन')">
+                    <img src="photo4.jpg" alt="Gabhara">
+                    <p id="t_p4">गाभारा दर्शन</p>
+                </div>
+                <div class="gallery-card" onclick="openModal('photo5.jpg', 'रात्रीची रोषणाई मंदिर')">
+                    <img src="photo5.jpg" alt="Night">
+                    <p id="t_p5">रात्रीची रोषणाई मंदिर</p>
+                </div>
+                <div class="gallery-card" onclick="openModal('photo6.jpg', 'शिवलिंग आणि सजावट')">
+                    <img src="photo6.jpg" alt="Shivling">
+                    <p id="t_p6">शिवलिंग आणि सजावट</p>
+                </div>
             </div>
         </div>
 
@@ -978,10 +941,10 @@
             <div id="ringtoneListContainer"></div>
         </div>
 
-        <!-- ५. ग्रंथ व मंदिर निबंध माहिती -->
+        <!-- ५. ग्रंथ -->
         <div id="section-texts" class="section-box">
-            <h2 id="t_textsTitle">५. पवित्र ग्रंथ, आरत्या, श्लोक व मंदिराचा निबंध माहिती</h2>
-            <input type="text" id="textSearch" class="search-box" placeholder="🔍 आरती, भजन, श्लोक किंवा निबंध येथे सर्च करा..." onkeyup="filterTexts()">
+            <h2 id="t_textsTitle">५. पवित्र ग्रंथ, आरत्या व श्लोक</h2>
+            <input type="text" id="textSearch" class="search-box" placeholder="🔍 आरती, भजन किंवा श्लोक येथे सर्च करा..." onkeyup="filterTexts()">
             <div id="textsListContainer"></div>
         </div>
 
@@ -1048,7 +1011,7 @@
         <input type="file" id="shortVideoFileInput" accept="video/*" style="display:none;" onchange="prepareVideoUpload(this, 'short')">
     </div>
 
-    <!-- अपलोड मॉडेल -->
+    <!-- अपलोड मॉडेल (थंबनेल अपलोड फिचरसह) -->
     <div id="uploadModal" class="modal">
         <div class="modal-content-box">
             <h3 id="modalHeaderTitle" style="color:#b71c1c; margin-top:0; font-size:14px;">माहिती भरा</h3>
@@ -1073,20 +1036,6 @@
                 <button class="btn-cancel" onclick="closeUploadModal()" id="t_cancelBtn">रद्द करा</button>
                 <button class="btn-save" onclick="confirmAndUpload()" id="t_saveBtn">सेव्ह करा</button>
             </div>
-        </div>
-    </div>
-
-    <!-- युझर ब्लॉक मॅनेजर मॉडेल (फक्त ॲडमिनसाठी) -->
-    <div id="blockManagerModal" class="modal">
-        <div class="modal-content-box">
-            <h3 style="color:#b71c1c; margin-top:0; font-size:14px;">🚫 युझर ब्लॉक मॅनेजर</h3>
-            <p style="font-size:11px; color:#666;">ज्या युझरला ब्लॉक करायचे आहे त्याचे नाव खाली टाका:</p>
-            <input type="text" id="blockUserNameInput" placeholder="युझरचे अचूक नाव टाका...">
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="document.getElementById('blockManagerModal').style.display='none'">बंद करा</button>
-                <button class="btn-save" style="background:#c62828;" onclick="blockUserAction()">ब्लॉक करा</button>
-            </div>
-            <div id="blockedUsersListContainer" style="margin-top:15px; font-size:11px;"></div>
         </div>
     </div>
 
@@ -1152,29 +1101,17 @@
         let tempDpBase64 = '';
         let currentLang = 'mr';
         let globalHistoryList = [];
-        let globalGalleryList = [];
-        let globalBlockedUsers = [];
         let currentVideoTab = 'full';
         let currentPlayingVideoId = null;
-        let isAdminLoggedIn = false;
-
-        const defaultGallery = [
-            { id: 1, url: 'photo1.jpg', caption: 'मंदिर प्रवेशद्वार' },
-            { id: 2, url: 'photo2.jpg', caption: 'नंदी आणि सभामंडप' },
-            { id: 3, url: 'photo3.jpg', caption: 'प्राचीन नक्षीकाम छतावरील' },
-            { id: 4, url: 'photo4.jpg', caption: 'गाभारा दर्शन' },
-            { id: 5, url: 'photo5.jpg', caption: 'रात्रीची रोषणाई मंदिर' },
-            { id: 6, url: 'photo6.jpg', caption: 'शिवलिंग आणि सजावट' }
-        ];
 
         window.onload = function() {
             let savedName = localStorage.getItem('mandir_app_username');
             let savedDp = localStorage.getItem('mandir_app_userdp');
             let savedLang = localStorage.getItem('mandir_app_lang');
-            let adminStatus = localStorage.getItem('mandir_is_admin') === 'true';
             
-            if (savedLang) currentLang = savedLang;
-            isAdminLoggedIn = adminStatus;
+            if (savedLang) {
+                currentLang = savedLang;
+            }
 
             if (savedName && savedName.trim() !== '') {
                 loggedInUserName = savedName;
@@ -1182,7 +1119,6 @@
                 document.getElementById('displayUserName').innerText = loggedInUserName;
                 document.getElementById('headerUserDp').src = loggedInUserDp;
                 document.getElementById('nameGateModal').style.display = 'none';
-                checkIfBlockedAndProceed(loggedInUserName);
             } else {
                 document.getElementById('nameGateModal').style.display = 'flex';
             }
@@ -1192,18 +1128,6 @@
             renderTexts(sacredTextsData);
             initFirebaseRealtimeListeners();
         };
-
-        function checkIfBlockedAndProceed(username) {
-            if(!window.db) return;
-            const { collection, getDocs } = window.firebaseCols;
-            getDocs(collection(window.db, "mandir_blocked")).then(snapshot => {
-                let blocked = [];
-                snapshot.forEach(docSnap => blocked.push(docSnap.data().name));
-                if(blocked.includes(username)) {
-                    document.getElementById('blockedModal').style.display = 'flex';
-                }
-            });
-        }
 
         function selectLoginMode(mode) {
             document.getElementById('loginChoiceView').style.display = 'none';
@@ -1257,20 +1181,18 @@
                 alert('कृपया तुमचे पूर्ण नाव टाका!');
                 return;
             }
-            if (tempDpBase64 === '') tempDpBase64 = 'photo1.jpg';
-            
+            if (tempDpBase64 === '') {
+                tempDpBase64 = 'photo1.jpg';
+            }
             localStorage.setItem('mandir_app_username', inputName);
             localStorage.setItem('mandir_app_userdp', tempDpBase64);
-            localStorage.setItem('mandir_is_admin', 'false');
             loggedInUserName = inputName;
             loggedInUserDp = tempDpBase64;
-            isAdminLoggedIn = false;
 
             document.getElementById('displayUserName').innerText = loggedInUserName;
             document.getElementById('headerUserDp').src = loggedInUserDp;
             document.getElementById('nameGateModal').style.display = 'none';
             addFirebaseNotification('स्वागत आहे!', `${loggedInUserName} यांनी ॲपमध्ये प्रवेश केला आहे.`);
-            checkIfBlockedAndProceed(loggedInUserName);
         }
 
         function verifyAdminLogin() {
@@ -1281,15 +1203,12 @@
                 
                 localStorage.setItem('mandir_app_username', adminName);
                 localStorage.setItem('mandir_app_userdp', adminDp);
-                localStorage.setItem('mandir_is_admin', 'true');
                 loggedInUserName = adminName;
                 loggedInUserDp = adminDp;
-                isAdminLoggedIn = true;
 
                 document.getElementById('displayUserName').innerText = loggedInUserName;
                 document.getElementById('headerUserDp').src = loggedInUserDp;
                 document.getElementById('nameGateModal').style.display = 'none';
-                document.getElementById('addGalleryPhotoBtn').style.display = 'block';
                 addFirebaseNotification('ॲडमिन प्रवेश!', `ॲडमिन (Sanchit Vikas Patil) यांनी ॲपमध्ये प्रवेश केला आहे.`);
             } else {
                 document.getElementById('adminErrorMsg').innerText = "Incorrect Code! चुकीचा कोड आहे.";
@@ -1299,14 +1218,7 @@
         function logoutUser() {
             localStorage.removeItem('mandir_app_username');
             localStorage.removeItem('mandir_app_userdp');
-            localStorage.removeItem('mandir_is_admin');
             location.reload();
-        }
-
-        function toggleSideDrawer(event) {
-            if(event) event.stopPropagation();
-            const drawer = document.getElementById('sideDrawerMenu');
-            drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
         }
 
         function toggleCreateMenu(event) {
@@ -1316,61 +1228,15 @@
         }
 
         window.onclick = function(event) {
-            if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu') && !event.target.closest('.notification-bell-btn') && !event.target.closest('#notificationDropdown') && !event.target.closest('.menu-hamburger-btn') && !event.target.closest('#sideDrawerMenu')) {
+            if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu') && !event.target.closest('.notification-bell-btn') && !event.target.closest('#notificationDropdown')) {
                 document.getElementById('createMenuBox').style.display = 'none';
                 document.getElementById('notificationDropdown').style.display = 'none';
-                document.getElementById('sideDrawerMenu').style.display = 'none';
             }
         }
 
         function toggleNotifications() {
             const dropdown = document.getElementById('notificationDropdown');
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function openBlockManager() {
-            document.getElementById('sideDrawerMenu').style.display = 'none';
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            document.getElementById('blockManagerModal').style.display = 'flex';
-            renderBlockedUsersUI();
-        }
-
-        function togglePublicPrivateMode() {
-            document.getElementById('sideDrawerMenu').style.display = 'none';
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            alert('ॲडमिन मोड सक्रिय आहे.');
-        }
-
-        async function blockUserAction() {
-            let nameToBlock = document.getElementById('blockUserNameInput').value.trim();
-            if(nameToBlock !== "" && window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                try {
-                    await addDoc(collection(window.db, "mandir_blocked"), { name: nameToBlock, id: Date.now() });
-                    alert(`${nameToBlock} यशस्वीरित्या ब्लॉक केला आहे.`);
-                    document.getElementById('blockUserNameInput').value = '';
-                    renderBlockedUsersUI();
-                } catch(e) { console.error("Block error:", e); }
-            }
-        }
-
-        function renderBlockedUsersUI() {
-            if(!window.db) return;
-            const { collection, getDocs } = window.firebaseCols;
-            getDocs(collection(window.db, "mandir_blocked")).then(snapshot => {
-                let container = document.getElementById('blockedUsersListContainer');
-                container.innerHTML = '<strong>सध्या ब्लॉक केलेले युझर्स:</strong><br>';
-                snapshot.forEach(docSnap => {
-                    let data = docSnap.data();
-                    container.innerHTML += `- ${data.name}<br>`;
-                });
-            });
         }
 
         function initFirebaseRealtimeListeners() {
@@ -1380,7 +1246,7 @@
             onSnapshot(collection(window.db, "mandir_history"), (snapshot) => {
                 globalHistoryList = [];
                 snapshot.forEach((docSnap) => {
-                    globalHistoryList.push({ id: docSnap.id, docFirebaseId: docSnap.id, ...docSnap.data() });
+                    globalHistoryList.push({ id: docSnap.id, ...docSnap.data() });
                 });
                 globalHistoryList.sort((a, b) => b.id - a.id);
                 
@@ -1397,14 +1263,6 @@
                 } else {
                     alertBar.style.display = 'none';
                 }
-            });
-
-            onSnapshot(collection(window.db, "mandir_gallery"), (snapshot) => {
-                globalGalleryList = [];
-                snapshot.forEach((docSnap) => {
-                    globalGalleryList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
-                });
-                renderGalleryUI();
             });
 
             onSnapshot(collection(window.db, "mandir_notifications"), (snapshot) => {
@@ -1432,64 +1290,6 @@
                 });
                 renderYtCommentsUI(vcomments);
             });
-        }
-
-        async function uploadNewGalleryPhoto(input) {
-            if(!isAdminLoggedIn) {
-                alert('फक्त ॲडमिन गॅलरीमध्ये फोटो जोडू शकतो!');
-                return;
-            }
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    let base64Img = e.target.result;
-                    let caption = prompt('फोटोचे टायटल किंवा माहिती लिहा:', 'मंदिर दर्शन');
-                    if(caption && window.db) {
-                        const { collection, addDoc } = window.firebaseCols;
-                        await addDoc(collection(window.db, "mandir_gallery"), {
-                            id: Date.now(),
-                            url: base64Img,
-                            caption: caption
-                        });
-                        alert('फोटो गॅलरीत यशस्वीरित्या जोडला गेला!');
-                    }
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function renderGalleryUI() {
-            const container = document.getElementById('galleryGridContainer');
-            container.innerHTML = '';
-            
-            let combinedGallery = [...defaultGallery, ...globalGalleryList];
-            if(isAdminLoggedIn) {
-                document.getElementById('addGalleryPhotoBtn').style.display = 'block';
-            }
-
-            combinedGallery.forEach((item) => {
-                const card = document.createElement('div');
-                card.className = 'gallery-card';
-                card.innerHTML = `
-                    <img src="${item.url}" alt="Gallery" onclick="openModal('${item.url}', '${item.caption}')">
-                    <p>${item.caption}</p>
-                    ${isAdminLoggedIn && item.docFirebaseId ? `<button onclick="deleteGalleryPhoto('${item.docFirebaseId}')" style="background:red; color:white; border:none; font-size:9px; padding:2px 6px; border-radius:3px; cursor:pointer; margin-bottom:5px;">डिलीट</button>` : ''}
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        async function deleteGalleryPhoto(docId) {
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            if(confirm('हा फोटो गॅलरीमधून डिलीट करायचा का?')) {
-                if(!window.db) return;
-                const { doc, deleteDoc } = window.firebaseCols;
-                await deleteDoc(doc(window.db, "mandir_gallery", docId));
-                alert('फोटो डिलीट केला आहे.');
-            }
         }
 
         async function addFirebaseNotification(title, message) {
@@ -1524,10 +1324,16 @@
                 const item = document.createElement('div');
                 item.className = 'notif-item';
                 item.innerHTML = `<strong>${n.title}</strong><br>${n.message} <span style="font-size:9px; color:#888; float:right;">${n.time}</span>`;
+                
                 item.onclick = function() {
                     document.getElementById('notificationDropdown').style.display = 'none';
-                    if(n.title.includes('लाईव्ह')) jumpToLiveSection();
-                    else showSection('videos', document.querySelectorAll('.bottom-nav button')[4]);
+                    if(n.title.includes('लाईव्ह') || n.title.includes('Live')) {
+                        jumpToLiveSection();
+                    } else if(n.title.includes('अपलोड') || n.title.includes('व्हिडिओ')) {
+                        showSection('videos', document.querySelectorAll('.bottom-nav button')[4]);
+                    } else {
+                        showSection('history', document.querySelectorAll('.bottom-nav button')[6]);
+                    }
                 };
                 container.appendChild(item);
             });
@@ -1553,23 +1359,22 @@
             document.getElementById('thumbPreviewImg').style.display = 'none';
             document.getElementById('thumbPlaceholderText').style.display = 'block';
             pendingThumbnailBase64 = '';
+            document.getElementById('modalHeaderTitle').innerText = translations[currentLang][typeKey + 'ModalTitle'] || 'माहिती भरा';
             document.getElementById('uploadModal').style.display = 'flex';
         }
 
         function closeUploadModal() {
             document.getElementById('uploadModal').style.display = 'none';
+            pendingVideoObjectUrl = '';
             pendingThumbnailBase64 = '';
         }
 
         function prepareVideoUpload(input, typeKey) {
             document.getElementById('createMenuBox').style.display = 'none';
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingVideoObjectUrl = e.target.result;
-                    openUploadModal(typeKey);
-                };
-                reader.readAsDataURL(input.files[0]);
+                // युट्यूब सारखा व्हिडिओ प्ले होण्यासाठी ऑब्जेक्ट URL वापरली आहे
+                pendingVideoObjectUrl = URL.createObjectURL(input.files[0]);
+                openUploadModal(typeKey);
             }
         }
 
@@ -1611,17 +1416,18 @@
             } catch(e) { console.error("Firebase save error:", e); }
         }
 
-        async function deleteHistoryItem(firebaseDocId) {
-            if(!isAdminLoggedIn) {
-                alert('⛔ हा अधिकार फक्त ॲडमिनसाठी (Sanchit Vikas Patil) आहे!');
-                return;
-            }
-            if(confirm('तुम्हाला हा व्हिडिओ पूर्णपणे डिलीट करायची आहे का?')) {
+        async function deleteHistoryItem(id) {
+            if(confirm('तुम्हाला हा व्हिडिओ डिलीट करायची आहे का?')) {
                 if(!window.db) return;
-                const { doc, deleteDoc } = window.firebaseCols;
+                const { collection, getDocs, doc, deleteDoc } = window.firebaseCols;
                 try {
-                    await deleteDoc(doc(window.db, "mandir_history", firebaseDocId));
-                    alert('व्हिडिओ यशस्वीरित्या डिलीट केला आहे.');
+                    const querySnapshot = await getDocs(collection(window.db, "mandir_history"));
+                    querySnapshot.forEach(async (documentSnapshot) => {
+                        let data = documentSnapshot.data();
+                        if(data.id === id) {
+                            await deleteDoc(doc(window.db, "mandir_history", documentSnapshot.id));
+                        }
+                    });
                 } catch(e) { console.error("Delete error:", e); }
             }
         }
@@ -1665,4 +1471,180 @@
                         </div>
                     </div>
                 `;
-                contai
+                container.appendChild(card);
+            });
+        }
+
+        function renderHistoryUI(history) {
+            const container = document.getElementById('historyListContainer');
+            container.innerHTML = '';
+            if(history.length === 0) {
+                container.innerHTML = `<p style="font-size:11px; color:#777; text-align:center;">कोणतीही हिस्ट्री उपलब्ध नाही.</p>`;
+                return;
+            }
+            history.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'youtube-video-card';
+                card.innerHTML = `
+                    <div class="yt-thumb-container">
+                        <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
+                    </div>
+                    <div class="yt-card-details">
+                        <img class="comment-dp" src="${item.dp || 'photo1.jpg'}" alt="DP">
+                        <div class="yt-card-meta">
+                            <h4 class="yt-card-title">${item.type}: ${item.title}</h4>
+                            <p class="yt-card-channel">${item.uploader || 'Unknown'}</p>
+                            <p class="yt-card-time">${item.desc} | ${item.tags}</p>
+                        </div>
+                    </div>
+                    <div class="history-actions">
+                        ${item.url ? `<button class="btn-play" onclick="openYoutubePlayer('${item.id}', '${item.url}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">▶ प्ले करा</button>` : ''}
+                        <button class="btn-delete" onclick="deleteHistoryItem(${item.id})">🗑️ डिलीट</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /* युट्यूब सारखा आधुनिक व्हिडिओ प्लेअर कंट्रोल्स */
+        function openYoutubePlayer(id, url, title, desc, tags, uploader, dp) {
+            if(!url || url.trim() === '') {
+                alert('हा लाईव्ह स्ट्रीम व्हिडिओ आहे किंवा याची फाईल उपलब्ध नाही.');
+                return;
+            }
+            currentPlayingVideoId = id;
+            document.getElementById('ytPlayerTitle').innerText = title;
+            document.getElementById('ytPlayerDesc').innerText = desc;
+            document.getElementById('ytPlayerTags').innerText = tags;
+            document.getElementById('playerUploaderName').innerText = uploader;
+            document.getElementById('playerUploaderDp').src = dp;
+            
+            const videoElem = document.getElementById('advancedVideoElement');
+            videoElem.src = url;
+            
+            updateLikeButtonUI();
+            document.getElementById('youtubePlayerModal').style.display = 'flex';
+            videoElem.play().catch(e => console.log("Autoplay error:", e));
+        }
+
+        function closeYoutubePlayer() {
+            document.getElementById('youtubePlayerModal').style.display = 'none';
+            const videoElem = document.getElementById('advancedVideoElement');
+            videoElem.pause();
+            videoElem.src = "";
+            currentPlayingVideoId = null;
+        }
+
+        async function toggleVideoLike() {
+            if(!currentPlayingVideoId || !window.db) return;
+            const { collection, getDocs, doc, setDoc } = window.firebaseCols;
+            
+            try {
+                const querySnapshot = await getDocs(collection(window.db, "mandir_history"));
+                querySnapshot.forEach(async (documentSnapshot) => {
+                    let data = documentSnapshot.data();
+                    if(data.id == currentPlayingVideoId) {
+                        let likesArr = data.likes || [];
+                        let index = likesArr.indexOf(loggedInUserName);
+                        if(index > -1) {
+                            likesArr.splice(index, 1);
+                        } else {
+                            likesArr.push(loggedInUserName);
+                        }
+                        await setDoc(doc(window.db, "mandir_history", documentSnapshot.id), { ...data, likes: likesArr });
+                        
+                        data.likes = likesArr;
+                        updateLikeButtonUI();
+                    }
+                });
+            } catch(e) { console.error("Like error:", e); }
+        }
+
+        function updateLikeButtonUI() {
+            let item = globalHistoryList.find(i => i.id == currentPlayingVideoId);
+            if(item) {
+                let likes = item.likes || [];
+                document.getElementById('ytLikeCount').innerText = likes.length;
+                let btn = document.getElementById('ytLikeBtn');
+                if(likes.includes(loggedInUserName)) {
+                    btn.classList.add('liked');
+                } else {
+                    btn.classList.remove('liked');
+                }
+            }
+        }
+
+        async function sendYtComment() {
+            const input = document.getElementById('ytCommentInput');
+            const val = input.value.trim();
+            if(val !== "" && currentPlayingVideoId) {
+                if(!window.db) return;
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_videocomments"), {
+                        videoId: currentPlayingVideoId,
+                        name: loggedInUserName,
+                        dp: loggedInUserDp,
+                        text: val,
+                        id: Date.now()
+                    });
+                    input.value = "";
+                } catch(e) { console.error("Video comment error:", e); }
+            }
+        }
+
+        function renderYtCommentsUI(vcomments) {
+            const listContainer = document.getElementById('ytCommentList');
+            if(!listContainer) return;
+            listContainer.innerHTML = '';
+            
+            let filtered = vcomments.filter(c => c.videoId == currentPlayingVideoId);
+            if(filtered.length === 0) {
+                listContainer.innerHTML = `<div style="color:#777; text-align:center;">कोणतीही कमेंट नाही. पहिली कमेंट करा!</div>`;
+                return;
+            }
+
+            filtered.forEach(c => {
+                const row = document.createElement('div');
+                row.className = 'comment-item-row';
+                row.style.borderBottom = '1px solid #333';
+                row.innerHTML = `
+                    <img class="comment-dp" src="${c.dp || 'photo1.jpg'}" alt="DP">
+                    <div style="color:white;"><strong>${c.name}:</strong> ${c.text}</div>
+                `;
+                listContainer.appendChild(row);
+            });
+            listContainer.scrollTop = listContainer.scrollHeight;
+        }
+
+        let mediaStream = null;
+        let useFrontCamera = true;
+
+        async function startLiveCameraStream(title, desc, tags) {
+            showSection('live', document.querySelectorAll('.bottom-nav button')[5]);
+            const videoElement = document.getElementById('liveVideoElement');
+            const placeholder = document.getElementById('livePlaceholderText');
+            const badge = document.getElementById('liveBadge');
+            const controlsRow = document.getElementById('liveControlsRow');
+            const viewerText = document.getElementById('viewerStatusText');
+            const liveTitleElem = document.getElementById('displayLiveTitle');
+
+            liveTitleElem.innerText = title;
+
+            try {
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => track.stop());
+                }
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
+                    audio: true
+                });
+                videoElement.srcObject = mediaStream;
+                videoElement.style.display = 'block';
+                placeholder.style.display = 'none';
+                badge.style.display = 'block';
+                controlsRow.style.display = 'flex';
+                viewerText.innerHTML = "👁️ 156 Viewers Watching Live";
+                
+                await saveHistoryItemToFirebase("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", pendingThumbnailBase64 || 'photo1.jpg', loggedInUserName, loggedInUserDp, true);
+            
