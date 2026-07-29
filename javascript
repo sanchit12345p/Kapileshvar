@@ -1,7 +1,6 @@
 // ==========================================
-// १. FIREBASE SETUP & INITIALIZATION
+// 1. FIREBASE INITIALIZATION
 // ==========================================
-// (टीप: खालील कॉन्फिगरेशनमध्ये तुझी खरी Firebase माहिती खात्री करून टाक)
 const firebaseConfig = {
     apiKey: "YOUR_FIREBASE_API_KEY",
     authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -11,7 +10,6 @@ const firebaseConfig = {
     appId: "YOUR_APP_ID"
 };
 
-// Firebase इनिशिअलाईझ करणे (जर आधीच होत असेल तर ही ओळ सांभाळून वापर)
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
@@ -19,30 +17,57 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-// ==========================================
-// २. NAVIGATION & SECTION SWITCHING
-// ==========================================
-function showSection(sectionId, element) {
-    // सर्व सेक्शन लपवणे
-    const sections = document.querySelectorAll('.section-box');
-    sections.forEach(sec => sec.style.display = 'none');
+// WebRTC साठी मोफत Google STUN सर्व्हर (दुसऱ्या फोनला जोडण्यासाठी)
+const servers = {
+    iceServers: [
+        { urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] }
+    ]
+};
 
-    // ठरवलेला सेक्शन दाखवणे
-    const targetSection = document.getElementById('section-' + sectionId);
-    if (targetSection) {
-        targetSection.style.display = 'block';
-    }
+let localStream = null;
+let peerConnection = null;
 
-    // नेव्हिगेशन बटण ॲक्टिव्ह क्लास मॅनेज करणे
-    if (element) {
-        const buttons = document.querySelectorAll('.bottom-nav button');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        element.classList.add('active');
-    }
+// Page लोड झाल्यावर लगेच हिस्ट्री दाखवणे
+window.onload = function() {
+    listenToHistoryRealtime();
+    listenToLiveStreamsRealtime();
+};
+
+// ==========================================
+// 2. REALTIME HISTORY (दुसऱ्या मोबाईलवर लगेच दिसणार)
+// ==========================================
+function listenToHistoryRealtime() {
+    const historyContainer = document.getElementById('history-container');
+    if (!historyContainer) return;
+
+    // onSnapshot मुळे कोणत्याही फोनवरून व्हिडिओ सेव्ह झाला की दुसऱ्या फोनवर ऑटोमॅटिक दिसेल
+    db.collection("videos").orderBy("createdAt", "desc")
+      .onSnapshot((snapshot) => {
+        historyContainer.innerHTML = "";
+        if (snapshot.empty) {
+            historyContainer.innerHTML = "<p>कोणतीही हिस्ट्री उपलब्ध नाही.</p>";
+            return;
+        }
+
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const videoItem = document.createElement('div');
+            videoItem.className = 'history-item';
+            videoItem.style.cssText = "margin-bottom: 15px; background: #222; padding: 10px; border-radius: 8px;";
+            videoItem.innerHTML = `
+                <h4 style="color: #fff; margin-bottom: 5px;">${data.title || 'व्हिडिओ'}</h4>
+                <video width="100%" controls src="${data.url}" style="border-radius: 5px;"></video>
+            `;
+            historyContainer.appendChild(videoItem);
+        });
+    }, (error) => {
+        console.error("History Error: ", error);
+        historyContainer.innerHTML = "<p>डेटा लोड करताना एरर आला. Firebase Rules तपासा.</p>";
+    });
 }
 
 // ==========================================
-// ३. VIDEO UPLOAD & FIREBASE STORAGE SAVING
+// 3. VIDEO UPLOAD & SAVE (Firebase Storage)
 // ==========================================
 async function uploadAndSaveVideo(fileInputId, titleInputId) {
     const fileInput = document.getElementById(fileInputId);
@@ -54,114 +79,165 @@ async function uploadAndSaveVideo(fileInputId, titleInputId) {
     }
 
     const file = fileInput.files[0];
-    const title = titleInput ? titleInput.value : "Untitled Video";
-    const storageRef = storage.ref('videos/' + Date.now() + '_' + file.name);
+    const title = titleInput ? titleInput.value : "My Video";
+    const fileName = Date.now() + '_' + file.name;
+    const storageRef = storage.ref('videos/' + fileName);
 
-    alert("व्हिडिओ अपलोड होत आहे, कृपया वाट पाहा...");
+    alert("व्हिडिओ सेव्ह होतोय... थोडा वेळ थांब!");
 
     try {
-        // Firebase Storage वर अपलोड करणे
-        const snapshot = await storageRef.put(file);
-        const downloadURL = await snapshot.ref.getDownloadURL();
+        const uploadTask = await storageRef.put(file);
+        const downloadURL = await uploadTask.ref.getDownloadURL();
 
-        // Firestore मध्ये व्हिडिओची माहिती (History साठी) सेव्ह करणे
+        // Firestore मध्ये सेव्ह करणे
         await db.collection("videos").add({
             title: title,
             url: downloadURL,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        alert("व्हिडिओ यशस्वीपणे सेव्ह आणि अपलोड झाला!");
-        loadVideoHistory(); // हिस्ट्री रिफ्रेश करणे
+        alert("व्हिडिओ यशस्वीपणे सेव्ह झाला! आता तो हिस्ट्रीमध्ये दिसेल.");
     } catch (error) {
-        console.error("अपलोड करताना एरर आला: ", error);
-        alert("अपलोड अयशस्वी ठरले: " + error.message);
+        console.error("Upload Error: ", error);
+        alert("सेव्ह अयशस्वी: " + error.message);
     }
 }
 
 // ==========================================
-// ४. VIDEO HISTORY (हिस्ट्री लोड करणे)
+// 4. LIVE STREAMING (SCREEN + AUDIO BROADCAST)
 // ==========================================
-function loadVideoHistory() {
-    const historyContainer = document.getElementById('history-container');
-    if (!historyContainer) return;
-
-    historyContainer.innerHTML = "<p>लोद होत आहे...</p>";
-
-    db.collection("videos").orderBy("createdAt", "desc").get().then((querySnapshot) => {
-        historyContainer.innerHTML = "";
-        if (querySnapshot.empty) {
-            historyContainer.innerHTML = "<p>कोणतीही हिस्ट्री उपलब्ध नाही.</p>";
-            return;
-        }
-
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const videoElement = document.createElement('div');
-            videoElement.className = 'history-item';
-            videoElement.innerHTML = `
-                <h3>${data.title || 'कोनतेही शीर्षक नाही'}</h3>
-                <video width="100%" controls src="${data.url}"></video>
-                <hr>
-            `;
-            historyContainer.appendChild(videoElement);
-        });
-    }).catch((error) => {
-        console.error("हिस्ट्री लोड करण्यात एरर: ", error);
-        historyContainer.innerHTML = "<p>हिस्ट्री लोड करण्यात समस्या आली.</p>";
-    });
-}
-
-// ==========================================
-// ५. LIVE STREAMING (SCREEN & AUDIO CAPTURE)
-// ==========================================
-let localStream = null;
-
 async function startLiveStream() {
     try {
-        // स्क्रीन कॅप्चर करणे (Video) सोबत माईकचा आवाज (Audio) घेणे
-        const screenStream = await navigator.mediaDevices.getDisplayMedia({ 
-            video: true, 
-            audio: true 
+        // १. स्क्रीन आणि सिस्टीम ऑडिओ कॅप्चर करणे
+        const displayStream = await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: true
         });
 
-        // युजरचा स्वतःचा माईक वेगळा ॲड करायचा असल्यास:
-        const audioStream = await navigator.mediaDevices.getUserMedia({ 
-            audio: true, 
-            video: false 
-        });
+        // २. माईकचा आवाज कॅप्चर करणे
+        let micStream;
+        try {
+            micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        } catch(e) {
+            console.log("माईक ऑडिओ मिळाला नाही.");
+        }
 
-        // ऑडिओ ट्रॅक स्क्रीन स्ट्रीममध्ये जोडणे जेणेकरून आवाज जाईल
-        audioStream.getAudioTracks().forEach(track => {
-            screenStream.addTrack(track);
-        });
+        // ३. स्क्रीन आणि माईक ऑडिओ एकत्र करणे
+        localStream = new MediaStream();
+        
+        displayStream.getTracks().forEach(track => localStream.addTrack(track));
+        if (micStream) {
+            micStream.getAudioTracks().forEach(track => localStream.addTrack(track));
+        }
 
-        localStream = screenStream;
-
-        // लोकल व्हिडिओ elementi वर स्ट्रीम दाखवणे (स्वतःला दिसेल)
         const localVideo = document.getElementById('localLiveVideo');
         if (localVideo) {
             localVideo.srcObject = localStream;
         }
 
-        alert("लाईव्ह स्ट्रीम सुरू झाली आहे! स्क्रीन आणि ऑडिओ कॅप्चर होत आहेत.");
-        
-        // इथे पुढे WebRTC सिग्नलिंकचा कोड टाकता येईल ज्यामुळे हा स्ट्रीम दुसऱ्यापर्यंत जाईल.
+        // 💡 WebRTC Connection सुरू करणे (दुसऱ्या फोनला पाठवण्यासाठी)
+        peerConnection = new RTCPeerConnection(servers);
+
+        localStream.getTracks().forEach(track => {
+            peerConnection.addTrack(track, localStream);
+        });
+
+        const liveDoc = db.collection('lives').doc('currentStream');
+        const offerCandidates = liveDoc.collection('offerCandidates');
+        const answerCandidates = liveDoc.collection('answerCandidates');
+
+        peerConnection.onicecandidate = (event) => {
+            event.candidate && offerCandidates.add(event.candidate.toJSON());
+        };
+
+        const offerDescription = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offerDescription);
+
+        const offer = {
+            sdp: offerDescription.sdp,
+            type: offerDescription.type,
+            isLive: true,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        await liveDoc.set({ offer });
+
+        // समोरच्या फोनकडून उत्तर (Answer) ऐकणे
+        liveDoc.onSnapshot((snapshot) => {
+            const data = snapshot.data();
+            if (peerConnection && !peerConnection.currentRemoteDescription && data && data.answer) {
+                const answerDescription = new RTCSessionDescription(data.answer);
+                peerConnection.setRemoteDescription(answerDescription);
+            }
+        });
+
+        answerCandidates.onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === 'added') {
+                    const candidate = new RTCIceCandidate(change.doc.data());
+                    peerConnection.addIceCandidate(candidate);
+                }
+            });
+        });
+
+        alert("🔴 लाईव्ह सुरू झाले आहे! आता दुसऱ्या फोनवर व्हिडिओ आणि आवाज दोन्ही दिसेल.");
 
     } catch (error) {
-        console.error("लाईव्ह सुरू करताना एरर आला:", error);
-        alert("लाईव्ह सुरू होऊ शकली नाही. परवानग्या तपासा: " + error.message);
+        console.error("Live Error: ", error);
+        alert("लाईव्ह सुरू करताना अडचण आली: " + error.message);
     }
 }
 
-function stopLiveStream() {
-    if (localStream) {
-        localStream.getTracks().forEach(track => track.stop());
-        localStream = null;
-        const localVideo = document.getElementById('localLiveVideo');
-        if (localVideo) {
-            localVideo.srcObject = null;
-        }
-        alert("लाईव्ह स्ट्रीम बंद करण्यात आली.");
+// ==========================================
+// 5. RECEIVE LIVE STREAM (दुसऱ्या फोनसाठी)
+// ==========================================
+async function watchLiveStream(remoteVideoElementId) {
+    peerConnection = new RTCPeerConnection(servers);
+    const remoteStream = new MediaStream();
+
+    const remoteVideo = document.getElementById(remoteVideoElementId);
+    if (remoteVideo) {
+        remoteVideo.srcObject = remoteStream;
     }
+
+    peerConnection.ontrack = (event) => {
+        event.streams[0].getTracks().forEach((track) => {
+            remoteStream.addTrack(track);
+        });
+    };
+
+    const liveDoc = db.collection('lives').doc('currentStream');
+    const offerCandidates = liveDoc.collection('offerCandidates');
+    const answerCandidates = liveDoc.collection('answerCandidates');
+
+    peerConnection.onicecandidate = (event) => {
+        event.candidate && answerCandidates.add(event.candidate.toJSON());
+    };
+
+    const liveData = (await liveDoc.get()).data();
+    if (!liveData || !liveData.offer) {
+        alert("सध्या कोणतीही लाईव्ह स्ट्रीम चालू नाही!");
+        return;
+    }
+
+    await peerConnection.setRemoteDescription(new RTCSessionDescription(liveData.offer));
+
+    const answerDescription = await peerConnection.createAnswer();
+    await peerConnection.setLocalDescription(answerDescription);
+
+    const answer = {
+        type: answerDescription.type,
+        sdp: answerDescription.sdp,
+    };
+
+    await liveDoc.update({ answer });
+
+    offerCandidates.onSnapshot((snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === 'added') {
+                let data = change.doc.data();
+                peerConnection.addIceCandidate(new RTCIceCandidate(data));
+            }
+        });
+    });
 }
