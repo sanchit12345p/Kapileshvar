@@ -3,142 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Permax Gaming</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #121212;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-card {
-            background: #1e1e1e;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            width: 320px;
-            text-align: center;
-        }
-        h2 { margin-bottom: 15px; color: #ffcc00; }
-        .admin-brand {
-            font-size: 11px;
-            color: #888;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-        button, input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 6px;
-            border: none;
-            font-size: 16px;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover { background: #0056b3; }
-        .btn-private { background: #ff4757; }
-        .btn-private:hover { background: #ff6b81; }
-        input {
-            background: #2d2d2d;
-            color: white;
-            border: 1px solid #444;
-            box-sizing: border-box;
-        }
-        .hidden { display: none; }
-        #error-msg { color: #ff4d4d; font-size: 14px; margin-top: 5px; }
-    </style>
-</head>
-<body>
-
-    <div class="login-card" id="login-screen">
-        <h2>Permax Gaming</h2>
-        <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
-        
-        <p>लॉगिन प्रकार निवडा:</p>
-        <button onclick="showPublic()">Public</button>
-        <button class="btn-private" onclick="showPrivateForm()">Private (Admin)</button>
-    </div>
-
-    <!-- ॲडमिन पासवर्ड टाकण्यासाठीचा फॉर्म -->
-    <div class="login-card hidden" id="admin-form">
-        <h2>Admin Login</h2>
-        <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
-        
-        <input type="password" id="admin-code-input" placeholder="ॲडमिन कोड टाका">
-        <button onclick="verifyAdmin()">प्रवेश करा (Open)</button>
-        <button style="background:#555;" onclick="goBack()">मागे जा</button>
-        <div id="error-msg"></div>
-    </div>
-
-    <!-- डॅशबोर्ड पेज (सुरुवातीला लपलेला असेल) -->
-    <div class="login-card hidden" id="dashboard-screen">
-        <h2>डॅशबोर्ड (Dashboard)</h2>
-        <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
-        <p>स्वागत आहे! तुम्ही यशस्वीरित्या लॉग इन केले आहे.</p>
-        <button style="background:#2ed573;" onclick="logout()">बाहेर पडा (Logout)</button>
-    </div>
-
-    <script>
-        // जुने लॉगिन डेटा साफ करण्यासाठी (जर आधीचा साठलेला असेल तर)
-        localStorage.removeItem('user_session');
-
-        function showPublic() {
-            // पब्लिक क्लिक केल्यावर थेट डॅशबोर्डवर जाईल
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard-screen').classList.remove('hidden');
-        }
-
-        function showPrivateForm() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('admin-form').classList.remove('hidden');
-        }
-
-        function goBack() {
-            document.getElementById('admin-form').classList.add('hidden');
-            document.getElementById('login-screen').classList.remove('hidden');
-            document.getElementById('admin-code-input').value = '';
-            document.getElementById('error-msg').innerText = '';
-        }
-
-        function verifyAdmin() {
-            const enteredCode = document.getElementById('admin-code-input').value;
-            const correctCode = "SANCHIT9129";
-
-            if (enteredCode === correctCode) {
-                // कोड बरोबर असल्यास डॅशबोर्ड उघडेल
-                document.getElementById('admin-form').classList.add('hidden');
-                document.getElementById('dashboard-screen').classList.remove('hidden');
-                document.getElementById('admin-code-input').value = '';
-                document.getElementById('error-msg').innerText = '';
-            } else {
-                // चुकीचा कोड असल्यास लाल रंगात 'Incorrect' दिसेल
-                document.getElementById('error-msg').innerText = "Incorrect Code!";
-            }
-        }
-
-        function logout() {
-            document.getElementById('dashboard-screen').classList.add('hidden');
-            document.getElementById('login-screen').classList.remove('hidden');
-        }
-    </script>
-
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="mr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="appTitle">MH कपिलेश्वर महादेव मंदिर विल्होळे</title>
     <style>
         body {
@@ -165,6 +29,14 @@
             border-radius: 50%;
             border: 2px solid white;
             object-fit: cover;
+        }
+
+        .admin-brand {
+            font-size: 11px;
+            color: #ffccbc;
+            margin-top: 4px;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
 
         .lang-switcher {
@@ -704,6 +576,7 @@
         .btn-cancel { background: #aaa; color: white; }
         .btn-save { background: #b71c1c; color: white; }
 
+        /* लॉगिन / प्रवेश गेट मॉडेल */
         #nameGateModal {
             display: flex;
             position: fixed;
@@ -748,6 +621,19 @@
             object-fit: cover;
             display: none;
         }
+        
+        .login-type-btn {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .btn-public-type { background: #ff9800; color: white; }
+        .btn-admin-type { background: #c62828; color: white; }
     </style>
 
     <!-- Firebase SDKs -->
@@ -768,28 +654,49 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Global functions export
         window.db = db;
         window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc };
     </script>
 </head>
 <body>
 
-    <!-- नाव व डीपी विचारणारे पहिले पेज -->
+    <!-- लॉगिन / प्रवेश गेट मॉडेल (Public & Admin Login) -->
     <div id="nameGateModal">
         <div class="name-gate-card">
             <h3 style="color:#b71c1c; margin-top:0;">🙏 स्वागत आहे!</h3>
-            <p style="font-size:12px; color:#666;">कृपया तुमचे नाव आणि फोटो टाका</p>
+            <div class="admin-brand" style="color:#666; margin-bottom:12px;">Admin By : Sanchit Vikas Patil</div>
+            <p style="font-size:12px; color:#666; margin-bottom:15px;">लॉगिन प्रकार निवडा:</p>
             
-            <div class="dp-upload-circle" onclick="document.getElementById('dpFileInput').click()">
-                <span id="dpPlaceholderText" style="font-size:10px; color:#666;">➕ फोटो</span>
-                <img id="dpPreviewImg" src="" alt="DP">
+            <div id="loginChoiceView">
+                <button class="login-type-btn btn-public-type" onclick="selectLoginMode('public')">👤 Public (पब्लिक)</button>
+                <button class="login-type-btn btn-admin-type" onclick="selectLoginMode('admin')">👑 Private Admin (ॲडमिन)</button>
             </div>
-            <input type="file" id="dpFileInput" accept="image/*" style="display:none;" onchange="previewDP(this)">
 
-            <input type="text" id="enteredUserName" placeholder="तुमचे पूर्ण नाव टाका..." style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:12px; text-align:center; box-sizing:border-box;">
-            
-            <button onclick="verifyAndOpenApp()" style="width:100%; background:#b71c1c; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">ॲपमध्ये प्रवेश करा</button>
+            <!-- पब्लिक फॉर्म -->
+            <div id="publicFormView" style="display:none; text-align:left;">
+                <label style="font-size:11px; font-weight:bold;">प्रोफाईल फोटो (DP) निवडा:</label>
+                <div class="dp-upload-circle" onclick="document.getElementById('dpFileInput').click()">
+                    <span id="dpPlaceholderText" style="font-size:10px; color:#666;">➕ फोटो</span>
+                    <img id="dpPreviewImg" src="" alt="DP">
+                </div>
+                <input type="file" id="dpFileInput" accept="image/*" style="display:none;" onchange="previewDP(this)">
+
+                <label style="font-size:11px; font-weight:bold;">तुमचे नाव:</label>
+                <input type="text" id="enteredUserName" placeholder="पूर्ण नाव टाका..." style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:10px; box-sizing:border-box;">
+                
+                <button onclick="verifyPublicLogin()" style="width:100%; background:#ff9800; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">प्रवेश करा</button>
+                <button onclick="backToLoginChoice()" style="width:100%; background:#aaa; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
+            </div>
+
+            <!-- ॲडमिन फॉर्म -->
+            <div id="adminFormView" style="display:none; text-align:left;">
+                <label style="font-size:11px; font-weight:bold;">ॲडमिन कोड टाका:</label>
+                <input type="password" id="adminCodeInput" placeholder="Enter Admin Code..." style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:5px; box-sizing:border-box;">
+                <div id="adminErrorMsg" style="color:red; font-size:11px; margin-bottom:8px;"></div>
+                
+                <button onclick="verifyAdminLogin()" style="width:100%; background:#c62828; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">ॲडमिन लॉगिन करा</button>
+                <button onclick="backToLoginChoice()" style="width:100%; background:#aaa; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
+            </div>
         </div>
     </div>
 
@@ -801,7 +708,7 @@
         </div>
         <div class="top-bar-right">
             <button class="notification-bell-btn" onclick="toggleNotifications()">🔔<span id="notifBadge" class="notification-badge">0</span></button>
-            <button onclick="logoutUser()" style="background:none; border:1px solid #b71c1c; color:#b71c1c; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;" id="t_logoutText">नाव बदला</button>
+            <button onclick="logoutUser()" style="background:none; border:1px solid #b71c1c; color:#b71c1c; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;" id="t_logoutText">लॉग आउट</button>
         </div>
     </div>
 
@@ -825,8 +732,9 @@
 
     <header>
         <img src="photo1.jpg" alt="Mandir Logo">
-        <h1 id="appTitle" style="font-size: 16px; margin: 8px 0 4px 0;">MH कपिलेश्वर महादेव मंदिर विल्होळे</h1>
-        <p id="t_headerSub" style="font-size: 11px; margin: 0; opacity: 0.9;">ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
+        <h1 id="appTitle" style="font-size: 16px; margin: 8px 0 2px 0;">MH कपिलेश्वर महादेव मंदिर विल्होळे</h1>
+        <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
+        <p id="t_headerSub" style="font-size: 11px; margin: 4px 0 0 0; opacity: 0.9;">ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
         
         <div class="lang-switcher">
             <button onclick="changeLanguage('mr')">मराठी</button>
@@ -1001,7 +909,6 @@
         <button onclick="showSection('history', this)"><span id="t_iconHistory">📂</span><span id="t_navHistory">हिस्ट्री</span></button>
     </div>
 
-    <!-- जाॅवास्क्रिप्ट कोडिंग (Firebase Live & Real-time Integration) -->
     <script>
         let currentUploadType = '';
         let pendingVideoBase64 = '';
@@ -1032,10 +939,26 @@
             applyLanguage(currentLang);
             renderRingtones(ringtonesData);
             renderTexts(sacredTextsData);
-            
-            // Firebase Real-time listeners initialize
             initFirebaseRealtimeListeners();
         };
+
+        function selectLoginMode(mode) {
+            document.getElementById('loginChoiceView').style.display = 'none';
+            if(mode === 'public') {
+                document.getElementById('publicFormView').style.display = 'block';
+                document.getElementById('adminFormView').style.display = 'none';
+            } else {
+                document.getElementById('publicFormView').style.display = 'none';
+                document.getElementById('adminFormView').style.display = 'block';
+            }
+        }
+
+        function backToLoginChoice() {
+            document.getElementById('loginChoiceView').style.display = 'block';
+            document.getElementById('publicFormView').style.display = 'none';
+            document.getElementById('adminFormView').style.display = 'none';
+            document.getElementById('adminErrorMsg').innerText = '';
+        }
 
         function previewDP(input) {
             if (input.files && input.files[0]) {
@@ -1051,7 +974,7 @@
             }
         }
 
-        function verifyAndOpenApp() {
+        function verifyPublicLogin() {
             let inputName = document.getElementById('enteredUserName').value.trim();
             if (inputName === '') {
                 alert('कृपया तुमचे पूर्ण नाव टाका!');
@@ -1069,6 +992,26 @@
             document.getElementById('headerUserDp').src = loggedInUserDp;
             document.getElementById('nameGateModal').style.display = 'none';
             addFirebaseNotification('स्वागत आहे!', `${loggedInUserName} यांनी ॲपमध्ये प्रवेश केला आहे.`);
+        }
+
+        function verifyAdminLogin() {
+            let code = document.getElementById('adminCodeInput').value.trim();
+            if(code === "SANCHIT9129") {
+                let adminName = "Sanchit Vikas Patil";
+                let adminDp = "photo1.jpg";
+                
+                localStorage.setItem('mandir_app_username', adminName);
+                localStorage.setItem('mandir_app_userdp', adminDp);
+                loggedInUserName = adminName;
+                loggedInUserDp = adminDp;
+
+                document.getElementById('displayUserName').innerText = loggedInUserName;
+                document.getElementById('headerUserDp').src = loggedInUserDp;
+                document.getElementById('nameGateModal').style.display = 'none';
+                addFirebaseNotification('ॲडमिन प्रवेश!', `ॲडमिन (Sanchit Vikas Patil) यांनी ॲपमध्ये प्रवेश केला आहे.`);
+            } else {
+                document.getElementById('adminErrorMsg').innerText = "Incorrect Code! चुकीचा कोड आहे.";
+            }
         }
 
         function logoutUser() {
@@ -1095,22 +1038,18 @@
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
 
-        // --- FIREBASE REALTIME SYNC FUNCTIONS ---
         function initFirebaseRealtimeListeners() {
             if(!window.db) return;
             const { collection, onSnapshot } = window.firebaseCols;
 
-            // 1. History & Live Streams Realtime Listener
             onSnapshot(collection(window.db, "mandir_history"), (snapshot) => {
                 let historyList = [];
                 snapshot.forEach((docSnap) => {
                     historyList.push({ id: docSnap.id, ...docSnap.data() });
                 });
-                // Sort by id descending (latest first)
                 historyList.sort((a, b) => b.id - a.id);
                 renderHistoryUI(historyList);
 
-                // Check if any active live stream exists online
                 let activeLive = historyList.find(item => item.type === "🔴 लाईव्ह स्ट्रीम" && item.isLive === true);
                 let alertBar = document.getElementById('globalLiveAlertBar');
                 let dismissed = sessionStorage.getItem('live_alert_dismissed') === 'true';
@@ -1123,7 +1062,6 @@
                 }
             });
 
-            // 2. Notifications Realtime Listener
             onSnapshot(collection(window.db, "mandir_notifications"), (snapshot) => {
                 let notifs = [];
                 snapshot.forEach((docSnap) => {
@@ -1133,7 +1071,6 @@
                 renderNotificationsUI(notifs);
             });
 
-            // 3. Comments Realtime Listener
             onSnapshot(collection(window.db, "mandir_comments"), (snapshot) => {
                 let comments = [];
                 snapshot.forEach((docSnap) => {
@@ -1158,8 +1095,7 @@
         }
 
         async function clearNotifications() {
-            // Clears local view / or optional firebase bulk delete
-            document.getElementById('notifListContainerinnerHTML').innerHTML = '';
+            document.getElementById('notifListContainer').innerHTML = '';
         }
 
         function renderNotificationsUI(notifs) {
@@ -1348,7 +1284,6 @@
                 controlsRow.style.display = 'flex';
                 viewerText.innerHTML = "👁️ 156 Viewers Watching Live";
                 
-                // Save active live stream to Firebase online database (triggers instant notification for all users)
                 await saveHistoryItemToFirebase("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", loggedInUserName, loggedInUserDp, true);
                 addFirebaseNotification("🔴 लाईव्ह सुरू!", `${loggedInUserName} यांनी "${title}" लाईव्ह सुरू केली आहे!`);
             } catch (err) {
@@ -1500,7 +1435,7 @@
                 appName: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
                 headerSub: "ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५",
                 userLabel: "युझर:",
-                logoutText: "नाव बदला",
+                logoutText: "लॉग आउट",
                 notifTitle: "🔔 अपडेट्स व नोटीस",
                 clearNotif: "सर्व हटवा",
                 galleryTitle: "१. मंदिर दर्शन गॅलरी",
@@ -1517,7 +1452,7 @@
                 appName: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
                 headerSub: "ट्रस्ट श्री कपिलेश्वर महादेव मंदिर, विल्होळे<br>तहसील भुसावळ, जिला जळगाव - ४२५३०५",
                 userLabel: "यूज़र:",
-                logoutText: "नाम बदलें",
+                logoutText: "लॉग आउट",
                 notifTitle: "🔔 अपडेट्स व सूचना",
                 clearNotif: "सभी हटाएं",
                 galleryTitle: "१. मंदिर दर्शन गैलरी",
@@ -1534,7 +1469,7 @@
                 appName: "MH Kapileshwar Mahadev Mandir Vilhale",
                 headerSub: "Trust Shri Kapileshwar Mahadev Mandir, Vilhale<br>Tehsil Bhusawal, District Jalgaon - 425305",
                 userLabel: "User:",
-                logoutText: "Change Name",
+                logoutText: "Logout",
                 notifTitle: "🔔 Updates & Notices",
                 clearNotif: "Clear All",
                 galleryTitle: "1. Temple Darshan Gallery",
