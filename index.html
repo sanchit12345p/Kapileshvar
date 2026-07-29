@@ -24,7 +24,7 @@
         /* भाषा बार आणि प्लस (+) बटन कंटainer */
         .top-action-bar {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             background: #ffffff;
             padding: 6px 15px;
@@ -42,39 +42,25 @@
             margin-left: 4px;
             font-weight: bold;
         }
-        /* प्लस (+) ॲक्शन बटन */
-        .create-post-btn {
-            background: #2e7d32;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        /* युट्युब स्टाईल पॉपअप मेनू */
+        
+        /* युट्युब स्टाईल पॉपअप मेनू (मध्यभागी क्लिक केल्यावर उघडेल) */
         .create-menu {
             display: none;
-            position: absolute;
-            top: 45px;
-            right: 15px;
+            position: fixed;
+            bottom: 75px;
+            left: 50%;
+            transform: translateX(-50%);
             background: white;
             border: 1px solid #ddd;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-radius: 12px;
             z-index: 3000;
-            width: 200px;
+            width: 240px;
             overflow: hidden;
         }
         .create-menu button {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px 15px;
             background: none;
             border: none;
             text-align: left;
@@ -344,7 +330,7 @@
             cursor: pointer;
         }
 
-        /* बॉटन नेव्हिगेशन बार */
+        /* बॉटन नेव्हिगेशन बार आणि मध्यभागी प्लस (+) बटन */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -353,11 +339,11 @@
             background: #ffffff;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0;
+            align-items: center;
+            padding: 6px 0;
             box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
             border-top: 1px solid #ddd;
             z-index: 1000;
-            overflow-x: auto;
         }
         .bottom-nav button {
             background: none;
@@ -377,26 +363,42 @@
         .bottom-nav button.active, .bottom-nav button:hover {
             color: var(--primary-color);
         }
+
+        /* मध्यभागी असणारा युट्युब स्टाईल प्लस (+) गोल बटन */
+        .nav-center-create {
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            color: white;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            margin-top: -4px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- भाषा बार आणि प्लस (+) युट्युब स्टाईल मेनू बार -->
+    <!-- भाषा बार -->
     <div class="top-action-bar">
-        <div style="position: relative;">
-            <button class="create-post-btn" onclick="toggleCreateMenu()">+</button>
-            <!-- युट्युब स्टाईल क्रिएट पॉपअप मेनू -->
-            <div id="createMenuBox" class="create-menu">
-                <button onclick="openLiveStreamFeature()">🔴 मंदिर आरती लाईव्ह स्ट्रीम</button>
-                <button onclick="alert('फुल व्हिडिओ अपलोड फिचर ओपन होत आहे...')">📁 फुल व्हिडिओ टाका</button>
-                <button onclick="alert('शॉर्ट व्हिडिओ अपलोड फिचर ओपन होत आहे...')">⚡ शॉर्ट व्हिडिओ टाका</button>
-            </div>
-        </div>
         <div class="lang-bar">
             <button onclick="changeLanguage('mr')">मराठी</button>
             <button onclick="changeLanguage('hi')">हिंदी</button>
             <button onclick="changeLanguage('en')">English</button>
         </div>
+    </div>
+
+    <!-- युट्युब स्टाईल क्रिएट पॉपअप मेनू (मध्यभागी प्लस दाबलीवर उघडेल) -->
+    <div id="createMenuBox" class="create-menu">
+        <button onclick="openLiveStreamFeature()">🔴 मंदिर आरती लाईव्ह स्ट्रीम</button>
+        <button onclick="alert('फुल व्हिडिओ अपलोड फिचर ओपन होत आहे...')">📁 फुल व्हिडिओ टाका</button>
+        <button onclick="alert('शॉर्ट व्हिडिओ अपलोड फिचर ओपन होत आहे...')">⚡ शॉर्ट व्हिडिओ टाका</button>
     </div>
 
     <!-- हेडर -->
@@ -504,7 +506,7 @@
         <p id="t_donationText" style="font-size: 13px; margin: 0;">मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
     </div>
 
-    <!-- खालील नेव्हिगेशन बार -->
+    <!-- खालील नेव्हिगेशन बार (मध्यभागी प्लस (+) आयकॉनसह सुव्यवस्थित) -->
     <div class="bottom-nav">
         <button onclick="showSection('gallery', this)" class="active">
             <div>🖼️</div><span id="t_navGallery">गॅलरी</span>
@@ -512,6 +514,10 @@
         <button onclick="showSection('schedule', this)">
             <div>⏰</div><span id="t_navSchedule">वेळपत्रक</span>
         </button>
+        
+        <!-- एकदम अचूक मध्यभागी प्लस (+) बटन -->
+        <button class="nav-center-create" onclick="toggleCreateMenu()">+</button>
+
         <button onclick="showSection('location', this)">
             <div>📍</div><span id="t_navLocation">लोकेशन</span>
         </button>
@@ -539,7 +545,14 @@
 
         function openLiveStreamFeature() {
             toggleCreateMenu();
-            showSection('live', document.querySelectorAll('.bottom-nav button')[5]);
+            showSection('live', document.querySelectorAll('.bottom-nav button')[6]); // लाईव्ह बटनावर नेईल
+        }
+
+        // बाहेरील बाजूला क्लिक केल्यास मेनू बंद होणे
+        window.onclick = function(event) {
+            if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu')) {
+                document.getElementById('createMenuBox').style.display = 'none';
+            }
         }
 
         // लाईक काउंटर लॉजिक
@@ -705,9 +718,11 @@
             sections.forEach(sec => sec.classList.remove('active-section'));
             document.getElementById('section-' + sectionId).classList.add('active-section');
             
-            const buttons = document.querySelectorAll('.bottom-nav button');
+            const buttons = document.querySelectorAll('.bottom-nav button:not(.nav-center-create)');
             buttons.forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
+            if(btnElement && !btnElement.classList.contains('nav-center-create')) {
+                btnElement.classList.add('active');
+            }
         }
 
         function openModal(imgSrc, captionText) {
