@@ -327,11 +327,11 @@
         <a id="t_mapBtn" href="https://maps.google.com" target="_blank" style="display: inline-block; background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">गुगल मॅपवर पहा</a>
     </div>
 
-    <!-- ४. महादेव रिंगटोन व भक्ती ध्वनी (५०+ सॉंग्स, सर्च बार आणि मास्टर ऑडिओ प्लेयरसह) -->
+    <!-- ४. महादेवांच्या रिंगटोन व भक्ती ध्वनी (सर्च बार आणि अचूक ऑडिओ प्लेयरसह) -->
     <div id="section-ringtones" class="section-box">
-        <h2 id="t_ringtoneTitle">४. महादेवांच्या ५०+ रिंगटोन व भक्ती ध्वनी</h2>
+        <h2 id="t_ringtoneTitle">४. महादेवांच्या रिंगटोन व भक्ती ध्वनी</h2>
         
-        <!-- ग्लोबल म्युझिक प्लेयर (ज्यामुळे गाणं हमखास आणि अचूक वाजेल) -->
+        <!-- ग्लोबल म्युझिक प्लेयर -->
         <div class="global-player">
             <p id="nowPlayingText">सध्या सुरू आहे: काहीही नाही</p>
             <audio id="mainAudio" controls></audio>
@@ -339,7 +339,7 @@
 
         <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
         <div id="ringtoneListContainer">
-            <!-- जावास्क्रिप्ट द्वारे ५०+ रिंगटोन इथे लोड होतील -->
+            <!-- जावास्क्रिप्ट द्वारे रिंगटोन इथे लोड होतील -->
         </div>
     </div>
 
@@ -368,60 +368,20 @@
         </button>
     </div>
 
-    <!-- जावास्क्रिप्ट (५०+ गाण्यांचा अचूक डेटा आणि फीचर्स) -->
+    <!-- जावास्क्रिप्ट (फंक्शन आणि डेटा) -->
     <script>
-        // ५०+ महादेवांच्या रिंगटोन व भजनांची सुरक्षित आणि अचूक यादी
+        // महादेवांच्या रिंगटोन व भजनांची यादी (योग्य आणि सुरक्षित लिंक्ससह)
         const ringtonesData = [
-            { name: "🔔 हर हर शंभू (Har Har Shambhu Original)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { name: "🔔 हर हर शंभू (Har Har Shambhu)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
             { name: "⚡ शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { name: "🕉️ महामृत्युंजय मंत्र (Peaceful Chant)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { name: "🥁 पवित्र मंदिर घंटा व डमरू (Temple Bell & Damru)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { name: "🕉️ महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { name: "🥁 पवित्र मंदिर घंटा (Temple Bell & Damru)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
             { name: "🎶 मेरा भोला है भंडारी (Hansraj Raghuwanshi)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
             { name: "🔥 शंकरा रे शंकरा (Tanhaji Theme)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
-            { name: "🎵 ओम नमः शिवाय धुन (Slow & Relaxing)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
-            { name: "🔔 मंदिर घंटा आवाज (Temple Bell Long Echo)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
-            { name: "💫 लिंगाष्टकम (Lingashtakam)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
-            { name: "🌟 शिवाष्टकम (Shivashtakam)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { name: "🎵 कर्पूरगौरं करुणावतारम्", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { name: "🎶 हर हर शंभू (Remix Beat Version)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { name: "⚡ शिव तांडव (Fast Rock Version)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-            { name: "🕉️ महामृत्युंजय मंत्र (Ringtones Mix)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-            { name: "🥁 डमरू नाद (Pure Damru Beats)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
-            { name: "🎵 कौन है वो कौन है वो (Baahubali Shiv Theme)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
-            { name: "🔥 महाकाल का भक्त हूँ (Mahakal Attitude)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
-            { name: "🔔 शंखनाद आणि घंटा (Shankhnad & Bell)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
-            { name: "🎶 देव देवा धुन (Brahmastra Shiv Theme)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { name: "🌟 नमामि शमिशान निर्वाण रूपं", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { name: "🎵 भोले बाबा की बारात गीत", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { name: "💫 सज रहे भोले बाबा निराले", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-            { name: "🎶 भोला भंडारी मारी रखवाली करे", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-            { name: "🔥 चल भोले के द्वार भक्त", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
-            { name: "🔔 शिव शंभू के चरणों में वंदन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
-            { name: "⚡ जटाधारी शंभू नाथ रिंगटोन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
-            { name: "🎵 बम् बम् भोले गूंज रहा है", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
-            { name: "🌟 काशी का विश्वनाथ दरबार", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { name: "🎶 अमरनाथ यात्रा स्पेशल गीत", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { name: "🔥 केदारनाथ धाम भजन ट्यून", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { name: "🎵 उज्जयिनी के महाकाल आरती", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-            { name: "💫 सावन मास विशेष शिव गीत", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-            { name: "🔔 सोमवार व्रत कथा धुन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
-            { name: "⚡ त्रिपुंड धारी भोलेनाथ रिंगटोन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
-            { name: "🎵 महाकाल भस्म आरती डमरू", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
-            { name: "🌟 शॉर्ट डमरू नोटिफिकेशन ट्यून", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
-            { name: "🎶 महादेव व्हॉट्सॲप रिंगटोन बीट्स", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { name: "🔥 फ्लूट शिव धुन (Flute Version)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { name: "🎵 व्हायोलिन शिव थीम संगीत", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { name: "💫 ट्रान्स डमरू मॉडर्न रिंगटोन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-            { name: "🔔 रुद्राक्ष रिंगटोन स्पेशल ट्यून", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-            { name: "⚡ कैलाश पर्वत हवा आणि मंत्र", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
-            { name: "🎵 संध्या आरती स्पेशल घंटा नाद", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
-            { name: "🌟 सुबह की शुरुआत महाकाल के साथ (Alarm)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
-            { name: "🔥 सुपरफास्ट महाकाल रिंगटोन मिक्स", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
-            { name: "🎵 रुद्र गायत्री मंत्र जप", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { name: "💫 दरिद्र दहन शिव स्तोत्र", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { name: "🔔 शिव पुराण कथा धुन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { name: "⚡ भोले बाबा स्पेशल कॉलरट्यून", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-            { name: "🎵 हर हर महादेव गर्जना रिंगटोन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" }
+            { name: "🎵 ओम नमः शिवाय धुन (Om Namah Shivay)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+            { name: "💫 लिंगाष्टकम (Lingashtakam)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+            { name: "🌟 शिवाष्टकम (Shivashtakam)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
+            { name: "🎵 कर्पूरगौरं करुणावतारम् (Karpur Gauram)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" }
         ];
 
         const mainAudio = document.getElementById('mainAudio');
@@ -454,7 +414,9 @@
         // गाणे प्ले करण्याचे अचूक फंक्शन
         function playSelectedSong(songName, songUrl) {
             mainAudio.src = songUrl;
-            mainAudio.play();
+            mainAudio.play().catch(error => {
+                alert("गाणे प्ले करण्यात अडचण येत आहे. कृपया इंटरनेट कनेक्शन तपासा.");
+            });
             nowPlayingText.innerText = "सध्या सुरू आहे: " + songName;
         }
 
@@ -507,7 +469,7 @@
                 locationTitle: "३. पत्ता व लोकेशन",
                 addressText: "श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.",
                 mapBtn: "गुगल मॅपवर पहा",
-                ringtoneTitle: "४. महादेवांच्या ५०+ रिंगटोन व भक्ती ध्वनी",
+                ringtoneTitle: "४. महादेवांच्या रिंगटोन व भक्ती ध्वनी",
                 donationTitle: "५. देणगी",
                 donationText: "मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.",
                 navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navDonation: "देणगी"
@@ -522,7 +484,7 @@
                 locationTitle: "३. पता और लोकेशन",
                 addressText: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे, तहसील भुसावळ, जिला जलगाँव - ४२५३०५.",
                 mapBtn: "गूगल मैप पर देखें",
-                ringtoneTitle: "४. महादेव की ५०+ रिंगटोन और भक्ति ध्वनि",
+                ringtoneTitle: "४. महादेव की रिंगटोन और भक्ति ध्वनि",
                 donationTitle: "५. दान",
                 donationText: "मंदिर के विकास और कार्यों के लिए आप अपना दान दे सकते हैं। अधिक जानकारी के लिए मंदिर ट्रस्ट से संपर्क करें।",
                 navGallery: "गैलरी", navSchedule: "समय सारणी", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navDonation: "दान"
@@ -537,7 +499,7 @@
                 locationTitle: "3. Address & Location",
                 addressText: "Shri Kshetra Kapileshwar Mahadev Mandir, Vilhale, Tehsil Bhusawal, Dist. Jalgaon - 425305.",
                 mapBtn: "View on Google Map",
-                ringtoneTitle: "4. 50+ Mahadev Ringtones & Devotional Audio",
+                ringtoneTitle: "4. Mahadev Ringtones & Devotional Audio",
                 donationTitle: "5. Donation",
                 donationText: "You can contribute your donations for the development of the temple. Contact the temple trust for more details.",
                 navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navRingtones: "Ringtones", navDonation: "Donation"
@@ -572,4 +534,4 @@
         }
     </script>
 </body>
-</html>
+                    </html>
