@@ -1665,4 +1665,417 @@
                         </div>
                     </div>
                 `;
-                contai
+                container.appendChild(card);
+            });
+        }
+
+        function renderHistoryUI(history) {
+            const container = document.getElementById('historyListContainer');
+            container.innerHTML = '';
+            if(history.length === 0) {
+                container.innerHTML = `<p style="font-size:11px; color:#777; text-align:center;">कोणतीही हिस्ट्री उपलब्ध नाही.</p>`;
+                return;
+            }
+            history.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'youtube-video-card';
+                card.innerHTML = `
+                    <div class="yt-thumb-container">
+                        <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
+                    </div>
+                    <div class="yt-card-details">
+                        <img class="comment-dp" src="${item.dp || 'photo1.jpg'}" alt="DP">
+                        <div class="yt-card-meta">
+                            <h4 class="yt-card-title">${item.type}: ${item.title}</h4>
+                            <p class="yt-card-channel">${item.uploader || 'Unknown'}</p>
+                            <p class="yt-card-time">${item.desc} | ${item.tags}</p>
+                        </div>
+                    </div>
+                    <div class="history-actions">
+                        ${item.url ? `<button class="btn-play" onclick="openYoutubePlayer('${item.id}', '${item.url}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">▶ प्ले करा</button>` : ''}
+                        ${isAdminLoggedIn ? `<button class="btn-delete" onclick="deleteHistoryItem('${item.docFirebaseId}')">🗑️ डिलीट (फक्त ॲडमिन)</button>` : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openYoutubePlayer(id, url, title, desc, tags, uploader, dp) {
+            currentPlayingVideoId = id;
+            document.getElementById('ytPlayerTitle').innerText = title;
+            document.getElementById('ytPlayerDesc').innerText = desc;
+            document.getElementById('ytPlayerTags').innerText = tags;
+            document.getElementById('playerUploaderName').innerText = uploader;
+            document.getElementById('playerUploaderDp').src = dp;
+            
+            const videoElem = document.getElementById('advancedVideoElement');
+            if(url && url.trim() !== '') {
+                videoElem.src = url;
+                videoElem.style.display = 'block';
+                videoElem.play().catch(e => console.log("Play error:", e));
+            } else {
+                videoElem.src = '';
+                videoElem.style.display = 'none';
+            }
+            
+            updateLikeButtonUI();
+            document.getElementById('youtubePlayerModal').style.display = 'flex';
+        }
+
+        function closeYoutubePlayer() {
+            document.getElementById('youtubePlayerModal').style.display = 'none';
+            const videoElem = document.getElementById('advancedVideoElement');
+            videoElem.pause();
+            videoElem.src = "";
+            currentPlayingVideoId = null;
+        }
+
+        async function toggleVideoLike() {
+            if(!currentPlayingVideoId || !window.db) return;
+            const { collection, getDocs, doc, setDoc } = window.firebaseCols;
+            
+            try {
+                const querySnapshot = await getDocs(collection(window.db, "mandir_history"));
+                querySnapshot.forEach(async (documentSnapshot) => {
+                    let data = documentSnapshot.data();
+                    if(data.id == currentPlayingVideoId) {
+                        let likesArr = data.likes || [];
+                        let index = likesArr.indexOf(loggedInUserName);
+                        if(index > -1) likesArr.splice(index, 1);
+                        else likesArr.push(loggedInUserName);
+                        
+                        await setDoc(doc(window.db, "mandir_history", documentSnapshot.id), { ...data, likes: likesArr });
+                        data.likes = likesArr;
+                        updateLikeButtonUI();
+                    }
+                });
+            } catch(e) { console.error("Like error:", e); }
+        }
+
+        function updateLikeButtonUI() {
+            let item = globalHistoryList.find(i => i.id == currentPlayingVideoId);
+            if(item) {
+                let likes = item.likes || [];
+                document.getElementById('ytLikeCount').innerText = likes.length;
+                let btn = document.getElementById('ytLikeBtn');
+                if(likes.includes(loggedInUserName)) btn.classList.add('liked');
+                else btn.classList.remove('liked');
+            }
+        }
+
+        async function sendYtComment() {
+            const input = document.getElementById('ytCommentInput');
+            const val = input.value.trim();
+            if(val !== "" && currentPlayingVideoId) {
+                if(!window.db) return;
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_videocomments"), {
+                        videoId: currentPlayingVideoId,
+                        name: loggedInUserName,
+                        dp: loggedInUserDp,
+                        text: val,
+                        id: Date.now()
+                    });
+                    input.value = "";
+                } catch(e) { console.error("Video comment error:", e); }
+            }
+        }
+
+        function renderYtCommentsUI(vcomments) {
+            const listContainer = document.getElementById('ytCommentList');
+            if(!listContainer) return;
+            listContainer.innerHTML = '';
+            
+            let filtered = vcomments.filter(c => c.videoId == currentPlayingVideoId);
+            if(filtered.length === 0) {
+                listContainer.innerHTML = `<div style="color:#777; text-align:center;">कोणतीही कमेंट नाही. पहिली कमेंट करा!</div>`;
+                return;
+            }
+
+            filtered.forEach(c => {
+                const row = document.createElement('div');
+                row.className = 'comment-item-row';
+                row.style.borderBottom = '1px solid #333';
+                row.innerHTML = `
+                    <img class="comment-dp" src="${c.dp || 'photo1.jpg'}" alt="DP">
+                    <div style="color:white;"><strong>${c.name}:</strong> ${c.text}</div>
+                `;
+                listContainer.appendChild(row);
+            });
+            listContainer.scrollTop = listContainer.scrollHeight;
+        }
+
+        let mediaStream = null;
+        let useFrontCamera = true;
+
+        async function startLiveCameraStream(title, desc, tags) {
+            showSection('live', document.querySelectorAll('.bottom-nav button')[5]);
+            const videoElement = document.getElementById('liveVideoElement');
+            const placeholder = document.getElementById('livePlaceholderText');
+            const badge = document.getElementById('liveBadge');
+            const controlsRow = document.getElementById('liveControlsRow');
+            const viewerText = document.getElementById('viewerStatusText');
+            const liveTitleElem = document.getElementById('displayLiveTitle');
+
+            liveTitleElem.innerText = title;
+
+            try {
+                if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
+                    audio: true
+                });
+                videoElement.srcObject = mediaStream;
+                videoElement.style.display = 'block';
+                placeholder.style.display = 'none';
+                badge.style.display = 'block';
+                controlsRow.style.display = 'flex';
+                viewerText.innerHTML = "👁️ 156 Viewers Watching Live";
+                
+                await saveHistoryItemToFirebase("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", pendingThumbnailBase64 || 'photo1.jpg', loggedInUserName, loggedInUserDp, true);
+                addFirebaseNotification("🔴 लाईव्ह सुरू!", `${loggedInUserName} यांनी "${title}" लाईव्ह सुरू केली आहे!`);
+            } catch (err) {
+                alert("कॅमेरा सुरू करण्याची परवानगी मिळाली नाही: " + err.message);
+            }
+        }
+
+        function stopLiveCameraStream() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+            document.getElementById('liveVideoElement').style.display = 'none';
+            document.getElementById('livePlaceholderText').style.display = 'block';
+            document.getElementById('liveBadge').style.display = 'none';
+            document.getElementById('liveControlsRow').style.display = 'none';
+            document.getElementById('viewerStatusText').innerHTML = "👁️ Live Stream Ended";
+            document.getElementById('globalLiveAlertBar').style.display = 'none';
+        }
+
+        function switchCamera() {
+            useFrontCamera = !useFrontCamera;
+            startLiveCameraStream("श्री कपिलेश्वर महादेव मंदिर लाईव्ह", "कॅमेरा स्विच केला", '#Live');
+        }
+
+        async function sendComment() {
+            const commentInput = document.getElementById('userCommentInput');
+            const commentVal = commentInput.value.trim();
+            if(commentVal !== "") {
+                if(!window.db) return;
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_comments"), {
+                        id: Date.now(),
+                        name: loggedInUserName,
+                        dp: loggedInUserDp,
+                        text: commentVal
+                    });
+                    commentInput.value = "";
+                } catch(e) { console.error("Comment error:", e); }
+            }
+        }
+
+        function renderCommentsUI(comments) {
+            const area = document.getElementById('commentArea');
+            if(!area) return;
+            area.innerHTML = '';
+            comments.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'comment-item-row';
+                div.innerHTML = `
+                    <img class="comment-dp" src="${c.dp || 'photo1.jpg'}" alt="DP">
+                    <div><strong>${c.name}:</strong> ${c.text}</div>
+                `;
+                area.appendChild(div);
+            });
+            area.scrollTop = area.scrollHeight;
+        }
+
+        const ringtonesData = [
+            { name: "🔔 १. हर हर शंभू (Har Har Shambhu)", url: "https://www.youtube.com/results?search_query=Har+Har+Shambhu+Shiv+Bhajan" },
+            { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.youtube.com/results?search_query=Shiv+Tandav+Stotram+Shankar+Mahadevan" }
+        ];
+
+        const sacredTextsData = [
+            {
+                category: "🕯️ श्री शंकराची आरती",
+                title: "जय देव जय देव जय श्री शंकरा",
+                content: `जय देव जय देव जय श्री शंकरा । आरती ओवाळू कपूरगौरा ॥ धृ ॥`
+            },
+            {
+                category: "📜 श्री कपिलेश्वर महादेव मंदिर: एक परिपूर्ण माहिती / निबंध",
+                title: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे - निबंध माहिती",
+                content: `महाराष्ट्रातील जळगाव जिल्ह्यातील भुसावळ तालुक्यात असलेले 'श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे' हे एक अत्यंत पवित्र, आध्यात्मिक आणि ऐतिहासिक श्रद्धास्थान आहे. निसर्गाच्या सानिध्यात आणि शांत वातावरणात वसलेले हे मंदिर भगवान शंकराला (महादेवांना) समर्पित आहे. 
+
+परिसराची महती:
+या मंदिराची वास्तुकला आणि प्राचीन नक्षीकाम लक्षवेधून घेणारे आहे. मंदिराच्या गाभाऱ्यात सुंदर पिंडी विराजमान असून, येथे वर्षभर भाविकांची अफाट गर्दी असते. विशेषतः महाशिवरात्री, श्रावण महिना आणि प्रत्येक सोमवारी येथे परिसरातील व दूरदूरवरून भाविक महादेवाचे दर्शन घेण्यासाठी आणि अभिषेक करण्यासाठी येतात.
+
+धार्मिक व सांस्कृतिक महत्त्व:
+मंदिरामध्ये नियमितपणे प्रातःकाळ व संध्याकाळची आरती, भजन, कीर्तन आणि धार्मिक अनुष्ठान पार पडतात. विल्होळे गावाच्या या पवित्र तीर्थक्षेत्रामुळे गावाला एक वेगळी आध्यात्मिक ओळख मिळाली आहे. येथे येणाऱ्या प्रत्येक भक्ताला असीम शांतता आणि मानसिक समाधान लाभते. ट्रस्टच्या वतीने मंदिराचा विकास, स्वच्छता आणि येणाऱ्या भाविकांच्या सुविधांची उत्तम काळजी घेतली जाते.`
+            }
+        ];
+
+        function renderRingtones(list) {
+            const container = document.getElementById('ringtoneListContainer');
+            container.innerHTML = '';
+            list.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = 'ringtone-card';
+                card.innerHTML = `
+                    <div class="ringtone-top">
+                        <div class="ringtone-info">${item.name}</div>
+                        <a href="${item.url}" target="_blank" class="yt-listen-btn">▶ ऐका / पहा</a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterRingtones() {
+            const query = document.getElementById('ringtoneSearch').value.toLowerCase();
+            const filtered = ringtonesData.filter(item => item.name.toLowerCase().includes(query));
+            renderRingtones(filtered);
+        }
+
+        function renderTexts(list) {
+            const container = document.getElementById('textsListContainer');
+            container.innerHTML = '';
+            let currentCat = "";
+            list.forEach((item) => {
+                if(item.category !== currentCat) {
+                    currentCat = item.category;
+                    const catHeader = document.createElement('div');
+                    catHeader.className = 'scripture-category';
+                    catHeader.innerText = currentCat;
+                    container.appendChild(catHeader);
+                }
+                const card = document.createElement('div');
+                card.className = 'scripture-card';
+                card.innerHTML = `
+                    <div class="scripture-title">${item.title}</div>
+                    <div class="scripture-text">${item.content}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterTexts() {
+            const query = document.getElementById('textSearch').value.toLowerCase();
+            const filtered = sacredTextsData.filter(item => item.title.toLowerCase().includes(query) || item.content.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
+            renderTexts(filtered);
+        }
+
+        function showSection(sectionId, btnElement) {
+            const sections = document.querySelectorAll('.section-box');
+            sections.forEach(sec => sec.classList.remove('active-section'));
+            document.getElementById('section-' + sectionId).classList.add('active-section');
+            
+            const buttons = document.querySelectorAll('.bottom-nav button:not(.nav-center-create)');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if(btnElement && !btnElement.classList.contains('nav-center-create')) {
+                btnElement.classList.add('active');
+            }
+        }
+
+        function openModal(imgSrc, captionText) {
+            document.getElementById('modalImg').src = imgSrc;
+            document.getElementById('modalCaption').innerText = captionText;
+            document.getElementById('imageModal').style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+
+        const translations = {
+            mr: {
+                appName: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
+                headerSub: "ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५",
+                userLabel: "युझर:",
+                logoutText: "लॉग आउट",
+                notifTitle: "🔔 अपडेट्स व नोटीस",
+                clearNotif: "सर्व हटवा",
+                galleryTitle: "१. मंदिर दर्शन गॅलरी",
+                scheduleTitle: "२. आरती आणि दर्शन वेळपत्रक",
+                locationTitle: "३. पत्ता व लोकेशन",
+                ringtoneTitle: "४. महादेवांच्या रिंगटोन व भक्ती ध्वनी",
+                textsTitle: "५. पवित्र ग्रंथ, आरत्या, श्लोक व निबंध",
+                liveMainTitle: "🔴 मंदिर लाईव्ह दर्शन व आरती",
+                videosTitle: "🎥 व्हिडिओज आणि शॉर्ट्स",
+                historyTitle: "📂 माझी अपलोड व लाईव्ह हिस्ट्री",
+                donationTitle: "७. देणगी",
+                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navVideos: "व्हिडिओज", navRingtones: "रिंगटोन", navHistory: "हिस्ट्री"
+            },
+            hi: {
+                appName: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
+                headerSub: "ट्रस्ट श्री कपिलेश्वर महादेव मंदिर, विल्होळे<br>तहसील भुसावळ, जिला जळगाव - ४२५३०५",
+                userLabel: "यूज़र:",
+                logoutText: "लॉग आउट",
+                notifTitle: "🔔 अपडेट्स व सूचना",
+                clearNotif: "सभी हटाएं",
+                galleryTitle: "१. मंदिर दर्शन गैलरी",
+                scheduleTitle: "२. आरती और दर्शन समय सारणी",
+                locationTitle: "३. पता व लोकेशन",
+                ringtoneTitle: "४. महादेव रिंगटोन व भक्ति ध्वनि",
+                textsTitle: "५. पवित्र ग्रंथ, आरतियाँ, श्लोक व निबंध",
+                liveMainTitle: "🔴 मंदिर लाइव दर्शन व आरती",
+                videosTitle: "🎥 वीडियोज़ और शॉर्ट्स",
+                historyTitle: "📂 मेरी अपलोड व लाइव हिस्ट्री",
+                donationTitle: "७. दान",
+                navGallery: "गॅलरी", navSchedule: "समय", navLocation: "लोकेशन", navVideos: "वीडियोज़", navRingtones: "रिंगटोन", navHistory: "हिस्ट्री"
+            },
+            en: {
+                appName: "MH Kapileshwar Mahadev Mandir Vilhale",
+                headerSub: "Trust Shri Kapileshwar Mahadev Mandir, Vilhale<br>Tehsil Bhusawal, District Jalgaon - 425305",
+                userLabel: "User:",
+                logoutText: "Logout",
+                notifTitle: "🔔 Updates & Notices",
+                clearNotif: "Clear All",
+                galleryTitle: "1. Temple Darshan Gallery",
+                scheduleTitle: "2. Aarti & Darshan Schedule",
+                locationTitle: "3. Address & Location",
+                ringtoneTitle: "4. Mahadev Ringtones & Bhakti Sounds",
+                textsTitle: "5. Sacred Texts, Aartis & Essay",
+                liveMainTitle: "🔴 Temple Live Darshan & Aarti",
+                videosTitle: "🎥 Videos & Shorts",
+                historyTitle: "📂 My Upload & Live History",
+                donationTitle: "7. Donation",
+                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navVideos: "Videos", navRingtones: "Ringtones", navHistory: "History"
+            }
+        };
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('mandir_app_lang', lang);
+            const t = translations[lang];
+
+            document.getElementById('appTitle').innerText = t.appName;
+            document.getElementById('t_headerSub').innerHTML = t.headerSub;
+            document.getElementById('t_userLabel').innerText = t.userLabel;
+            document.getElementById('t_logoutText').innerText = t.logoutText;
+            document.getElementById('t_notifTitle').innerText = t.notifTitle;
+            document.getElementById('t_clearNotif').innerText = t.clearNotif;
+            document.getElementById('t_galleryTitle').innerText = t.galleryTitle;
+            document.getElementById('t_scheduleTitle').innerText = t.scheduleTitle;
+            document.getElementById('t_locationTitle').innerText = t.locationTitle;
+            document.getElementById('t_ringtoneTitle').innerText = t.ringtoneTitle;
+            document.getElementById('t_textsTitle').innerText = t.textsTitle;
+            document.getElementById('t_liveMainTitle').innerText = t.liveMainTitle;
+            document.getElementById('t_videosTitle').innerText = t.videosTitle;
+            document.getElementById('t_historyTitle').innerText = t.historyTitle;
+            document.getElementById('t_donationTitle').innerText = t.donationTitle;
+            document.getElementById('t_navGallery').innerText = t.navGallery;
+            document.getElementById('t_navSchedule').innerText = t.navSchedule;
+            document.getElementById('t_navLocation').innerText = t.navLocation;
+            document.getElementById('t_navVideos').innerText = t.navVideos;
+            document.getElementById('t_navRingtones').innerText = t.navRingtones;
+            document.getElementById('t_navHistory').innerText = t.navHistory;
+        }
+
+        function changeLanguage(lang) {
+            applyLanguage(lang);
+        }
+    </script>
+</body>
+</html>
