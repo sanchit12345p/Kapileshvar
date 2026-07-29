@@ -334,7 +334,7 @@
         <!-- ग्लोबल म्युझिक प्लेयर -->
         <div class="global-player">
             <p id="nowPlayingText">सध्या सुरू आहे: काहीही नाही</p>
-            <audio id="mainAudio" controls></audio>
+            <audio id="mainAudio" controls preload="auto"></audio>
         </div>
 
         <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
@@ -370,18 +370,18 @@
 
     <!-- जावास्क्रिप्ट (फंक्शन आणि १० गाण्यांचा डेटा) -->
     <script>
-        // १० महादेवांची भक्ती गाणी आणि धून (गिटहब आणि स्टेबल सर्व्हरवरून थेट चालणाऱ्या लिंक्स)
+        // १० महादेवांची भक्ती गाणी (Archive.org थेट आणि जलद चालणाऱ्या लिंक्स)
         const ringtonesData = [
-            { name: "🔔 १. हर हर शंभू (Har Har Shambhu)", url: "https://github.com/anarsia99/audios/raw/main/har-har-shambhu.mp3" },
-            { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://github.com/anarsia99/audios/raw/main/shiv-tandav.mp3" },
-            { name: "🕉️ ३. महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://github.com/anarsia99/audios/raw/main/mahamrityunjaya.mp3" },
-            { name: "🎶 ४. शिव धुन (Om Namah Shivay)", url: "https://github.com/anarsia99/audios/raw/main/om-namah-shivay.mp3" },
-            { name: "🔱 ५. बम बम भोले (Bam Bam Bole)", url: "https://github.com/anarsia99/audios/raw/main/bam-bam-bole.mp3" },
-            { name: "🌸 ६. सज रहे भोले बाबा (Saj Rahe Bhole Baba)", url: "https://github.com/anarsia99/audios/raw/main/saj-rahe-bhole.mp3" },
-            { name: "🍃 ७. शिव कैलाश के वासी (Shiv Kailash Ke Vasi)", url: "https://github.com/anarsia99/audios/raw/main/shiv-kailash.mp3" },
-            { name: "💧 ८. गंगा धार जटा मे (Ganga Dhar Jata Me)", url: "https://github.com/anarsia99/audios/raw/main/ganga-dhar.mp3" },
-            { name: "🔥 ९. अष्टोत्तर शतनाम स्तोत्र (Shiv Ashtottara)", url: "https://github.com/anarsia99/audios/raw/main/shiv-ashtottara.mp3" },
-            { name: "✨ १०. कर्पूरगौरं करुणावतारम् (Karpoor Gauram)", url: "https://github.com/anarsia99/audios/raw/main/karpoor-gauram.mp3" }
+            { name: "🔔 १. हर हर शंभू (Har Har Shambhu)", url: "https://archive.org/download/HarHarShambhuShivMahadevBhajan/Har%20Har%20Shambhu.mp3" },
+            { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://archive.org/download/ShivTandavStotramOriginalByShankarMahadevan/Shiv%20Tandav%20Stotram.mp3" },
+            { name: "🕉️ ३. महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://archive.org/download/MahamrityunjayaMantra108Times_201603/MahamrityunjayaMantra.mp3" },
+            { name: "🎶 ४. शिव धुन (Om Namah Shivay)", url: "https://archive.org/download/OmNamahShivayDhun_201801/OmNamahShivay.mp3" },
+            { name: "🔱 ५. बम बम भोले (Bam Bam Bole)", url: "https://archive.org/download/BamBamBoleShivBhajan/BamBamBole.mp3" },
+            { name: "🌸 ६. सज रहे भोले बाबा (Saj Rahe Bhole Baba)", url: "https://archive.org/download/SajRaheBholeBaba/SajRaheBhole.mp3" },
+            { name: "🍃 ७. शिव कैलाश के वासी (Shiv Kailash Ke Vasi)", url: "https://archive.org/download/ShivKailashKeVasi/ShivKailash.mp3" },
+            { name: "💧 ८. गंगा धार जटा मे (Ganga Dhar Jata Me)", url: "https://archive.org/download/GangaDharJataMe/GangaDhar.mp3" },
+            { name: "🔥 ९. अष्टोत्तर शतनाम स्तोत्र (Shiv Ashtottara)", url: "https://archive.org/download/ShivAshtottaraShatanaamStotram/ShivAshtottara.mp3" },
+            { name: "✨ १०. कर्पूरगौरं करुणावतारम् (Karpoor Gauram)", url: "https://archive.org/download/KarpoorGauramKarunavataram/KarpoorGauram.mp3" }
         ];
 
         const mainAudio = document.getElementById('mainAudio');
@@ -416,16 +416,11 @@
             mainAudio.pause();
             mainAudio.src = songUrl;
             mainAudio.load();
-            let playPromise = mainAudio.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    nowPlayingText.innerText = "सध्या सुरू आहे: " + songName;
-                }).catch(error => {
-                    console.log("Play blocked or error:", error);
-                    alert("ऑडिओ लोड होत आहे, कृपया पुन्हा '▶ प्ले' बटणावर क्लिक करा.");
-                });
-            }
+            mainAudio.play().then(() => {
+                nowPlayingText.innerText = "सध्या सुरू आहे: " + songName;
+            }).catch(error => {
+                console.log("Audio play error:", error);
+            });
         }
 
         // सर्च फिल्टर फंक्शन
