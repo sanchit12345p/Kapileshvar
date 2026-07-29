@@ -76,6 +76,41 @@
             border: 1px solid #d84315;
         }
 
+        /* ग्लोबल लाईव्ह बझर / फ्लॅश बटण */
+        .global-live-alert {
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            padding: 6px 15px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        .live-pulse-dot {
+            width: 12px;
+            height: 12px;
+            background-color: red;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 rgba(255, 0, 0, 0.4);
+            animation: pulse-animation 1.5s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(255, 0, 0, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .notification-bell-btn {
             background: none;
             border: none;
@@ -100,7 +135,7 @@
             display: none;
             position: absolute;
             right: 15px;
-            top: 110px;
+            top: 130px;
             background: white;
             width: 280px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
@@ -117,6 +152,10 @@
             border-bottom: 1px solid #eee;
             font-size: 12px;
             text-align: left;
+            cursor: pointer;
+        }
+        .notif-item:hover {
+            background: #fff5f5;
         }
 
         .container {
@@ -207,6 +246,7 @@
             border-radius: 5px;
             margin-bottom: 12px;
             font-size: 13px;
+            box-sizing: border-box;
         }
 
         .ringtone-card, .scripture-card {
@@ -298,13 +338,7 @@
             font-weight: bold;
             border-radius: 4px;
             display: none;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
+            animation: pulse-animation 1.5s infinite;
         }
 
         .live-controls {
@@ -624,16 +658,25 @@
         </div>
     </div>
 
-    <!-- युझर बार व नोटिफिकेशन -->
+    <!-- युझर बार व लाईव्ह ग्लोबल अलर्ट (गोल फिरणारे चिन्ह) -->
     <div class="user-top-bar">
         <div class="user-profile-info">
             <img id="headerUserDp" src="photo1.jpg" alt="DP">
             <span><strong id="t_userLabel">युझर:</strong> <span id="displayUserName" style="color:#b71c1c; font-weight:bold;">भक्त</span></span>
         </div>
-        <div>
+        <div class="top-bar-right">
             <button class="notification-bell-btn" onclick="toggleNotifications()">🔔<span id="notifBadge" class="notification-badge">0</span></button>
-            <button onclick="logoutUser()" style="background:none; border:1px solid #b71c1c; color:#b71c1c; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer; margin-left:5px;" id="t_logoutText">नाव बदला</button>
+            <button onclick="logoutUser()" style="background:none; border:1px solid #b71c1c; color:#b71c1c; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;" id="t_logoutText">नाव बदला</button>
         </div>
+    </div>
+
+    <!-- ग्लोबल लाईव्ह बझर बार (दुसऱ्याच्या फोनमध्ये लाईव्ह दिसण्यासाठी) -->
+    <div id="globalLiveAlertBar" class="global-live-alert">
+        <div style="display:flex; align-items:center; gap:8px; cursor:pointer;" onclick="jumpToLiveSection()">
+            <span class="live-pulse-dot"></span>
+            <span id="globalLiveText">मंदिर लाईव्ह सुरू आहे! पाहण्यासाठी क्लिक करा 🔴</span>
+        </div>
+        <button onclick="dismissGlobalLiveAlert(event)" style="background:none; border:none; font-size:14px; cursor:pointer; color:#c62828;">✖</button>
     </div>
 
     <!-- नोटिफिकेशन ड्रॉपडाऊन -->
@@ -804,7 +847,7 @@
         </div>
     </div>
 
-    <!-- व्हिडिओ प्लेअर मॉडेल (बग दुरुस्त केलेला) -->
+    <!-- व्हिडिओ प्लेअर मॉडेल -->
     <div id="videoPlayerModal" class="modal">
         <div class="modal-content-box" style="text-align:center;">
             <h3 id="playerVideoTitle" style="color:#b71c1c; margin-top:0; font-size:14px;"></h3>
@@ -857,6 +900,10 @@
             renderTexts(sacredTextsData);
             renderHistory();
             renderNotifications();
+            checkGlobalLiveStatus();
+
+            // दर २ सेकंदाने दुसऱ्या फोनमधील लाईव्ह स्टेटस चेक करण्यासाठी
+            setInterval(checkGlobalLiveStatus, 2000);
         };
 
         function previewDP(input) {
@@ -955,8 +1002,37 @@
                 const item = document.createElement('div');
                 item.className = 'notif-item';
                 item.innerHTML = `<strong>${n.title}</strong><br>${n.message} <span style="font-size:9px; color:#888; float:right;">${n.time}</span>`;
+                item.onclick = function() {
+                    if(n.title.includes('लाईव्ह') || n.title.includes('Live')) {
+                        jumpToLiveSection();
+                    }
+                };
                 container.appendChild(item);
             });
+        }
+
+        // ग्लोबल लाईव्ह स्टेटस फंक्शन (इतर फोनमध्ये लाईव्ह दाखवण्यासाठी)
+        function checkGlobalLiveStatus() {
+            let isLiveActive = localStorage.getItem('mandir_is_live_active') === 'true';
+            let alertBar = document.getElementById('globalLiveAlertBar');
+            let dismissed = sessionStorage.getItem('live_alert_dismissed') === 'true';
+
+            if (isLiveActive && !dismissed) {
+                alertBar.style.display = 'flex';
+            } else {
+                alertBar.style.display = 'none';
+            }
+        }
+
+        function dismissGlobalLiveAlert(event) {
+            if(event) event.stopPropagation();
+            document.getElementById('globalLiveAlertBar').style.display = 'none';
+            sessionStorage.setItem('live_alert_dismissed', 'true');
+        }
+
+        function jumpToLiveSection() {
+            showSection('live', document.querySelectorAll('.bottom-nav button')[5]);
+            // लाईव्ह सेक्शन टॅब ऍक्टिव्ह करताना योग्य बटण किंवा थेट सेक्शन दाखवणे
         }
 
         function openUploadModal(typeKey) {
@@ -1109,6 +1185,11 @@
                 badge.style.display = 'block';
                 controlsRow.style.display = 'flex';
                 viewerText.innerHTML = translations[currentLang].viewersWatching;
+                
+                // लाईव्ह सुरू केल्याची नोंद सर्व फोनसाठी सेव्ह करा
+                localStorage.setItem('mandir_is_live_active', 'true');
+                sessionStorage.removeItem('live_alert_dismissed');
+
                 saveHistoryItem(translations[currentLang].liveStreamType, title, desc, tags, "", loggedInUserName, loggedInUserDp);
                 addNotification(translations[currentLang].liveStartedNotif, `${loggedInUserName} "${title}" ${translations[currentLang].liveStartedText}`);
             } catch (err) {
@@ -1126,6 +1207,10 @@
             document.getElementById('liveBadge').style.display = 'none';
             document.getElementById('liveControlsRow').style.display = 'none';
             document.getElementById('viewerStatusText').innerHTML = translations[currentLang].liveEnded;
+            
+            // लाईव्ह बंद झाल्याची नोंद सर्व फोनसाठी अपडेट करा
+            localStorage.setItem('mandir_is_live_active', 'false');
+            document.getElementById('globalLiveAlertBar').style.display = 'none';
         }
 
         function switchCamera() {
@@ -1237,7 +1322,6 @@
             document.getElementById('imageModal').style.display = "none";
         }
 
-        // परिपूर्ण भाषा ट्रान्सलेशन्स
         const translations = {
             mr: {
                 appName: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
@@ -1262,17 +1346,15 @@
                 liveMainTitle: "🔴 मंदिर लाईव्ह दर्शन व आरती",
                 mandirLiveTitle: "श्री कपिलेश्वर महादेव मंदिर लाईव्ह",
                 liveSubText: "कॅमेरा सुरू करण्यासाठी मध्यभागी (+) वर क्लिक करा",
-                startLiveBtn: "🎥 लाईव्ह कॅमेरा सुरू करा",
                 stopLiveBtn: "⏹️ Stop Live",
                 switchCamBtn: "🔄 Switch Camera",
-                watchersText: "👁️ 54 Viewers Watching Live",
                 commentPlaceholder: "कमेंट लिहा...",
                 sendBtn: "पाठवा",
                 historyTitle: "📂 माझी अपलोड व लाईव्ह हिस्ट्री",
                 historySub: "सर्व युझर्सचे अपलोड केलेले व्हिडिओ व लाईव्ह स्ट्रीम त्यांच्या डीपी आणि नावासाहित येथे दिसतील.",
                 donationTitle: "७. देणगी",
                 donationText: "मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.",
-                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ व आरत्या", navLive: "लाईव्ह", navHistory: "हिस्ट्री", navDonation: "देणगी",
+                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ व आरत्या", navLive: "लाईव्ह", navHistory: "हिस्ट्री",
                 menuLive: "🔴 मंदिर आरती लाईव्ह सुरू करा", menuFull: "📁 फुल व्हिडिओ टाका", menuShort: "⚡ शॉर्ट व्हिडिओ टाका",
                 fullModalTitle: "फुल व्हिडिओ माहिती भरा", shortModalTitle: "शॉर्ट व्हिडिओ माहिती भरा", liveModalTitle: "लाईव्ह माहिती भरा",
                 titleLabel: "टायटल (Title):", descLabel: "वर्णन (Description):", tagsLabel: "हॅशटॅग (Hashtags):",
@@ -1315,17 +1397,15 @@
                 liveMainTitle: "🔴 मंदिर लाइव दर्शन व आरती",
                 mandirLiveTitle: "श्री कपिलेश्वर महादेव मंदिर लाइव",
                 liveSubText: "कैमरा शुरू करने के लिए बीच में (+) पर क्लिक करें",
-                startLiveBtn: "🎥 लाइव कैमरा शुरू करें",
                 stopLiveBtn: "⏹️ Stop Live",
                 switchCamBtn: "🔄 Switch Camera",
-                watchersText: "👁️ 54 Viewers Watching Live",
                 commentPlaceholder: "कमेंट लिखें...",
                 sendBtn: "भेजें",
                 historyTitle: "📂 मेरी अपलोड व लाइव हिस्ट्री",
                 historySub: "सभी यूजर्स के अपलोड किए गए वीडियो और लाइव स्ट्रीम उनके डीपी और नाम के साथ यहाँ दिखेंगे।",
                 donationTitle: "७. दान",
                 donationText: "मंदिर विकास व कार्यों के लिए आप अपना योगदान दे सकते हैं। अधिक जानकारी के लिए मंदिर ट्रस्ट से संपर्क करें।",
-                navGallery: "गैलरी", navSchedule: "समय", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ", navLive: "लाइव", navHistory: "हिस्ट्री", navDonation: "दान",
+                navGallery: "गैलरी", navSchedule: "समय", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ", navLive: "लाइव", navHistory: "हिस्ट्री",
                 menuLive: "🔴 मंदिर आरती लाइव शुरू करें", menuFull: "📁 फुल वीडियो डालें", menuShort: "⚡ शॉर्ट वीडियो डालें",
                 fullModalTitle: "फुल वीडियो जानकारी भरें", shortModalTitle: "शॉर्ट वीडियो जानकारी भरें", liveModalTitle: "लाइव जानकारी भरें",
                 titleLabel: "टाइटल (Title):", descLabel: "विवरण (Description):", tagsLabel: "हैशटैग (Hashtags):",
@@ -1368,17 +1448,15 @@
                 liveMainTitle: "🔴 Temple Live Darshan & Aarti",
                 mandirLiveTitle: "Shri Kapileshwar Mahadev Mandir Live",
                 liveSubText: "Click on (+) in the middle to start the camera",
-                startLiveBtn: "🎥 Start Live Camera",
                 stopLiveBtn: "⏹️ Stop Live",
                 switchCamBtn: "🔄 Switch Camera",
-                watchersText: "👁️ 54 Viewers Watching Live",
                 commentPlaceholder: "Write a comment...",
                 sendBtn: "Send",
                 historyTitle: "📂 My Upload & Live History",
                 historySub: "Uploaded videos and live streams of all users will appear here with their DP and name.",
                 donationTitle: "7. Donation",
                 donationText: "You can contribute for temple development. Contact temple trust for more info.",
-                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navRingtones: "Ringtones", navTexts: "Texts", navLive: "Live", navHistory: "History", navDonation: "Donation",
+                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navRingtones: "Ringtones", navTexts: "Texts", navLive: "Live", navHistory: "History",
                 menuLive: "🔴 Start Mandir Aarti Live", menuFull: "📁 Upload Full Video", menuShort: "⚡ Upload Short Video",
                 fullModalTitle: "Fill Full Video Details", shortModalTitle: "Fill Short Video Details", liveModalTitle: "Fill Live Details",
                 titleLabel: "Title:", descLabel: "Description:", tagsLabel: "Hashtags:",
