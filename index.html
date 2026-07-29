@@ -188,41 +188,23 @@
             padding: 10px;
             margin-bottom: 10px;
             display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .ringtone-top {
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 8px;
         }
         .ringtone-info {
             font-size: 12px;
             font-weight: bold;
             color: #333;
-            flex-grow: 1;
             text-align: left;
         }
-        .action-btns {
-            display: flex;
-            gap: 6px;
-        }
-        .play-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .download-btn {
-            background: #2e7d32;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
+        .ringtone-card audio {
+            width: 100%;
+            height: 35px;
         }
 
         /* बॉटन नेव्हिगेशन बार */
@@ -327,15 +309,9 @@
         <a id="t_mapBtn" href="https://maps.google.com" target="_blank" style="display: inline-block; background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">गुगल मॅपवर पहा</a>
     </div>
 
-    <!-- ४. महादेवांच्या रिंगटोन व भक्ती ध्वनी (१० गाणी) -->
+    <!-- ४. महादेवांच्या रिंगटोन व भक्ती ध्वनी (१० गाणी - थेट प्लेअरसह) -->
     <div id="section-ringtones" class="section-box">
         <h2 id="t_ringtoneTitle">४. महादेवांच्या रिंगटोन व भक्ती ध्वनी</h2>
-        
-        <!-- ग्लोबल म्युझिक प्लेयर -->
-        <div class="global-player">
-            <p id="nowPlayingText">सध्या सुरू आहे: काहीही नाही</p>
-            <audio id="mainAudio" controls preload="auto"></audio>
-        </div>
 
         <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
         <div id="ringtoneListContainer">
@@ -368,9 +344,8 @@
         </button>
     </div>
 
-    <!-- जावास्क्रिप्ट (फंक्शन आणि १० गाण्यांचा डेटा) -->
+    <!-- जावास्क्रिप्ट (प्रत्येक गाण्याला थेट स्वतंत्र ऑडिओ प्लेअर) -->
     <script>
-        // १० महादेवांची भक्ती गाणी (Archive.org थेट आणि जलद चालणाऱ्या लिंक्स)
         const ringtonesData = [
             { name: "🔔 १. हर हर शंभू (Har Har Shambhu)", url: "https://archive.org/download/HarHarShambhuShivMahadevBhajan/Har%20Har%20Shambhu.mp3" },
             { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://archive.org/download/ShivTandavStotramOriginalByShankarMahadevan/Shiv%20Tandav%20Stotram.mp3" },
@@ -384,10 +359,7 @@
             { name: "✨ १०. कर्पूरगौरं करुणावतारम् (Karpoor Gauram)", url: "https://archive.org/download/KarpoorGauramKarunavataram/KarpoorGauram.mp3" }
         ];
 
-        const mainAudio = document.getElementById('mainAudio');
-        const nowPlayingText = document.getElementById('nowPlayingText');
-
-        // रिंगटोन लिस्ट रेंडर करणे
+        // रिंगटोन लिस्ट रेंडर करणे (प्रत्येकाचा स्वतःचा स्टँडर्ड ऑडिओ प्लेअर जेणेकरून एरर येणार नाही)
         function renderRingtones(list) {
             const container = document.getElementById('ringtoneListContainer');
             container.innerHTML = '';
@@ -401,25 +373,13 @@
                 const card = document.createElement('div');
                 card.className = 'ringtone-card';
                 card.innerHTML = `
-                    <div class="ringtone-info">${item.name}</div>
-                    <div class="action-btns">
-                        <button class="play-btn" onclick="playSelectedSong('${item.name.replace(/'/g, "")}', '${item.url}')">▶ प्ले</button>
-                        <a href="${item.url}" download class="download-btn">📥 डाऊनलोड</a>
+                    <div class="ringtone-top">
+                        <div class="ringtone-info">${item.name}</div>
+                        <a href="${item.url}" download style="background: #2e7d32; color: white; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-decoration: none;">📥 डाऊनलोड</a>
                     </div>
+                    <audio controls preload="none" src="${item.url}"></audio>
                 `;
                 container.appendChild(card);
-            });
-        }
-
-        // गाणे प्ले करण्याचे अचूक फंक्शन
-        function playSelectedSong(songName, songUrl) {
-            mainAudio.pause();
-            mainAudio.src = songUrl;
-            mainAudio.load();
-            mainAudio.play().then(() => {
-                nowPlayingText.innerText = "सध्या सुरू आहे: " + songName;
-            }).catch(error => {
-                console.log("Audio play error:", error);
             });
         }
 
