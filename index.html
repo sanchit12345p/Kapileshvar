@@ -842,47 +842,47 @@
     <!-- ब्लॉक केलेले युझरसाठी मेसेज मॉडेल -->
     <div id="blockedModal" style="display:none;">
         <div class="name-gate-card">
-            <h3 style="color:#c62828; margin-top:0;">⛔ ॲपवरून ब्लॉक केले आहे</h3>
-            <p style="font-size:12px; color:#666;">तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.</p>
+            <h3 id="t_blockedTitle" style="color:#c62828; margin-top:0;">⛔ ॲपवरून ब्लॉक केले आहे</h3>
+            <p id="t_blockedDesc" style="font-size:12px; color:#666;">तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.</p>
         </div>
     </div>
 
     <!-- लॉगिन / प्रवेश गेट मॉडेल -->
     <div id="nameGateModal">
         <div class="name-gate-card">
-            <h3 style="color:#b71c1c; margin-top:0;">🙏 स्वागत आहे!</h3>
+            <h3 id="t_welcomeTitle" style="color:#b71c1c; margin-top:0;">🙏 स्वागत आहे!</h3>
             <div class="admin-brand" style="color:#666; margin-bottom:12px;">Admin By : Sanchit Vikas Patil</div>
-            <p style="font-size:12px; color:#666; margin-bottom:15px;">लॉगिन प्रकार निवडा:</p>
+            <p id="t_loginChoiceText" style="font-size:12px; color:#666; margin-bottom:15px;">लॉगिन प्रकार निवडा:</p>
             
             <div id="loginChoiceView">
-                <button class="login-type-btn btn-public-type" onclick="selectLoginMode('public')">👤 Public (पब्लिक)</button>
-                <button class="login-type-btn btn-admin-type" onclick="selectLoginMode('admin')">👑 Private Admin (ॲडमिन)</button>
+                <button id="t_btnPublic" class="login-type-btn btn-public-type" onclick="selectLoginMode('public')">👤 Public (पब्लिक)</button>
+                <button id="t_btnAdmin" class="login-type-btn btn-admin-type" onclick="selectLoginMode('admin')">👑 Private Admin (ॲडमिन)</button>
             </div>
 
             <!-- पब्लिक फॉर्म -->
             <div id="publicFormView" style="display:none; text-align:left;">
-                <label style="font-size:11px; font-weight:bold;">प्रोफाईल फोटो (DP) निवडा:</label>
+                <label id="t_dpLabel" style="font-size:11px; font-weight:bold;">प्रोफाईल फोटो (DP) निवडा:</label>
                 <div class="dp-upload-circle" onclick="document.getElementById('dpFileInput').click()">
                     <span id="dpPlaceholderText" style="font-size:10px; color:#666;">➕ फोटो</span>
                     <img id="dpPreviewImg" src="" alt="DP">
                 </div>
                 <input type="file" id="dpFileInput" accept="image/*" style="display:none;" onchange="previewDP(this)">
 
-                <label style="font-size:11px; font-weight:bold;">तुमचे नाव:</label>
+                <label id="t_nameLabel" style="font-size:11px; font-weight:bold;">तुमचे नाव:</label>
                 <input type="text" id="enteredUserName" placeholder="पूर्ण नाव टाका..." style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:10px; box-sizing:border-box;">
                 
-                <button onclick="verifyPublicLogin()" style="width:100%; background:#ff9800; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">प्रवेश करा</button>
-                <button onclick="backToLoginChoice()" style="width:100%; background:#aaa; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
+                <button id="t_enterBtn" onclick="verifyPublicLogin()" style="width:100%; background:#ff9800; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">प्रवेश करा</button>
+                <button id="t_backBtn1" onclick="backToLoginChoice()" style="width:100%; background:#aaa; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
             </div>
 
             <!-- ॲडमिन फॉर्म -->
             <div id="adminFormView" style="display:none; text-align:left;">
-                <label style="font-size:11px; font-weight:bold;">ॲडमिन कोड टाका:</label>
+                <label id="t_adminCodeLabel" style="font-size:11px; font-weight:bold;">ॲडमिन कोड टाका:</label>
                 <input type="password" id="adminCodeInput" placeholder="Enter Admin Code..." style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:5px; box-sizing:border-box;">
                 <div id="adminErrorMsg" style="color:red; font-size:11px; margin-bottom:8px;"></div>
                 
-                <button onclick="verifyAdminLogin()" style="width:100%; background:#c62828; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">ॲडमिन लॉगिन करा</button>
-                <button onclick="backToLoginChoice()" style="width:100%; background:#aaa; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
+                <button id="t_adminLoginBtn" onclick="verifyAdminLogin()" style="width:100%; background:#c62828; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">ॲडमिन लॉगिन करा</button>
+                <button id="t_backBtn2" onclick="backToLoginChoice()" style="width:100%; background:#aaa; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
             </div>
         </div>
     </div>
@@ -919,10 +919,10 @@
 
     <!-- ॲडमिन सेटिंग्स व ब्लॉक लिस्ट ड्राव्हर मेनू -->
     <div id="sideDrawerMenu" class="side-drawer-menu">
-        <div style="font-size:13px; font-weight:bold; color:#b71c1c; border-bottom:1px solid #ddd; padding-bottom:5px; margin-bottom:5px;">⚙️ ॲप सेटिंग्ज</div>
-        <button onclick="openBlockManager()">🚫 युझर ब्लॉक लिस्ट मॅनेज करा</button>
-        <button onclick="togglePublicPrivateMode()">🔄 स्विच पब्लिक/प्रायव्हेट मोड</button>
-        <button onclick="logoutUser()">🚪 लॉग आउट</button>
+        <div id="t_settingsTitle" style="font-size:13px; font-weight:bold; color:#b71c1c; border-bottom:1px solid #ddd; padding-bottom:5px; margin-bottom:5px;">⚙️ ॲप सेटिंग्ज</div>
+        <button id="t_menuBlockList" onclick="openBlockManager()">🚫 युझर ब्लॉक लिस्ट मॅनेज करा</button>
+        <button id="t_menuSwitchMode" onclick="togglePublicPrivateMode()">🔄 स्विच पब्लिक/प्रायव्हेट मोड</button>
+        <button id="t_menuLogout" onclick="logoutUser()">🚪 लॉग आउट</button>
     </div>
 
     <header>
@@ -1056,7 +1056,7 @@
         <div class="modal-content-box">
             <h3 id="modalHeaderTitle" style="color:#b71c1c; margin-top:0; font-size:14px;">माहिती भरा</h3>
             
-            <label style="font-size:11px; font-weight:bold;">थंबनेल (Thumbnail) अपलोड करा:</label>
+            <label id="t_thumbLabelModal" style="font-size:11px; font-weight:bold;">थंबनेल (Thumbnail) अपलोड करा:</label>
             <div class="thumbnail-upload-box" onclick="document.getElementById('thumbnailFileInput').click()">
                 <span id="thumbPlaceholderText" style="font-size:11px; color:#666;">📸 थंबनेल फोटो निवडा</span>
                 <img id="thumbPreviewImg" src="" alt="Thumbnail">
@@ -1082,12 +1082,12 @@
     <!-- युझर ब्लॉक मॅनेजर मॉडेल (फक्त ॲडमिनसाठी) -->
     <div id="blockManagerModal" class="modal">
         <div class="modal-content-box">
-            <h3 style="color:#b71c1c; margin-top:0; font-size:14px;">🚫 युझर ब्लॉक मॅनेजर</h3>
-            <p style="font-size:11px; color:#666;">ज्या युझरला ब्लॉक करायचे आहे त्याचे नाव खाली टाका:</p>
+            <h3 id="t_blockManagerTitle" style="color:#b71c1c; margin-top:0; font-size:14px;">🚫 युझर ब्लॉक मॅनेजर</h3>
+            <p id="t_blockManagerSub" style="font-size:11px; color:#666;">ज्या युझरला ब्लॉक करायचे आहे त्याचे नाव खाली टाका:</p>
             <input type="text" id="blockUserNameInput" placeholder="युझरचे अचूक नाव टाका...">
             <div class="modal-buttons">
-                <button class="btn-cancel" onclick="document.getElementById('blockManagerModal').style.display='none'">बंद करा</button>
-                <button class="btn-save" style="background:#c62828;" onclick="blockUserAction()">ब्लॉक करा</button>
+                <button class="btn-cancel" onclick="document.getElementById('blockManagerModal').style.display='none'" id="t_blockCloseBtn">बंद करा</button>
+                <button class="btn-save" style="background:#c62828;" onclick="blockUserAction()" id="t_blockActionBtn">ब्लॉक करा</button>
             </div>
             <div id="blockedUsersListContainer" style="margin-top:15px; font-size:11px;"></div>
         </div>
@@ -1122,14 +1122,14 @@
             
             <div class="yt-action-bar">
                 <button id="ytLikeBtn" class="yt-action-btn" onclick="toggleVideoLike()">👍 <span id="ytLikeCount">0</span></button>
-                <button class="yt-action-btn" onclick="document.getElementById('ytCommentInput').focus()">💬 कमेंट</button>
+                <button class="yt-action-btn" onclick="document.getElementById('ytCommentInput').focus()" id="t_playerCommentBtn">💬 कमेंट</button>
             </div>
 
             <div style="margin-top:10px;">
                 <div id="ytCommentList" style="max-height:80px; overflow-y:auto; font-size:11px; background:#222; padding:5px; border-radius:4px; margin-bottom:5px;"></div>
                 <div class="comment-input-row">
                     <input type="text" id="ytCommentInput" placeholder="सार्वजनिक कमेंट लिहा...">
-                    <button onclick="sendYtComment()">पाठवा</button>
+                    <button onclick="sendYtComment()" id="t_playerSendBtn">पाठवा</button>
                 </div>
             </div>
         </div>
@@ -1535,7 +1535,7 @@
                 item.innerHTML = `<strong>${n.title}</strong><br>${n.message} <span style="font-size:9px; color:#888; float:right;">${n.time}</span>`;
                 item.onclick = function() {
                     document.getElementById('notificationDropdown').style.display = 'none';
-                    if(n.title.includes('लाईव्ह')) jumpToLiveSection();
+                    if(n.title.includes('लाईव्ह') || n.title.includes('Live')) jumpToLiveSection();
                     else showSection('videos', document.querySelectorAll('.bottom-nav button')[4]);
                 };
                 container.appendChild(item);
@@ -1663,13 +1663,13 @@
             container.innerHTML = '';
             
             let filtered = globalHistoryList.filter(item => {
-                if(currentVideoTab === 'full') return item.type === 'फुल व्हिडिओ';
-                if(currentVideoTab === 'short') return item.type === 'शॉर्ट व्हिडिओ';
+                if(currentVideoTab === 'full') return item.type === 'फुल व्हिडिओ' || item.type === 'Full Video';
+                if(currentVideoTab === 'short') return item.type === 'शॉर्ट व्हिडिओ' || item.type === 'Short Video';
                 return false;
             });
 
             if(filtered.length === 0) {
-                container.innerHTML = `<p style="font-size:12px; color:#777; text-align:center; padding:20px;">येथे कोणतेही ${currentVideoTab === 'full' ? 'फुल व्हिडिओ' : 'शॉर्ट्स'} उपलब्ध नाहीत.</p>`;
+                container.innerHTML = `<p style="font-size:12px; color:#777; text-align:center; padding:20px;">कोणतेही व्हिडिओ उपलब्ध नाहीत.</p>`;
                 return;
             }
 
@@ -1717,7 +1717,7 @@
                     </div>
                     <div class="history-actions">
                         ${item.url ? `<button class="btn-play" onclick="openYoutubePlayer('${item.id}', '${item.url}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">▶ प्ले करा</button>` : ''}
-                        ${isAdminLoggedIn ? `<button class="btn-delete" onclick="deleteHistoryItem('${item.docFirebaseId}')">🗑️ डिलीट (फक्त ॲडमिन)</button>` : ''}
+                        ${isAdminLoggedIn ? `<button class="btn-delete" onclick="deleteHistoryItem('${item.docFirebaseId}')">🗑️ डिलीट</button>` : ''}
                     </div>
                 `;
                 container.appendChild(card);
@@ -1847,7 +1847,6 @@
             try {
                 if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
                 
-                // मोबाईल आणि इतर उपकरणांवर कॅमेरा व ऑडिओ सुरळीत चालण्यासाठी अचूक कॉन्फिगरेशन
                 mediaStream = await navigator.mediaDevices.getUserMedia({
                     video: { facingMode: useFrontCamera ? 'user' : 'environment' },
                     audio: true
@@ -1860,7 +1859,8 @@
                 controlsRow.style.display = 'flex';
                 viewerText.innerHTML = "👁️ 156 Viewers Watching Live";
                 
-                await saveHistoryItemToFirebase("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", pendingThumbnailBase64 || 'photo1.jpg', loggedInUserName, loggedInUserDp, true);
+                let liveTypeLabel = currentLang === 'en' ? "🔴 Live Stream" : (currentLang === 'hi' ? "🔴 लाइव स्ट्रीम" : "🔴 लाईव्ह स्ट्रीम");
+                await saveHistoryItemToFirebase(liveTypeLabel, title, desc, tags, "", pendingThumbnailBase64 || 'photo1.jpg', loggedInUserName, loggedInUserDp, true);
                 addFirebaseNotification("🔴 लाईव्ह सुरू!", `${loggedInUserName} यांनी "${title}" लाईव्ह सुरू केली आहे!`);
             } catch (err) {
                 alert("कॅमेरा व ऑडिओ सुरू करण्याची परवानगी मिळाली नाही: " + err.message);
@@ -1952,7 +1952,7 @@
                 card.innerHTML = `
                     <div class="ringtone-top">
                         <div class="ringtone-info">${item.name}</div>
-                        <a href="${item.url}" target="_blank" class="yt-listen-btn">▶ ऐका / पहा</a>
+                        <a href="${item.url}" target="_blank" class="yt-listen-btn" id="t_listenBtn">▶ ऐका / पहा</a>
                     </div>
                 `;
                 container.appendChild(card);
@@ -2032,7 +2032,54 @@
                 videosTitle: "🎥 व्हिडिओज आणि शॉर्ट्स",
                 historyTitle: "📂 माझी अपलोड व लाईव्ह हिस्ट्री",
                 donationTitle: "७. देणगी",
-                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navVideos: "व्हिडिओज", navRingtones: "रिंगटोन", navHistory: "हिस्ट्री"
+                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navVideos: "व्हिडिओज", navRingtones: "रिंगटोन", navHistory: "हिस्ट्री",
+                blockedTitle: "⛔ ॲपवरून ब्लॉक केले आहे",
+                blockedDesc: "तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.",
+                welcomeTitle: "🙏 स्वागत आहे!",
+                loginChoiceText: "लॉगिन प्रकार निवडा:",
+                btnPublic: "👤 Public (पब्लिक)",
+                btnAdmin: "👑 Private Admin (ॲडमिन)",
+                dpLabel: "प्रोफाईल फोटो (DP) निवडा:",
+                nameLabel: "तुमचे नाव:",
+                enterBtn: "प्रवेश करा",
+                backBtn: "मागे जा",
+                adminCodeLabel: "ॲडमिन कोड टाका:",
+                adminLoginBtn: "ॲडमिन लॉगिन करा",
+                settingsTitle: "⚙️ ॲप सेटिंग्ज",
+                menuBlockList: "🚫 युझर ब्लॉक लिस्ट मॅनेज करा",
+                menuSwitchMode: "🔄 स्विच पब्लिक/प्रायव्हेट मोड",
+                menuLogout: "🚪 लॉग आउट",
+                aartiMorning: "प्रातःकाळ आरती:",
+                morningTime: "सकाळी ७:१५ वाजता (7:15 AM)",
+                aartiEvening: "संध्याकाळची आरती:",
+                eveningTime: "संध्याकाळी ७:१५ वाजता (7:15 PM)",
+                addressText: "श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.",
+                mapBtn: "गुगल मॅपवर पहा",
+                mandirLiveTitle: "श्री कपिलेश्वर महादेव मंदिर लाईव्ह",
+                liveSubText: "कॅमेरा सुरू करण्यासाठी खालील (+) वर क्लिक करा",
+                stopLiveBtn: "⏹️ Stop Live",
+                switchCamBtn: "🔄 Switch Camera",
+                sendBtn: "पाठवा",
+                tabFull: "📁 फुल व्हिडिओज",
+                tabShort: "⚡ शॉर्ट्स",
+                historySub: "सर्व युझर्सचे अपलोड केलेले व्हिडिओ व लाईव्ह स्ट्रीम त्यांच्या डीपी आणि नावासाहित येथे दिसतील.",
+                donationText: "मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.",
+                menuLive: "🔴 मंदिर आरती लाईव्ह सुरू करा",
+                menuFull: "📁 फुल व्हिडिओ टाका",
+                menuShort: "⚡ शॉर्ट व्हिडिओ टाका",
+                modalHeaderTitle: "माहिती भरा",
+                thumbLabelModal: "थंबनेल (Thumbnail) अपलोड करा:",
+                titleLabel: "टायटल (Title):",
+                descLabel: "वर्णन (Description):",
+                tagsLabel: "हॅशटॅग (Hashtags):",
+                cancelBtn: "रद्द करा",
+                saveBtn: "सेव्ह करा",
+                blockManagerTitle: "🚫 युझर ब्लॉक मॅनेजर",
+                blockManagerSub: "ज्या युझरला ब्लॉक करायचे आहे त्याचे नाव खाली टाका:",
+                blockCloseBtn: "बंद करा",
+                blockActionBtn: "ब्लॉक करा",
+                playerCommentBtn: "💬 कमेंट",
+                playerSendBtn: "पाठवा"
             },
             hi: {
                 appName: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
@@ -2050,7 +2097,54 @@
                 videosTitle: "🎥 वीडियोज़ और शॉर्ट्स",
                 historyTitle: "📂 मेरी अपलोड व लाइव हिस्ट्री",
                 donationTitle: "७. दान",
-                navGallery: "गॅलरी", navSchedule: "समय", navLocation: "लोकेशन", navVideos: "वीडियोज़", navRingtones: "रिंगटोन", navHistory: "हिस्ट्री"
+                navGallery: "गैलरी", navSchedule: "समय", navLocation: "लोकेशन", navVideos: "वीडियोज़", navRingtones: "रिंगटोन", navHistory: "हिस्ट्री",
+                blockedTitle: "⛔ ऐप से ब्लॉक कर दिया गया है",
+                blockedDesc: "आपको एडमिन द्वारा इस ऐप से ब्लॉक कर दिया गया है।",
+                welcomeTitle: "🙏 स्वागत है!",
+                loginChoiceText: "लॉगिन प्रकार चुनें:",
+                btnPublic: "👤 Public (पब्लिक)",
+                btnAdmin: "👑 Private Admin (एडमिन)",
+                dpLabel: "प्रोफाइल फोटो (DP) चुनें:",
+                nameLabel: "आपका नाम:",
+                enterBtn: "प्रवेश करें",
+                backBtn: "पीछे जाएं",
+                adminCodeLabel: "एडमिन कोड दर्ज करें:",
+                adminLoginBtn: "एडमिन लॉगिन करें",
+                settingsTitle: "⚙️ ऐप सेटिंग्स",
+                menuBlockList: "🚫 यूज़र ब्लॉक लिस्ट प्रबंधित करें",
+                menuSwitchMode: "🔄 स्विच पब्लिक/प्राइवेट मोड",
+                menuLogout: "🚪 लॉग आउट",
+                aartiMorning: "प्रातःकाल आरती:",
+                morningTime: "सुबह 7:15 बजे (7:15 AM)",
+                aartiEvening: "संध्याकाल आरती:",
+                eveningTime: "शाम 7:15 बजे (7:15 PM)",
+                addressText: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे, तहसील भुसावळ, जिला जळगाव - ४२५३०५.",
+                mapBtn: "गूगल मैप पर देखें",
+                mandirLiveTitle: "श्री कपिलेश्वर महादेव मंदिर लाइव",
+                liveSubText: "कैमरा शुरू करने के लिए नीचे दिए गए (+) पर क्लिक करें",
+                stopLiveBtn: "⏹️ Stop Live",
+                switchCamBtn: "🔄 Switch Camera",
+                sendBtn: "भेजें",
+                tabFull: "📁 फुल वीडियोज़",
+                tabShort: "⚡ शॉर्ट्स",
+                historySub: "सभी यूज़र के अपलोड किए गए वीडियो और लाइव स्ट्रीम उनके डीपी और नाम के साथ यहाँ दिखाई देंगे.",
+                donationText: "मंदिर विकास और कार्यों के लिए आप अपना दान दे सकते हैं। अधिक जानकारी के लिए मंदिर ट्रस्ट से संपर्क करें।",
+                menuLive: "🔴 मंदिर आरती लाइव शुरू करें",
+                menuFull: "📁 फुल वीडियो डालें",
+                menuShort: "⚡ शॉर्ट वीडियो डालें",
+                modalHeaderTitle: "जानकारी भरें",
+                thumbLabelModal: "थंबनेल (Thumbnail) अपलोड करें:",
+                titleLabel: "शीर्षक (Title):",
+                descLabel: "विवरण (Description):",
+                tagsLabel: "हैशटैग (Hashtags):",
+                cancelBtn: "रद्द करें",
+                saveBtn: "सहेजें",
+                blockManagerTitle: "🚫 यूज़र ब्लॉक मैनेजर",
+                blockManagerSub: "जिस यूज़र को ब्लॉक करना है उसका नाम नीचे दर्ज करें:",
+                blockCloseBtn: "बंद करें",
+                blockActionBtn: "ब्लॉक करें",
+                playerCommentBtn: "💬 कमेंट",
+                playerSendBtn: "भेजें"
             },
             en: {
                 appName: "MH Kapileshwar Mahadev Mandir Vilhale",
@@ -2068,7 +2162,54 @@
                 videosTitle: "🎥 Videos & Shorts",
                 historyTitle: "📂 My Upload & Live History",
                 donationTitle: "7. Donation",
-                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navVideos: "Videos", navRingtones: "Ringtones", navHistory: "History"
+                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navVideos: "Videos", navRingtones: "Ringtones", navHistory: "History",
+                blockedTitle: "⛔ Blocked from App",
+                blockedDesc: "You have been blocked from this app by the admin.",
+                welcomeTitle: "🙏 Welcome!",
+                loginChoiceText: "Select Login Type:",
+                btnPublic: "👤 Public",
+                btnAdmin: "👑 Private Admin",
+                dpLabel: "Select Profile Photo (DP):",
+                nameLabel: "Your Name:",
+                enterBtn: "Enter App",
+                backBtn: "Go Back",
+                adminCodeLabel: "Enter Admin Code:",
+                adminLoginBtn: "Admin Login",
+                settingsTitle: "⚙️ App Settings",
+                menuBlockList: "🚫 Manage User Block List",
+                menuSwitchMode: "🔄 Switch Public/Private Mode",
+                menuLogout: "🚪 Logout",
+                aartiMorning: "Morning Aarti:",
+                morningTime: "7:15 AM",
+                aartiEvening: "Evening Aarti:",
+                eveningTime: "7:15 PM",
+                addressText: "Shri Kshetra Kapileshwar Mahadev Mandir, Vilhale, Tehsil Bhusawal, District Jalgaon - 425305.",
+                mapBtn: "View on Google Maps",
+                mandirLiveTitle: "Shri Kapileshwar Mahadev Mandir Live",
+                liveSubText: "Click on (+) below to start camera",
+                stopLiveBtn: "⏹️ Stop Live",
+                switchCamBtn: "🔄 Switch Camera",
+                sendBtn: "Send",
+                tabFull: "📁 Full Videos",
+                tabShort: "⚡ Shorts",
+                historySub: "All uploaded videos and live streams from users will appear here with their DP and name.",
+                donationText: "You can contribute your donations for temple development. Contact temple trust for more info.",
+                menuLive: "🔴 Start Temple Aarti Live",
+                menuFull: "📁 Upload Full Video",
+                menuShort: "⚡ Upload Short Video",
+                modalHeaderTitle: "Fill Details",
+                thumbLabelModal: "Upload Thumbnail:",
+                titleLabel: "Title:",
+                descLabel: "Description:",
+                tagsLabel: "Hashtags:",
+                cancelBtn: "Cancel",
+                saveBtn: "Save",
+                blockManagerTitle: "🚫 User Block Manager",
+                blockManagerSub: "Enter the exact name of the user to block:",
+                blockCloseBtn: "Close",
+                blockActionBtn: "Block",
+                playerCommentBtn: "💬 Comment",
+                playerSendBtn: "Send"
             }
         };
 
@@ -2098,6 +2239,56 @@
             document.getElementById('t_navVideos').innerText = t.navVideos;
             document.getElementById('t_navRingtones').innerText = t.navRingtones;
             document.getElementById('t_navHistory').innerText = t.navHistory;
+
+            // मोडल आणि इतर टेक्स्टचे भाषांतर
+            if(document.getElementById('t_blockedTitle')) document.getElementById('t_blockedTitle').innerText = t.blockedTitle;
+            if(document.getElementById('t_blockedDesc')) document.getElementById('t_blockedDesc').innerText = t.blockedDesc;
+            if(document.getElementById('t_welcomeTitle')) document.getElementById('t_welcomeTitle').innerText = t.welcomeTitle;
+            if(document.getElementById('t_loginChoiceText')) document.getElementById('t_loginChoiceText').innerText = t.loginChoiceText;
+            if(document.getElementById('t_btnPublic')) document.getElementById('t_btnPublic').innerText = t.btnPublic;
+            if(document.getElementById('t_btnAdmin')) document.getElementById('t_btnAdmin').innerText = t.btnAdmin;
+            if(document.getElementById('t_dpLabel')) document.getElementById('t_dpLabel').innerText = t.dpLabel;
+            if(document.getElementById('t_nameLabel')) document.getElementById('t_nameLabel').innerText = t.nameLabel;
+            if(document.getElementById('t_enterBtn')) document.getElementById('t_enterBtn').innerText = t.enterBtn;
+            if(document.getElementById('t_backBtn1')) document.getElementById('t_backBtn1').innerText = t.backBtn;
+            if(document.getElementById('t_backBtn2')) document.getElementById('t_backBtn2').innerText = t.backBtn;
+            if(document.getElementById('t_adminCodeLabel')) document.getElementById('t_adminCodeLabel').innerText = t.adminCodeLabel;
+            if(document.getElementById('t_adminLoginBtn')) document.getElementById('t_adminLoginBtn').innerText = t.adminLoginBtn;
+            if(document.getElementById('t_settingsTitle')) document.getElementById('t_settingsTitle').innerText = t.settingsTitle;
+            if(document.getElementById('t_menuBlockList')) document.getElementById('t_menuBlockList').innerText = t.menuBlockList;
+            if(document.getElementById('t_menuSwitchMode')) document.getElementById('t_menuSwitchMode').innerText = t.menuSwitchMode;
+            if(document.getElementById('t_menuLogout')) document.getElementById('t_menuLogout').innerText = t.menuLogout;
+            if(document.getElementById('t_aartiMorning')) document.getElementById('t_aartiMorning').innerText = t.aartiMorning;
+            if(document.getElementById('t_morningTime')) document.getElementById('t_morningTime').innerText = t.morningTime;
+            if(document.getElementById('t_aartiEvening')) document.getElementById('t_aartiEvening').innerText = t.aartiEvening;
+            if(document.getElementById('t_eveningTime')) document.getElementById('t_eveningTime').innerText = t.eveningTime;
+            if(document.getElementById('t_addressText')) document.getElementById('t_addressText').innerText = t.addressText;
+            if(document.getElementById('t_mapBtn')) document.getElementById('t_mapBtn').innerText = t.mapBtn;
+            if(document.getElementById('t_mandirLiveTitle')) document.getElementById('t_mandirLiveTitle').innerText = t.mandirLiveTitle;
+            if(document.getElementById('t_liveSubText')) document.getElementById('t_liveSubText').innerText = t.liveSubText;
+            if(document.getElementById('t_stopLiveBtn')) document.getElementById('t_stopLiveBtn').innerText = t.stopLiveBtn;
+            if(document.getElementById('t_switchCamBtn')) document.getElementById('t_switchCamBtn').innerText = t.switchCamBtn;
+            if(document.getElementById('t_sendBtn')) document.getElementById('t_sendBtn').innerText = t.sendBtn;
+            if(document.getElementById('t_tabFull')) document.getElementById('t_tabFull').innerText = t.tabFull;
+            if(document.getElementById('t_tabShort')) document.getElementById('t_tabShort').innerText = t.tabShort;
+            if(document.getElementById('t_historySub')) document.getElementById('t_historySub').innerText = t.historySub;
+            if(document.getElementById('t_donationText')) document.getElementById('t_donationText').innerText = t.donationText;
+            if(document.getElementById('t_menuLive')) document.getElementById('t_menuLive').innerText = t.menuLive;
+            if(document.getElementById('t_menuFull')) document.getElementById('t_menuFull').innerText = t.menuFull;
+            if(document.getElementById('t_menuShort')) document.getElementById('t_menuShort').innerText = t.menuShort;
+            if(document.getElementById('modalHeaderTitle')) document.getElementById('modalHeaderTitle').innerText = t.modalHeaderTitle;
+            if(document.getElementById('t_thumbLabelModal')) document.getElementById('t_thumbLabelModal').innerText = t.thumbLabelModal;
+            if(document.getElementById('t_titleLabel')) document.getElementById('t_titleLabel').innerText = t.titleLabel;
+            if(document.getElementById('t_descLabel')) document.getElementById('t_descLabel').innerText = t.descLabel;
+            if(document.getElementById('t_tagsLabel')) document.getElementById('t_tagsLabel').innerText = t.tagsLabel;
+            if(document.getElementById('t_cancelBtn')) document.getElementById('t_cancelBtn').innerText = t.cancelBtn;
+            if(document.getElementById('t_saveBtn')) document.getElementById('t_saveBtn').innerText = t.saveBtn;
+            if(document.getElementById('t_blockManagerTitle')) document.getElementById('t_blockManagerTitle').innerText = t.blockManagerTitle;
+            if(document.getElementById('t_blockManagerSub')) document.getElementById('t_blockManagerSub').innerText = t.blockManagerSub;
+            if(document.getElementById('t_blockCloseBtn')) document.getElementById('t_blockCloseBtn').innerText = t.blockCloseBtn;
+            if(document.getElementById('t_blockActionBtn')) document.getElementById('t_blockActionBtn').innerText = t.blockActionBtn;
+            if(document.getElementById('t_playerCommentBtn')) document.getElementById('t_playerCommentBtn').innerText = t.playerCommentBtn;
+            if(document.getElementById('t_playerSendBtn')) document.getElementById('t_playerSendBtn').innerText = t.playerSendBtn;
         }
 
         function changeLanguage(lang) {
