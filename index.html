@@ -370,19 +370,19 @@
 
     <!-- जावास्क्रिप्ट (फंक्शन आणि डेटा) -->
     <script>
-        // महादेवांच्या खऱ्या ऑडिओ लिंक्स (ज्या स्पष्ट शब्दांत वाजतील)
+        // ऑडिओ लिंक्स (सुरक्षित आणि थेट चालणाऱ्या)
         const ringtonesData = [
-            { name: "🔔 हर हर शंभू (Har Har Shambhu)", url: "https://www.pagalworld.com.se/files/download/id/6545" },
-            { name: "⚡ शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://dl.pagalworld.com.de/files/download/id/1154/shiv-tandav-stotram.mp3" },
-            { name: "🕉️ महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://dl.pagalworld.com.de/files/download/id/2341/mahamrityunjaya-mantra.mp3" },
-            { name: "🎶 मेरा भोला है भंडारी (Hansraj Raghuwanshi)", url: "https://dl.pagalworld.com.de/files/download/id/1945/mera-bhola-hai-bhandari.mp3" },
-            { name: "🎵 ओम नमः शिवाय धुन (Om Namah Shivay)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" }
+            { name: "🔔 हर हर शंभू (Har Har Shambhu)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { name: "⚡ शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { name: "🕉️ महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { name: "🎶 मेरा भोला है भंडारी", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { name: "🎵 ओम नमः शिवाय धुन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" }
         ];
 
         const mainAudio = document.getElementById('mainAudio');
         const nowPlayingText = document.getElementById('nowPlayingText');
 
-        // रिंगटोन लिस्ट पेजवर रेंडर करणे
+        // रिंगटोन लिस्ट रेंडर करणे
         function renderRingtones(list) {
             const container = document.getElementById('ringtoneListContainer');
             container.innerHTML = '';
@@ -406,12 +406,11 @@
             });
         }
 
-        // गाणे प्ले करण्याचे अचूक फंक्शन
+        // गाणे प्ले करण्याचे फंक्शन
         function playSelectedSong(songName, songUrl) {
             mainAudio.src = songUrl;
-            mainAudio.play().catch(error => {
-                alert("हे गाणे लोड होत आहे किंवा इंटरनेट कनेक्शन तपासा.");
-            });
+            mainAudio.load();
+            mainAudio.play();
             nowPlayingText.innerText = "सध्या सुरू आहे: " + songName;
         }
 
@@ -422,7 +421,6 @@
             renderRingtones(filtered);
         }
 
-        // ॲप चालू झाल्यावर रिंगटोन लोड करणे
         window.onload = function() {
             renderRingtones(ringtonesData);
         };
@@ -430,7 +428,6 @@
         function showSection(sectionId, btnElement) {
             const sections = document.querySelectorAll('.section-box');
             sections.forEach(sec => sec.classList.remove('active-section'));
-            
             document.getElementById('section-' + sectionId).classList.add('active-section');
             
             const buttons = document.querySelectorAll('.bottom-nav button');
@@ -440,12 +437,9 @@
 
         function openModal(imgSrc, captionText) {
             const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImg');
-            const modalCaption = document.getElementById('modalCaption');
-            
+            document.getElementById('modalImg').src = imgSrc;
+            document.getElementById('modalCaption').innerText = captionText;
             modal.style.display = "block";
-            modalImg.src = imgSrc;
-            modalCaption.innerText = captionText;
         }
 
         function closeModal() {
@@ -502,30 +496,31 @@
         };
 
         function changeLanguage(lang) {
-            document.getElementById('appTitle').innerText = langData[lang].title;
-            document.getElementById('t_headerTitle').innerText = langData[lang].title;
-            document.getElementById('t_headerSub').innerHTML = langData[lang].headerSub;
-            document.getElementById('t_galleryTitle').innerText = langData[lang].galleryTitle;
-            document.getElementById('t_p1').innerText = langData[lang].p1;
-            document.getElementById('t_p2').innerText = langData[lang].p2;
-            document.getElementById('t_p3').innerText = langData[lang].p3;
-            document.getElementById('t_p4').innerText = langData[lang].p4;
-            document.getElementById('t_p5').innerText = langData[lang].p5;
-            document.getElementById('t_p6').innerText = langData[lang].p6;
-            document.getElementById('t_scheduleTitle').innerText = langData[lang].scheduleTitle;
-            document.getElementById('t_aartiMorning').innerText = langData[lang].aartiMorning;
-            document.getElementById('t_aartiEvening').innerText = langData[lang].aartiEvening;
-            document.getElementById('t_locationTitle').innerText = langData[lang].locationTitle;
-            document.getElementById('t_addressText').innerText = langData[lang].addressText;
-            document.getElementById('t_mapBtn').innerText = langData[lang].mapBtn;
-            document.getElementById('t_ringtoneTitle').innerText = langData[lang].ringtoneTitle;
-            document.getElementById('t_donationTitle').innerText = langData[lang].donationTitle;
-            document.getElementById('t_donationText').innerText = langData[lang].donationText;
-            document.getElementById('t_navGallery').innerText = langData[lang].navGallery;
-            document.getElementById('t_navSchedule').innerText = langData[lang].navSchedule;
-            document.getElementById('t_navLocation').innerText = langData[lang].navLocation;
-            document.getElementById('t_navRingtones').innerText = langData[lang].navRingtones;
-            document.getElementById('t_navDonation').innerText = langData[lang].navDonation;
+            const l = langData[lang];
+            document.getElementById('appTitle').innerText = l.title;
+            document.getElementById('t_headerTitle').innerText = l.title;
+            document.getElementById('t_headerSub').innerHTML = l.headerSub;
+            document.getElementById('t_galleryTitle').innerText = l.galleryTitle;
+            document.getElementById('t_p1').innerText = l.p1;
+            document.getElementById('t_p2').innerText = l.p2;
+            document.getElementById('t_p3').innerText = l.p3;
+            document.getElementById('t_p4').innerText = l.p4;
+            document.getElementById('t_p5').innerText = l.p5;
+            document.getElementById('t_p6').innerText = l.p6;
+            document.getElementById('t_scheduleTitle').innerText = l.scheduleTitle;
+            document.getElementById('t_aartiMorning').innerText = l.aartiMorning;
+            document.getElementById('t_aartiEvening').innerText = l.aartiEvening;
+            document.getElementById('t_locationTitle').innerText = l.locationTitle;
+            document.getElementById('t_addressText').innerText = l.addressText;
+            document.getElementById('t_mapBtn').innerText = l.mapBtn;
+            document.getElementById('t_ringtoneTitle').innerText = l.ringtoneTitle;
+            document.getElementById('t_donationTitle').innerText = l.donationTitle;
+            document.getElementById('t_donationText').innerText = l.donationText;
+            document.getElementById('t_navGallery').innerText = l.navGallery;
+            document.getElementById('t_navSchedule').innerText = l.navSchedule;
+            document.getElementById('t_navLocation').innerText = l.navLocation;
+            document.getElementById('t_navRingtones').innerText = l.navRingtones;
+            document.getElementById('t_navDonation').innerText = l.navDonation;
         }
     </script>
 </body>
