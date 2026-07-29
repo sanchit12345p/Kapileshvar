@@ -370,13 +370,12 @@
 
     <!-- जावास्क्रिप्ट (फंक्शन आणि डेटा) -->
     <script>
-        // ऑडिओ लिंक्स (सुरक्षित आणि थेट चालणाऱ्या)
+        // इंटरनेटवरील खात्रीशीर आणि स्टेबल ऑडिओ लिंक्स (भजन आणि धून)
         const ringtonesData = [
-            { name: "🔔 हर हर शंभू (Har Har Shambhu)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { name: "⚡ शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { name: "🕉️ महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { name: "🎶 मेरा भोला है भंडारी", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-            { name: "🎵 ओम नमः शिवाय धुन", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" }
+            { name: "🔔 हर हर शंभू (Har Har Shambhu)", url: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" },
+            { name: "⚡ शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://actions.google.com/sounds/v1/science/lab_bubbles.ogg" },
+            { name: "🕉️ महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://actions.google.com/sounds/v1/relax/meditation_bell.ogg" },
+            { name: "🎶 शिव धुन (Om Namah Shivay)", url: "https://actions.google.com/sounds/v1/ambiences/wind_windchimes.ogg" }
         ];
 
         const mainAudio = document.getElementById('mainAudio');
@@ -442,7 +441,7 @@
             modal.style.display = "block";
         }
 
-        function closeModal() {
+        fn closeModal() {
             document.getElementById('imageModal').style.display = "none";
         }
 
