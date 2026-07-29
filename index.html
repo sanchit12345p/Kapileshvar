@@ -1079,7 +1079,7 @@
         </div>
     </div>
 
-    <!-- युझर ब्लॉक मॅनेजर मॉडेल (फक्त ॲडमिनसाठी) -->
+    <!-- युझर ब्लॉक मॅनेजर मॉडेल (फक्त ॲडमिनसाठी - ब्लॉक आणि अनब्लॉक फिचरसह) -->
     <div id="blockManagerModal" class="modal">
         <div class="modal-content-box">
             <h3 id="t_blockManagerTitle" style="color:#b71c1c; margin-top:0; font-size:14px;">🚫 युझर ब्लॉक मॅनेजर</h3>
@@ -1089,7 +1089,7 @@
                 <button class="btn-cancel" onclick="document.getElementById('blockManagerModal').style.display='none'" id="t_blockCloseBtn">बंद करा</button>
                 <button class="btn-save" style="background:#c62828;" onclick="blockUserAction()" id="t_blockActionBtn">ब्लॉक करा</button>
             </div>
-            <div id="blockedUsersListContainer" style="margin-top:15px; font-size:11px;"></div>
+            <div id="blockedUsersListContainer" style="margin-top:15px; font-size:11px; max-height:180px; overflow-y:auto;"></div>
         </div>
     </div>
 
@@ -1369,15 +1369,36 @@
             }
         }
 
+        // युझर अनब्लॉक करण्याचे फंक्शन
+        async function unblockUserAction(docId, userName) {
+            if(!window.db) return;
+            const { doc, deleteDoc } = window.firebaseCols;
+            try {
+                await deleteDoc(doc(window.db, "mandir_blocked", docId));
+                alert(`${userName} ला यशस्वीरित्या अनब्लॉक केले आहे.`);
+                renderBlockedUsersUI();
+            } catch(e) { console.error("Unblock error:", e); }
+        }
+
         function renderBlockedUsersUI() {
             if(!window.db) return;
             const { collection, getDocs } = window.firebaseCols;
             getDocs(collection(window.db, "mandir_blocked")).then(snapshot => {
                 let container = document.getElementById('blockedUsersListContainer');
-                container.innerHTML = '<strong>सध्या ब्लॉक केलेले युझर्स:</strong><br>';
+                container.innerHTML = '<strong style="color:#b71c1c;">सध्या ब्लॉक केलेले युझर्स:</strong><br><br>';
+                if(snapshot.empty) {
+                    container.innerHTML += '<span style="color:#777;">कोणताही युझर ब्लॉक नाही.</span>';
+                    return;
+                }
                 snapshot.forEach(docSnap => {
                     let data = docSnap.data();
-                    container.innerHTML += `- ${data.name}<br>`;
+                    let div = document.createElement('div');
+                    div.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#fff5f5; padding:5px 8px; margin-bottom:5px; border-radius:4px; border:1px solid #ffcdd2;";
+                    div.innerHTML = `
+                        <span><strong>${data.name}</strong></span>
+                        <button onclick="unblockUserAction('${docSnap.id}', '${data.name}')" style="background:#2e7d32; color:white; border:none; padding:3px 8px; border-radius:3px; font-size:10px; cursor:pointer; font-weight:bold;">अनब्लॉक करा</button>
+                    `;
+                    container.appendChild(div);
                 });
             });
         }
@@ -2240,7 +2261,6 @@
             document.getElementById('t_navRingtones').innerText = t.navRingtones;
             document.getElementById('t_navHistory').innerText = t.navHistory;
 
-            // मोडल आणि इतर टेक्स्टचे भाषांतर
             if(document.getElementById('t_blockedTitle')) document.getElementById('t_blockedTitle').innerText = t.blockedTitle;
             if(document.getElementById('t_blockedDesc')) document.getElementById('t_blockedDesc').innerText = t.blockedDesc;
             if(document.getElementById('t_welcomeTitle')) document.getElementById('t_welcomeTitle').innerText = t.welcomeTitle;
