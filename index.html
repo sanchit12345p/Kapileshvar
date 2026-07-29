@@ -47,11 +47,6 @@
             font-weight: bold;
         }
 
-        .lang-switcher button:hover {
-            background: white;
-            color: #b71c1c;
-        }
-
         .user-top-bar {
             background: #fff3e0;
             padding: 8px 15px;
@@ -76,17 +71,18 @@
             border: 1px solid #d84315;
         }
 
-        /* ग्लोबल लाईव्ह बझर / फ्लॅश बटण */
+        /* ग्लोबल लाईव्ह बझर / फ्लॅश बटण (दुसऱ्याच्या फोनमध्ये लाईव्ह दिसण्यासाठी) */
         .global-live-alert {
             background: #ffebee;
             border: 1px solid #ffcdd2;
-            padding: 6px 15px;
+            padding: 8px 15px;
             display: none;
             align-items: center;
             justify-content: space-between;
             font-size: 12px;
             color: #c62828;
             font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .live-pulse-dot {
@@ -95,7 +91,6 @@
             background-color: red;
             border-radius: 50%;
             display: inline-block;
-            box-shadow: 0 0 0 rgba(255, 0, 0, 0.4);
             animation: pulse-animation 1.5s infinite;
         }
 
@@ -180,7 +175,6 @@
             margin-top: 20px;
         }
 
-        /* गॅलरी ग्रिड */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -195,11 +189,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
             cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .gallery-card:hover {
-            transform: scale(1.02);
         }
 
         .gallery-card img {
@@ -215,7 +204,6 @@
             color: #444;
         }
 
-        /* कार्ड व माहिती */
         .info-card {
             background: white;
             padding: 15px;
@@ -238,7 +226,6 @@
             font-size: 12px;
         }
 
-        /* रिंगटोन व ग्रंथ */
         .search-box {
             width: 100%;
             padding: 10px;
@@ -303,7 +290,6 @@
             color: #444;
         }
 
-        /* लाईव्ह सेक्शन */
         .live-container {
             background: black;
             border-radius: 8px;
@@ -418,7 +404,6 @@
             cursor: pointer;
         }
 
-        /* हिस्ट्री सेक्शन */
         .history-item-card {
             background: white;
             padding: 10px;
@@ -453,7 +438,6 @@
         .btn-play { background: #2e7d32; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 11px; }
         .btn-delete { background: #c62828; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 11px; }
 
-        /* बॉटम नेव्हिगेशन बार */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -503,7 +487,6 @@
             margin-top: -8px;
         }
 
-        /* क्रिएटिंग मेनू पॉपअप */
         .create-menu {
             display: none;
             position: fixed;
@@ -534,12 +517,6 @@
             text-align: left;
         }
 
-        .create-menu button:hover {
-            background: #ffccbc;
-            color: #b71c1c;
-        }
-
-        /* मॉडाल्स */
         .modal {
             display: none;
             position: fixed;
@@ -591,7 +568,6 @@
         .btn-cancel { background: #aaa; color: white; }
         .btn-save { background: #b71c1c; color: white; }
 
-        /* नाव नोंदणी गेट मॉडेल */
         #nameGateModal {
             display: flex;
             position: fixed;
@@ -658,7 +634,7 @@
         </div>
     </div>
 
-    <!-- युझर बार व लाईव्ह ग्लोबल अलर्ट (गोल फिरणारे चिन्ह) -->
+    <!-- युझर बार -->
     <div class="user-top-bar">
         <div class="user-profile-info">
             <img id="headerUserDp" src="photo1.jpg" alt="DP">
@@ -670,11 +646,11 @@
         </div>
     </div>
 
-    <!-- ग्लोबल लाईव्ह बझर बार (दुसऱ्याच्या फोनमध्ये लाईव्ह दिसण्यासाठी) -->
+    <!-- ग्लोबल लाईव्ह बझर बार (इतर फोनमध्ये लाईव्ह दिसण्यासाठी आणि क्लिक करून थेट लाईव्हमध्ये जाण्यासाठी) -->
     <div id="globalLiveAlertBar" class="global-live-alert">
-        <div style="display:flex; align-items:center; gap:8px; cursor:pointer;" onclick="jumpToLiveSection()">
+        <div style="display:flex; align-items:center; gap:8px; cursor:pointer; flex:1;" onclick="jumpToLiveSection()">
             <span class="live-pulse-dot"></span>
-            <span id="globalLiveText">मंदिर लाईव्ह सुरू आहे! पाहण्यासाठी क्लिक करा 🔴</span>
+            <span id="globalLiveText">मंदिर लाईव्ह सुरू आहे! पाहण्यासाठी येथे क्लिक करा 🔴</span>
         </div>
         <button onclick="dismissGlobalLiveAlert(event)" style="background:none; border:none; font-size:14px; cursor:pointer; color:#c62828;">✖</button>
     </div>
@@ -693,7 +669,6 @@
         <h1 id="appTitle" style="font-size: 16px; margin: 8px 0 4px 0;">MH कपिलेश्वर महादेव मंदिर विल्होळे</h1>
         <p id="t_headerSub" style="font-size: 11px; margin: 0; opacity: 0.9;">ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
         
-        <!-- भाषा बदलायची बटणे -->
         <div class="lang-switcher">
             <button onclick="changeLanguage('mr')">मराठी</button>
             <button onclick="changeLanguage('hi')">हिंदी</button>
@@ -703,7 +678,7 @@
 
     <div class="container">
 
-        <!-- १. गॅलरी सेक्शन -->
+        <!-- १. गॅलरी -->
         <div id="section-gallery" class="section-box active-section">
             <h2 id="t_galleryTitle">१. मंदिर दर्शन गॅलरी</h2>
             <div class="gallery-grid">
@@ -734,7 +709,7 @@
             </div>
         </div>
 
-        <!-- २. वेळपत्रक सेक्शन -->
+        <!-- २. वेळपत्रक -->
         <div id="section-schedule" class="section-box">
             <h2 id="t_scheduleTitle">२. आरती आणि दर्शन वेळपत्रक</h2>
             <div class="info-card">
@@ -743,7 +718,7 @@
             </div>
         </div>
 
-        <!-- ३. लोकेशन सेक्शन -->
+        <!-- ३. लोकेशन -->
         <div id="section-location" class="section-box">
             <h2 id="t_locationTitle">३. पत्ता व लोकेशन</h2>
             <div class="info-card">
@@ -752,14 +727,14 @@
             </div>
         </div>
 
-        <!-- ४. रिंगटोन सेक्शन -->
+        <!-- ४. रिंगटोन -->
         <div id="section-ringtones" class="section-box">
             <h2 id="t_ringtoneTitle">४. महादेवांच्या रिंगटोन व भक्ती ध्वनी</h2>
             <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
             <div id="ringtoneListContainer"></div>
         </div>
 
-        <!-- ५. ग्रंथ सेक्शन -->
+        <!-- ५. ग्रंथ -->
         <div id="section-texts" class="section-box">
             <h2 id="t_textsTitle">५. पवित्र ग्रंथ, आरत्या व श्लोक</h2>
             <input type="text" id="textSearch" class="search-box" placeholder="🔍 आरती, भजन किंवा श्लोक येथे सर्च करा..." onkeyup="filterTexts()">
@@ -774,7 +749,7 @@
                 <video id="liveVideoElement" autoplay playsinline muted></video>
                 <div id="livePlaceholderText" class="live-placeholder">
                     <h3 id="t_mandirLiveTitle" style="margin:0 0 5px 0; color:white; font-size:14px;">श्री कपिलेश्वर महादेव मंदिर लाईव्ह</h3>
-                    <p id="t_liveSubText" style="font-size:11px; color:#aaa; margin:0;">कॅमेरा सुरू करण्यासाठी मध्यभागी (+) वर क्लिक करा</p>
+                    <p id="t_liveSubText" style="font-size:11px; color:#aaa; margin:0;">कॅमेरा सुरू करण्यासाठी खालील (+) वर क्लिक करा</p>
                 </div>
                 <div id="liveControlsRow" class="live-controls" style="display:none;">
                     <button class="btn-stop-live" onclick="stopLiveCameraStream()" id="t_stopLiveBtn">⏹️ Stop Live</button>
@@ -784,7 +759,7 @@
 
             <div class="chat-box">
                 <p id="displayLiveTitle" style="font-weight:bold; font-size:12px; margin:0 0 5px 0; color:#b71c1c;"></p>
-                <p id="viewerStatusText" style="font-size:11px; color:#666; margin:0 0 8px 0;">👁️ 54 Viewers Watching Live</p>
+                <p id="viewerStatusText" style="font-size:11px; color:#666; margin:0 0 8px 0;">👁️ 156 Viewers Watching Live</p>
                 <div id="commentArea" class="comment-area"></div>
                 <div class="comment-input-row">
                     <input type="text" id="userCommentInput" placeholder="कमेंट लिहा...">
@@ -800,7 +775,7 @@
             <div id="historyListContainer"></div>
         </div>
 
-        <!-- ७. देणगी सेक्शन -->
+        <!-- ७. देणगी -->
         <div id="section-donation" class="section-box">
             <h2 id="t_donationTitle">७. देणगी</h2>
             <div class="info-card">
@@ -819,7 +794,7 @@
         <input type="file" id="shortVideoFileInput" accept="video/*" style="display:none;" onchange="prepareVideoUpload(this, 'short')">
     </div>
 
-    <!-- व्हिडिओ अपलोड माहिती मॉडेल -->
+    <!-- अपलोड मॉडेल -->
     <div id="uploadModal" class="modal">
         <div class="modal-content-box">
             <h3 id="modalHeaderTitle" style="color:#b71c1c; margin-top:0; font-size:14px;">माहिती भरा</h3>
@@ -902,7 +877,7 @@
             renderNotifications();
             checkGlobalLiveStatus();
 
-            // दर २ सेकंदाने दुसऱ्या फोनमधील लाईव्ह स्टेटस चेक करण्यासाठी
+            // दर २ सेकंदाने लाईव्ह स्टेटस चेक करण्यासाठी
             setInterval(checkGlobalLiveStatus, 2000);
         };
 
@@ -923,7 +898,7 @@
         function verifyAndOpenApp() {
             let inputName = document.getElementById('enteredUserName').value.trim();
             if (inputName === '') {
-                alert(currentLang === 'mr' ? 'कृपया तुमचे पूर्ण नाव टाका!' : (currentLang === 'hi' ? 'कृपया अपना पूरा नाम दर्ज करें!' : 'Please enter your full name!'));
+                alert('कृपया तुमचे पूर्ण नाव टाका!');
                 return;
             }
             if (tempDpBase64 === '') {
@@ -937,7 +912,7 @@
             document.getElementById('displayUserName').innerText = loggedInUserName;
             document.getElementById('headerUserDp').src = loggedInUserDp;
             document.getElementById('nameGateModal').style.display = 'none';
-            addNotification(currentLang === 'mr' ? 'स्वागत आहे!' : 'Welcome!', `${loggedInUserName} ${currentLang === 'mr' ? 'यांनी ॲपमध्ये प्रवेश केला आहे.' : 'has entered the app.'}`);
+            addNotification('स्वागत आहे!', `${loggedInUserName} यांनी ॲपमध्ये प्रवेश केला आहे.`);
         }
 
         function logoutUser() {
@@ -992,7 +967,7 @@
             const notifs = getNotificationsData();
             container.innerHTML = '';
             if(notifs.length === 0) {
-                container.innerHTML = `<div class="notif-item" style="color:#777; text-align:center;">${translations[currentLang].noNotif}</div>`;
+                container.innerHTML = `<div class="notif-item" style="color:#777; text-align:center;">कोणतीही नवीन नोटिफिकेशन नाही.</div>`;
                 badge.style.display = 'none';
                 return;
             }
@@ -1011,7 +986,7 @@
             });
         }
 
-        // ग्लोबल लाईव्ह स्टेटस फंक्शन (इतर फोनमध्ये लाईव्ह दाखवण्यासाठी)
+        // लाईव्ह स्टेटस चेक करून दुसऱ्यांच्या फोनमध्ये लाल गोल फिरणारे चिन्ह दाखवणे
         function checkGlobalLiveStatus() {
             let isLiveActive = localStorage.getItem('mandir_is_live_active') === 'true';
             let alertBar = document.getElementById('globalLiveAlertBar');
@@ -1032,7 +1007,7 @@
 
         function jumpToLiveSection() {
             showSection('live', document.querySelectorAll('.bottom-nav button')[5]);
-            // लाईव्ह सेक्शन टॅब ऍक्टिव्ह करताना योग्य बटण किंवा थेट सेक्शन दाखवणे
+            document.getElementById('globalLiveAlertBar').style.display = 'none';
         }
 
         function openUploadModal(typeKey) {
@@ -1063,8 +1038,8 @@
         }
 
         function confirmAndUpload() {
-            const title = document.getElementById('inputVideoTitle').value.trim() || translations[currentLang].defaultVideoTitle;
-            const desc = document.getElementById('inputVideoDesc').value.trim() || translations[currentLang].defaultVideoDesc;
+            const title = document.getElementById('inputVideoTitle').value.trim() || 'शिवालय दर्शन';
+            const desc = document.getElementById('inputVideoDesc').value.trim() || 'भक्तीमय व्हिडिओ';
             const tags = document.getElementById('inputVideoTags').value.trim() || '#Mahadev';
             
             closeUploadModal();
@@ -1072,10 +1047,10 @@
             if (currentUploadType === 'live') {
                 startLiveCameraStream(title, desc, tags);
             } else {
-                let typeNameText = currentUploadType === 'full' ? translations[currentLang].fullVideoType : translations[currentLang].shortVideoType;
+                let typeNameText = currentUploadType === 'full' ? 'फुल व्हिडिओ' : 'शॉर्ट व्हिडिओ';
                 saveHistoryItem(typeNameText, title, desc, tags, pendingVideoBase64, loggedInUserName, loggedInUserDp);
-                addNotification(translations[currentLang].newUploadNotif, `${loggedInUserName} "${title}" (${typeNameText}) ${translations[currentLang].uploadedText}`);
-                alert(translations[currentLang].successUploadAlert);
+                addNotification('नवीन अपलोड!', `${loggedInUserName} "${title}" (${typeNameText}) अपलोड केला आहे.`);
+                alert('यशस्वी! तुमचे व्हिडिओ यशस्वीरित्या सेव्ह झाले आहे.');
             }
         }
 
@@ -1104,7 +1079,7 @@
         }
 
         function deleteHistoryItem(id) {
-            if(confirm(translations[currentLang].confirmDelete)) {
+            if(confirm('तुम्हाला हा व्हिडिओ डिलीट करायची आहे का?')) {
                 let history = getHistoryData();
                 history = history.filter(item => item.id !== id);
                 localStorage.setItem('mandir_history_v5', JSON.stringify(history));
@@ -1117,7 +1092,7 @@
             const history = getHistoryData();
             container.innerHTML = '';
             if(history.length === 0) {
-                container.innerHTML = `<p style="font-size:11px; color:#777; text-align:center;">${translations[currentLang].noHistory}</p>`;
+                container.innerHTML = `<p style="font-size:11px; color:#777; text-align:center;">कोणतीही हिस्ट्री उपलब्ध नाही.</p>`;
                 return;
             }
             history.forEach(item => {
@@ -1128,14 +1103,14 @@
                         <h4>${item.type}: ${item.title}</h4>
                         <div class="history-uploader-row">
                             <img class="comment-dp" src="${item.dp || 'photo1.jpg'}" alt="DP">
-                            <p style="margin:0;"><strong>${translations[currentLang].uploadedBy}:</strong> <span style="color:#2e7d32; font-weight:bold;">${item.uploader || 'Unknown'}</span></p>
+                            <p style="margin:0;"><strong>टाकणारे:</strong> <span style="color:#2e7d32; font-weight:bold;">${item.uploader || 'Unknown'}</span></p>
                         </div>
-                        <p style="margin:2px 0;"><strong>${translations[currentLang].descLabel}</strong> ${item.desc}</p>
-                        <p style="margin:2px 0;"><strong>${translations[currentLang].tagsLabel}</strong> <span style="color:#d84315;">${item.tags}</span></p>
+                        <p style="margin:2px 0;"><strong>वर्णन:</strong> ${item.desc}</p>
+                        <p style="margin:2px 0;"><strong>हॅशटॅग:</strong> <span style="color:#d84315;">${item.tags}</span></p>
                     </div>
                     <div class="history-actions">
-                        ${item.url ? `<button class="btn-play" onclick="playHistoryVideo('${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}')">${translations[currentLang].playBtn}</button>` : ''}
-                        <button class="btn-delete" onclick="deleteHistoryItem(${item.id})">${translations[currentLang].deleteBtn}</button>
+                        ${item.url ? `<button class="btn-play" onclick="playHistoryVideo('${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}')">▶ प्ले</button>` : ''}
+                        <button class="btn-delete" onclick="deleteHistoryItem(${item.id})">🗑️ डिलीट</button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -1184,16 +1159,16 @@
                 placeholder.style.display = 'none';
                 badge.style.display = 'block';
                 controlsRow.style.display = 'flex';
-                viewerText.innerHTML = translations[currentLang].viewersWatching;
+                viewerText.innerHTML = "👁️ 156 Viewers Watching Live";
                 
-                // लाईव्ह सुरू केल्याची नोंद सर्व फोनसाठी सेव्ह करा
+                // लाईव्ह सुरू केल्याची नोंद सर्व फोनसाठी सेव्ह करा (ज्यामुळे दुसऱ्यांच्या फोनमध्ये लाल गोल दिसेल)
                 localStorage.setItem('mandir_is_live_active', 'true');
                 sessionStorage.removeItem('live_alert_dismissed');
 
-                saveHistoryItem(translations[currentLang].liveStreamType, title, desc, tags, "", loggedInUserName, loggedInUserDp);
-                addNotification(translations[currentLang].liveStartedNotif, `${loggedInUserName} "${title}" ${translations[currentLang].liveStartedText}`);
+                saveHistoryItem("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", loggedInUserName, loggedInUserDp);
+                addNotification("🔴 लाईव्ह सुरू!", `${loggedInUserName} "${title}" लाईव्ह सुरू केली आहे.`);
             } catch (err) {
-                alert(translations[currentLang].cameraError + err.message);
+                alert("कॅमेरा सुरू करण्याची परवानगी मिळाली नाही: " + err.message);
             }
         }
 
@@ -1206,7 +1181,7 @@
             document.getElementById('livePlaceholderText').style.display = 'block';
             document.getElementById('liveBadge').style.display = 'none';
             document.getElementById('liveControlsRow').style.display = 'none';
-            document.getElementById('viewerStatusText').innerHTML = translations[currentLang].liveEnded;
+            document.getElementById('viewerStatusText').innerHTML = "👁️ Live Stream Ended";
             
             // लाईव्ह बंद झाल्याची नोंद सर्व फोनसाठी अपडेट करा
             localStorage.setItem('mandir_is_live_active', 'false');
@@ -1215,7 +1190,7 @@
 
         function switchCamera() {
             useFrontCamera = !useFrontCamera;
-            startLiveCameraStream(translations[currentLang].mandirLiveTitle, translations[currentLang].cameraSwitched, '#Live');
+            startLiveCameraStream("श्री कपिलेश्वर महादेव मंदिर लाईव्ह", "कॅमेरा स्विच केला", '#Live');
         }
 
         function sendComment() {
@@ -1233,7 +1208,7 @@
                 area.scrollTop = area.scrollHeight;
                 commentInput.value = "";
             } else {
-                alert(translations[currentLang].emptyCommentAlert);
+                alert("कृपया काहीतरी कमेंट लिहा.");
             }
         }
 
@@ -1259,7 +1234,7 @@
                 card.innerHTML = `
                     <div class="ringtone-top">
                         <div class="ringtone-info">${item.name}</div>
-                        <a href="${item.url}" target="_blank" class="yt-listen-btn">${translations[currentLang].listenBtn}</a>
+                        <a href="${item.url}" target="_blank" class="yt-listen-btn">▶ ऐका / पहा</a>
                     </div>
                 `;
                 container.appendChild(card);
@@ -1330,49 +1305,15 @@
                 logoutText: "नाव बदला",
                 notifTitle: "🔔 अपडेट्स व नोटीस",
                 clearNotif: "सर्व हटवा",
-                noNotif: "कोणतीही नवीन नोटिफिकेशन नाही.",
                 galleryTitle: "१. मंदिर दर्शन गॅलरी",
-                p1: "मंदिर प्रवेशद्वार", p2: "नंदी आणि सभामंडप", p3: "प्राचीन नक्षीकाम छतावरील", p4: "गाभारा दर्शन", p5: "रात्रीची रोषणाई मंदिर", p6: "शिवलिंग आणि सजावट",
                 scheduleTitle: "२. आरती आणि दर्शन वेळपत्रक",
-                aartiMorning: "प्रातःकाळ आरती:", morningTime: "सकाळी ७:१५ वाजता (7:15 AM)",
-                aartiEvening: "संध्याकाळची आरती:", eveningTime: "संध्याकाळी ७:१५ वाजता (7:15 PM)",
                 locationTitle: "३. पत्ता व लोकेशन",
-                addressText: "श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.",
-                mapBtn: "गुगल मॅपवर पहा",
                 ringtoneTitle: "४. महादेवांच्या रिंगटोन व भक्ती ध्वनी",
-                ringtoneSearch: "🔍 येथे रिंगटोन किंवा भजन सर्च करा...",
                 textsTitle: "५. पवित्र ग्रंथ, आरत्या व श्लोक",
-                textSearch: "🔍 आरती, भजन किंवा श्लोक येथे सर्च करा...",
                 liveMainTitle: "🔴 मंदिर लाईव्ह दर्शन व आरती",
-                mandirLiveTitle: "श्री कपिलेश्वर महादेव मंदिर लाईव्ह",
-                liveSubText: "कॅमेरा सुरू करण्यासाठी मध्यभागी (+) वर क्लिक करा",
-                stopLiveBtn: "⏹️ Stop Live",
-                switchCamBtn: "🔄 Switch Camera",
-                commentPlaceholder: "कमेंट लिहा...",
-                sendBtn: "पाठवा",
                 historyTitle: "📂 माझी अपलोड व लाईव्ह हिस्ट्री",
-                historySub: "सर्व युझर्सचे अपलोड केलेले व्हिडिओ व लाईव्ह स्ट्रीम त्यांच्या डीपी आणि नावासाहित येथे दिसतील.",
                 donationTitle: "७. देणगी",
-                donationText: "मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.",
-                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ व आरत्या", navLive: "लाईव्ह", navHistory: "हिस्ट्री",
-                menuLive: "🔴 मंदिर आरती लाईव्ह सुरू करा", menuFull: "📁 फुल व्हिडिओ टाका", menuShort: "⚡ शॉर्ट व्हिडिओ टाका",
-                fullModalTitle: "फुल व्हिडिओ माहिती भरा", shortModalTitle: "शॉर्ट व्हिडिओ माहिती भरा", liveModalTitle: "लाईव्ह माहिती भरा",
-                titleLabel: "टायटल (Title):", descLabel: "वर्णन (Description):", tagsLabel: "हॅशटॅग (Hashtags):",
-                cancelBtn: "रद्द करा", saveBtn: "पुढे जा / सेव्ह करा",
-                fullVideoType: "फुल व्हिडिओ", shortVideoType: "शॉर्ट व्हिडिओ", liveStreamType: "🔴 लाईव्ह स्ट्रीम",
-                defaultVideoTitle: "शिवालय दर्शन", defaultVideoDesc: "भक्तीमय व्हिडिओ",
-                newUploadNotif: "नवीन अपलोड!", uploadedText: "अपलोड केला आहे.",
-                successUploadAlert: "यशस्वी! तुमचे व्हिडिओ यशस्वीरित्या सेव्ह झाले आहे.",
-                confirmDelete: "तुम्हाला हा व्हिडिओ डिलीट करायची आहे का?",
-                noHistory: "कोणतीही हिस्ट्री उपलब्ध नाही.",
-                uploadedBy: "टाकणारे", playBtn: "▶ प्ले", deleteBtn: "🗑️ डिलीट",
-                viewersWatching: "👁️ 156 Viewers Watching Live",
-                liveEnded: "👁️ Live Stream Ended",
-                liveStartedNotif: "🔴 लाईव्ह सुरू!", liveStartedText: "लाईव्ह सुरू केली आहे.",
-                cameraError: "कॅमेरा सुरू करण्याची परवानगी मिळाली नाही: ",
-                emptyCommentAlert: "कृपया काहीतरी कमेंट लिहा.",
-                listenBtn: "▶ ऐका / पहा",
-                cameraSwitched: "कॅमेरा स्विच केला"
+                navGallery: "गॅलरी", navSchedule: "वेळपत्रक", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ व आरत्या", navHistory: "हिस्ट्री"
             },
             hi: {
                 appName: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
@@ -1381,49 +1322,15 @@
                 logoutText: "नाम बदलें",
                 notifTitle: "🔔 अपडेट्स व सूचना",
                 clearNotif: "सभी हटाएं",
-                noNotif: "कोई नई नोटिफिकेशन नहीं है।",
                 galleryTitle: "१. मंदिर दर्शन गैलरी",
-                p1: "मंदिर प्रवेश द्वार", p2: "नंदी और सभामंडप", p3: "प्राचीन नक्काशी छत", p4: "गर्भ गृह दर्शन", p5: "रात्रि रोशनी मंदिर", p6: "शिवलिंग और सजावट",
                 scheduleTitle: "२. आरती और दर्शन समय सारणी",
-                aartiMorning: "प्रातःकाल आरती:", morningTime: "सुबह ७:१५ बजे (7:15 AM)",
-                aartiEvening: "संध्याकाल आरती:", eveningTime: "शाम ७:१५ बजे (7:15 PM)",
                 locationTitle: "३. पता व लोकेशन",
-                addressText: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे, तहसील भुसावळ, जिला जळगाव - ४२५३०५.",
-                mapBtn: "गूगल मैप पर देखें",
                 ringtoneTitle: "४. महादेव रिंगटोन व भक्ति ध्वनि",
-                ringtoneSearch: "🔍 यहाँ रिंगटोन या भजन सर्च करें...",
                 textsTitle: "५. पवित्र ग्रंथ, आरतियाँ व श्लोक",
-                textSearch: "🔍 आरती, भजन या श्लोक यहाँ सर्च करें...",
                 liveMainTitle: "🔴 मंदिर लाइव दर्शन व आरती",
-                mandirLiveTitle: "श्री कपिलेश्वर महादेव मंदिर लाइव",
-                liveSubText: "कैमरा शुरू करने के लिए बीच में (+) पर क्लिक करें",
-                stopLiveBtn: "⏹️ Stop Live",
-                switchCamBtn: "🔄 Switch Camera",
-                commentPlaceholder: "कमेंट लिखें...",
-                sendBtn: "भेजें",
                 historyTitle: "📂 मेरी अपलोड व लाइव हिस्ट्री",
-                historySub: "सभी यूजर्स के अपलोड किए गए वीडियो और लाइव स्ट्रीम उनके डीपी और नाम के साथ यहाँ दिखेंगे।",
                 donationTitle: "७. दान",
-                donationText: "मंदिर विकास व कार्यों के लिए आप अपना योगदान दे सकते हैं। अधिक जानकारी के लिए मंदिर ट्रस्ट से संपर्क करें।",
-                navGallery: "गैलरी", navSchedule: "समय", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ", navLive: "लाइव", navHistory: "हिस्ट्री",
-                menuLive: "🔴 मंदिर आरती लाइव शुरू करें", menuFull: "📁 फुल वीडियो डालें", menuShort: "⚡ शॉर्ट वीडियो डालें",
-                fullModalTitle: "फुल वीडियो जानकारी भरें", shortModalTitle: "शॉर्ट वीडियो जानकारी भरें", liveModalTitle: "लाइव जानकारी भरें",
-                titleLabel: "टाइटल (Title):", descLabel: "विवरण (Description):", tagsLabel: "हैशटैग (Hashtags):",
-                cancelBtn: "रद्द करें", saveBtn: "आगे बढ़ें / सेव करें",
-                fullVideoType: "फुल वीडियो", shortVideoType: "शॉर्ट वीडियो", liveStreamType: "🔴 लाइव स्ट्रीम",
-                defaultVideoTitle: "शिवालय दर्शन", defaultVideoDesc: "भक्तिमय वीडियो",
-                newUploadNotif: "नया अपलोड!", uploadedText: "अपलोड किया है।",
-                successUploadAlert: "सफल! आपका वीडियो सफलतापूर्वक सेव हो गया है।",
-                confirmDelete: "क्या आप इस वीडियो को डिलीट करना चाहते हैं?",
-                noHistory: "कोई हिस्ट्री उपलब्ध नहीं है.",
-                uploadedBy: "अपलोडकर्ता", playBtn: "▶ प्ले", deleteBtn: "🗑️ डिलीट",
-                viewersWatching: "👁️ 156 Viewers Watching Live",
-                liveEnded: "👁️ Live Stream Ended",
-                liveStartedNotif: "🔴 लाइव शुरू!", liveStartedText: "लाइव शुरू किया है।",
-                cameraError: "कैमरा शुरू करने की अनुमति नहीं मिली: ",
-                emptyCommentAlert: "कृपया कुछ कमेंट लिखें।",
-                listenBtn: "▶ सुनें / देखें",
-                cameraSwitched: "कैमरा स्विच किया"
+                navGallery: "गॅलरी", navSchedule: "समय", navLocation: "लोकेशन", navRingtones: "रिंगटोन", navTexts: "ग्रंथ", navHistory: "हिस्ट्री"
             },
             en: {
                 appName: "MH Kapileshwar Mahadev Mandir Vilhale",
@@ -1432,49 +1339,15 @@
                 logoutText: "Change Name",
                 notifTitle: "🔔 Updates & Notices",
                 clearNotif: "Clear All",
-                noNotif: "No new notifications.",
                 galleryTitle: "1. Temple Darshan Gallery",
-                p1: "Temple Entrance", p2: "Nandi & Sabhamandap", p3: "Ancient Roof Carvings", p4: "Gabhara Darshan", p5: "Night Lighting Mandir", p6: "Shivling & Decoration",
                 scheduleTitle: "2. Aarti & Darshan Schedule",
-                aartiMorning: "Morning Aarti:", morningTime: "7:15 AM",
-                aartiEvening: "Evening Aarti:", eveningTime: "7:15 PM",
                 locationTitle: "3. Address & Location",
-                addressText: "Shri Kshetra Kapileshwar Mahadev Mandir, Vilhale, Tehsil Bhusawal, District Jalgaon - 425305.",
-                mapBtn: "View on Google Map",
                 ringtoneTitle: "4. Mahadev Ringtones & Bhakti Sounds",
-                ringtoneSearch: "🔍 Search ringtone or bhajan here...",
                 textsTitle: "5. Sacred Texts, Aartis & Verses",
-                textSearch: "🔍 Search aarti, bhajan or shlok here...",
                 liveMainTitle: "🔴 Temple Live Darshan & Aarti",
-                mandirLiveTitle: "Shri Kapileshwar Mahadev Mandir Live",
-                liveSubText: "Click on (+) in the middle to start the camera",
-                stopLiveBtn: "⏹️ Stop Live",
-                switchCamBtn: "🔄 Switch Camera",
-                commentPlaceholder: "Write a comment...",
-                sendBtn: "Send",
                 historyTitle: "📂 My Upload & Live History",
-                historySub: "Uploaded videos and live streams of all users will appear here with their DP and name.",
                 donationTitle: "7. Donation",
-                donationText: "You can contribute for temple development. Contact temple trust for more info.",
-                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navRingtones: "Ringtones", navTexts: "Texts", navLive: "Live", navHistory: "History",
-                menuLive: "🔴 Start Mandir Aarti Live", menuFull: "📁 Upload Full Video", menuShort: "⚡ Upload Short Video",
-                fullModalTitle: "Fill Full Video Details", shortModalTitle: "Fill Short Video Details", liveModalTitle: "Fill Live Details",
-                titleLabel: "Title:", descLabel: "Description:", tagsLabel: "Hashtags:",
-                cancelBtn: "Cancel", saveBtn: "Save / Proceed",
-                fullVideoType: "Full Video", shortVideoType: "Short Video", liveStreamType: "🔴 Live Stream",
-                defaultVideoTitle: "Shivalay Darshan", defaultVideoDesc: "Devotional Video",
-                newUploadNotif: "New Upload!", uploadedText: "has uploaded.",
-                successUploadAlert: "Success! Your video has been saved successfully.",
-                confirmDelete: "Do you want to delete this video?",
-                noHistory: "No history available.",
-                uploadedBy: "Uploaded By", playBtn: "▶ Play", deleteBtn: "🗑️ Delete",
-                viewersWatching: "👁️ 156 Viewers Watching Live",
-                liveEnded: "👁️ Live Stream Ended",
-                liveStartedNotif: "🔴 Live Started!", liveStartedText: "started live streaming.",
-                cameraError: "Camera permission denied: ",
-                emptyCommentAlert: "Please write a comment.",
-                listenBtn: "▶ Listen / Watch",
-                cameraSwitched: "Camera Switched"
+                navGallery: "Gallery", navSchedule: "Schedule", navLocation: "Location", navRingtones: "Ringtones", navTexts: "Texts", navHistory: "History"
             }
         };
 
@@ -1489,53 +1362,14 @@
             document.getElementById('t_logoutText').innerText = t.logoutText;
             document.getElementById('t_notifTitle').innerText = t.notifTitle;
             document.getElementById('t_clearNotif').innerText = t.clearNotif;
-            
-            // गॅलरी
             document.getElementById('t_galleryTitle').innerText = t.galleryTitle;
-            document.getElementById('t_p1').innerText = t.p1;
-            document.getElementById('t_p2').innerText = t.p2;
-            document.getElementById('t_p3').innerText = t.p3;
-            document.getElementById('t_p4').innerText = t.p4;
-            document.getElementById('t_p5').innerText = t.p5;
-            document.getElementById('t_p6').innerText = t.p6;
-
-            // वेळपत्रक
             document.getElementById('t_scheduleTitle').innerText = t.scheduleTitle;
-            document.getElementById('t_aartiMorning').innerText = t.aartiMorning;
-            document.getElementById('t_aartiEvening').innerText = t.aartiEvening;
-
-            // लोकेशन
             document.getElementById('t_locationTitle').innerText = t.locationTitle;
-            document.getElementById('t_addressText').innerText = t.addressText;
-            document.getElementById('t_mapBtn').innerText = t.mapBtn;
-
-            // रिंगटोन व ग्रंथ
             document.getElementById('t_ringtoneTitle').innerText = t.ringtoneTitle;
-            document.getElementById('ringtoneSearch').placeholder = t.ringtoneSearch;
             document.getElementById('t_textsTitle').innerText = t.textsTitle;
-            document.getElementById('textSearch').placeholder = t.textSearch;
-
-            // लाईव्ह
             document.getElementById('t_liveMainTitle').innerText = t.liveMainTitle;
-            document.getElementById('t_mandirLiveTitle').innerText = t.mandirLiveTitle;
-            document.getElementById('t_liveSubText').innerText = t.liveSubText;
-            document.getElementById('t_stopLiveBtn').innerText = t.stopLiveBtn;
-            document.getElementById('t_switchCamBtn').innerText = t.switchCamBtn;
-            document.getElementById('userCommentInput').placeholder = t.commentPlaceholder;
-            document.getElementById('t_sendBtn').innerText = t.sendBtn;
-
-            // हिस्ट्री व देणगी
             document.getElementById('t_historyTitle').innerText = t.historyTitle;
-            document.getElementById('t_historySub').innerText = t.historySub;
             document.getElementById('t_donationTitle').innerText = t.donationTitle;
-            document.getElementById('t_donationText').innerText = t.donationText;
-
-            // मेनू बटन्स
-            document.getElementById('t_menuLive').innerText = t.menuLive;
-            document.getElementById('t_menuFull').innerText = t.menuFull;
-            document.getElementById('t_menuShort').innerText = t.menuShort;
-
-            // बॉटम नॅव्हिगेशन
             document.getElementById('t_navGallery').innerText = t.navGallery;
             document.getElementById('t_navSchedule').innerText = t.navSchedule;
             document.getElementById('t_navLocation').innerText = t.navLocation;
