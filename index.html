@@ -382,8 +382,8 @@
         }
 
         .comment-dp {
-            width: 22px;
-            height: 22px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             object-fit: cover;
         }
@@ -411,39 +411,67 @@
             cursor: pointer;
         }
 
-        .history-item-card {
+        /* युट्यूब सारखा हुबेहूब व्हिडिओ कार्ड डिझाईन */
+        .youtube-video-card {
             background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .youtube-video-card:hover {
+            transform: translateY(-2px);
+        }
+        .yt-thumb-container {
+            width: 100%;
+            height: 180px;
+            position: relative;
+            background: #000;
+        }
+        .yt-thumb-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .yt-card-details {
+            display: flex;
             padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            gap: 10px;
+        }
+        .yt-card-meta {
+            flex: 1;
+        }
+        .yt-card-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #222;
+            margin: 0 0 4px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .yt-card-channel {
             font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: #555;
+            margin: 0;
         }
-
-        .history-info h4 {
-            margin: 0 0 5px 0;
-            color: #b71c1c;
-            font-size: 13px;
-        }
-
-        .history-uploader-row {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 3px;
+        .yt-card-time {
+            font-size: 11px;
+            color: #888;
+            margin: 2px 0 0 0;
         }
 
         .history-actions {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
+            gap: 6px;
+            padding: 0 10px 10px 10px;
         }
 
-        .btn-play { background: #2e7d32; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 11px; }
-        .btn-delete { background: #c62828; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 11px; }
+        .btn-play { background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; flex: 1; }
+        .btn-delete { background: #c62828; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
 
         .video-tabs {
             display: flex;
@@ -565,6 +593,8 @@
             max-width: 350px;
             text-align: left;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-content-box input, .modal-content-box textarea {
@@ -575,6 +605,31 @@
             border-radius: 4px;
             font-size: 12px;
             box-sizing: border-box;
+        }
+
+        .thumbnail-upload-box {
+            width: 100%;
+            height: 110px;
+            border: 2px dashed #b71c1c;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background: #fafafa;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .thumbnail-upload-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .modal-buttons {
@@ -653,7 +708,7 @@
         .btn-public-type { background: #ff9800; color: white; }
         .btn-admin-type { background: #c62828; color: white; }
 
-        /* यूट्यूब सारखा ॲडव्हान्स व्हिडिओ प्लेअर मॉडेल डिझाईन */
+        /* युट्यूब सारखा ॲडव्हान्स व्हिडिओ प्लेअर मॉडेल डिझाईन */
         .youtube-player-modal {
             display: none;
             position: fixed;
@@ -956,10 +1011,18 @@
         <input type="file" id="shortVideoFileInput" accept="video/*" style="display:none;" onchange="prepareVideoUpload(this, 'short')">
     </div>
 
-    <!-- अपलोड मॉडेल -->
+    <!-- अपलोड मॉडेल (थंबनेल अपलोड फिचरसह) -->
     <div id="uploadModal" class="modal">
         <div class="modal-content-box">
             <h3 id="modalHeaderTitle" style="color:#b71c1c; margin-top:0; font-size:14px;">माहिती भरा</h3>
+            
+            <label style="font-size:11px; font-weight:bold;">थंबनेल (Thumbnail) अपलोड करा:</label>
+            <div class="thumbnail-upload-box" onclick="document.getElementById('thumbnailFileInput').click()">
+                <span id="thumbPlaceholderText" style="font-size:11px; color:#666;">📸 थंबनेल फोटो निवडा</span>
+                <img id="thumbPreviewImg" src="" alt="Thumbnail">
+            </div>
+            <input type="file" id="thumbnailFileInput" accept="image/*" style="display:none;" onchange="previewThumbnail(this)">
+
             <label id="t_titleLabel" style="font-size:11px; font-weight:bold;">टायटल (Title):</label>
             <input type="text" id="inputVideoTitle" placeholder="उदा. महाकाल आरती दर्शन">
             
@@ -984,7 +1047,7 @@
         </div>
     </div>
 
-    <!-- युट्यूब सारखा ॲडव्हान्स व्हिडिओ प्लेअर मॉडेल (फुलेस्ट फिचर्ससह) -->
+    <!-- युट्यूब सारखा ॲडव्हान्स व्हिडिओ प्लेअर मॉडेल -->
     <div id="youtubePlayerModal" class="youtube-player-modal">
         <div class="yt-player-header">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1031,7 +1094,8 @@
 
     <script>
         let currentUploadType = '';
-        let pendingVideoBase64 = '';
+        let pendingVideoObjectUrl = '';
+        let pendingThumbnailBase64 = '';
         let loggedInUserName = '';
         let loggedInUserDp = '';
         let tempDpBase64 = '';
@@ -1092,6 +1156,20 @@
                     preview.src = tempDpBase64;
                     preview.style.display = 'block';
                     document.getElementById('dpPlaceholderText').style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewThumbnail(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    pendingThumbnailBase64 = e.target.result;
+                    const preview = document.getElementById('thumbPreviewImg');
+                    preview.src = pendingThumbnailBase64;
+                    preview.style.display = 'block';
+                    document.getElementById('thumbPlaceholderText').style.display = 'none';
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -1278,24 +1356,25 @@
             document.getElementById('inputVideoTitle').value = '';
             document.getElementById('inputVideoDesc').value = '';
             document.getElementById('inputVideoTags').value = '';
+            document.getElementById('thumbPreviewImg').style.display = 'none';
+            document.getElementById('thumbPlaceholderText').style.display = 'block';
+            pendingThumbnailBase64 = '';
             document.getElementById('modalHeaderTitle').innerText = translations[currentLang][typeKey + 'ModalTitle'] || 'माहिती भरा';
             document.getElementById('uploadModal').style.display = 'flex';
         }
 
         function closeUploadModal() {
             document.getElementById('uploadModal').style.display = 'none';
-            pendingVideoBase64 = '';
+            pendingVideoObjectUrl = '';
+            pendingThumbnailBase64 = '';
         }
 
         function prepareVideoUpload(input, typeKey) {
             document.getElementById('createMenuBox').style.display = 'none';
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingVideoBase64 = e.target.result;
-                    openUploadModal(typeKey);
-                };
-                reader.readAsDataURL(input.files[0]);
+                // युट्यूब सारखा व्हिडिओ प्ले होण्यासाठी ऑब्जेक्ट URL वापरली आहे
+                pendingVideoObjectUrl = URL.createObjectURL(input.files[0]);
+                openUploadModal(typeKey);
             }
         }
 
@@ -1303,6 +1382,7 @@
             const title = document.getElementById('inputVideoTitle').value.trim() || 'शिवालय दर्शन';
             const desc = document.getElementById('inputVideoDesc').value.trim() || 'भक्तीमय व्हिडिओ';
             const tags = document.getElementById('inputVideoTags').value.trim() || '#Mahadev';
+            let finalThumbnail = pendingThumbnailBase64 || 'photo1.jpg';
             
             closeUploadModal();
 
@@ -1310,13 +1390,13 @@
                 startLiveCameraStream(title, desc, tags);
             } else {
                 let typeNameText = currentUploadType === 'full' ? 'फुल व्हिडिओ' : 'शॉर्ट व्हिडिओ';
-                await saveHistoryItemToFirebase(typeNameText, title, desc, tags, pendingVideoBase64, loggedInUserName, loggedInUserDp, false);
+                await saveHistoryItemToFirebase(typeNameText, title, desc, tags, pendingVideoObjectUrl, finalThumbnail, loggedInUserName, loggedInUserDp, false);
                 addFirebaseNotification('नवीन अपलोड!', `${loggedInUserName} "${title}" (${typeNameText}) अपलोड केला आहे.`);
                 alert('यशस्वी! तुमचे व्हिडिओ यशस्वीरित्या ऑनलाईन सेव्ह झाले आहे.');
             }
         }
 
-        async function saveHistoryItemToFirebase(type, title, desc, tags, url, uploaderName, uploaderDp, isLive) {
+        async function saveHistoryItemToFirebase(type, title, desc, tags, url, thumbnail, uploaderName, uploaderDp, isLive) {
             if(!window.db) return;
             const { collection, addDoc } = window.firebaseCols;
             try {
@@ -1327,6 +1407,7 @@
                     desc: desc,
                     tags: tags,
                     url: url,
+                    thumbnail: thumbnail,
                     uploader: uploaderName,
                     dp: uploaderDp,
                     isLive: isLive,
@@ -1376,19 +1457,18 @@
 
             filtered.forEach(item => {
                 const card = document.createElement('div');
-                card.className = 'history-item-card';
+                card.className = 'youtube-video-card';
                 card.innerHTML = `
-                    <div class="history-info">
-                        <h4>${item.title}</h4>
-                        <div class="history-uploader-row">
-                            <img class="comment-dp" src="${item.dp || 'photo1.jpg'}" alt="DP">
-                            <p style="margin:0;"><strong>टाकणारे:</strong> <span style="color:#2e7d32; font-weight:bold;">${item.uploader || 'Unknown'}</span></p>
-                        </div>
-                        <p style="margin:2px 0;"><strong>वर्णन:</strong> ${item.desc}</p>
-                        <p style="margin:2px 0;"><strong>हॅशटॅग:</strong> <span style="color:#d84315;">${item.tags}</span></p>
+                    <div class="yt-thumb-container" onclick="openYoutubePlayer('${item.id}', '${item.url || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">
+                        <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
                     </div>
-                    <div class="history-actions">
-                        ${item.url ? `<button class="btn-play" onclick="openYoutubePlayer('${item.id}', '${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">▶ प्ले</button>` : ''}
+                    <div class="yt-card-details">
+                        <img class="comment-dp" src="${item.dp || 'photo1.jpg'}" alt="DP">
+                        <div class="yt-card-meta">
+                            <h4 class="yt-card-title">${item.title}</h4>
+                            <p class="yt-card-channel">${item.uploader || 'Unknown'}</p>
+                            <p class="yt-card-time">${item.tags}</p>
+                        </div>
                     </div>
                 `;
                 container.appendChild(card);
@@ -1404,19 +1484,21 @@
             }
             history.forEach(item => {
                 const card = document.createElement('div');
-                card.className = 'history-item-card';
+                card.className = 'youtube-video-card';
                 card.innerHTML = `
-                    <div class="history-info">
-                        <h4>${item.type}: ${item.title}</h4>
-                        <div class="history-uploader-row">
-                            <img class="comment-dp" src="${item.dp || 'photo1.jpg'}" alt="DP">
-                            <p style="margin:0;"><strong>टाकणारे:</strong> <span style="color:#2e7d32; font-weight:bold;">${item.uploader || 'Unknown'}</span></p>
+                    <div class="yt-thumb-container">
+                        <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
+                    </div>
+                    <div class="yt-card-details">
+                        <img class="comment-dp" src="${item.dp || 'photo1.jpg'}" alt="DP">
+                        <div class="yt-card-meta">
+                            <h4 class="yt-card-title">${item.type}: ${item.title}</h4>
+                            <p class="yt-card-channel">${item.uploader || 'Unknown'}</p>
+                            <p class="yt-card-time">${item.desc} | ${item.tags}</p>
                         </div>
-                        <p style="margin:2px 0;"><strong>वर्णन:</strong> ${item.desc}</p>
-                        <p style="margin:2px 0;"><strong>हॅशटॅग:</strong> <span style="color:#d84315;">${item.tags}</span></p>
                     </div>
                     <div class="history-actions">
-                        ${item.url ? `<button class="btn-play" onclick="openYoutubePlayer('${item.id}', '${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">▶ प्ले</button>` : ''}
+                        ${item.url ? `<button class="btn-play" onclick="openYoutubePlayer('${item.id}', '${item.url}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">▶ प्ले करा</button>` : ''}
                         <button class="btn-delete" onclick="deleteHistoryItem(${item.id})">🗑️ डिलीट</button>
                     </div>
                 `;
@@ -1426,6 +1508,10 @@
 
         /* युट्यूब सारखा आधुनिक व्हिडिओ प्लेअर कंट्रोल्स */
         function openYoutubePlayer(id, url, title, desc, tags, uploader, dp) {
+            if(!url || url.trim() === '') {
+                alert('हा लाईव्ह स्ट्रीम व्हिडिओ आहे किंवा याची फाईल उपलब्ध नाही.');
+                return;
+            }
             currentPlayingVideoId = id;
             document.getElementById('ytPlayerTitle').innerText = title;
             document.getElementById('ytPlayerDesc').innerText = desc;
@@ -1467,7 +1553,6 @@
                         }
                         await setDoc(doc(window.db, "mandir_history", documentSnapshot.id), { ...data, likes: likesArr });
                         
-                        // इन्स्टंट अपडेटसाठी लोकल लिस्ट अपडेट करा
                         data.likes = likesArr;
                         updateLikeButtonUI();
                     }
@@ -1561,7 +1646,7 @@
                 controlsRow.style.display = 'flex';
                 viewerText.innerHTML = "👁️ 156 Viewers Watching Live";
                 
-                await saveHistoryItemToFirebase("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", loggedInUserName, loggedInUserDp, true);
+                await saveHistoryItemToFirebase("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", pendingThumbnailBase64 || 'photo1.jpg', loggedInUserName, loggedInUserDp, true);
                 addFirebaseNotification("🔴 लाईव्ह सुरू!", `${loggedInUserName} यांनी "${title}" लाईव्ह सुरू केली आहे!`);
             } catch (err) {
                 alert("कॅमेरा सुरू करण्याची परवानगी मिळाली नाही: " + err.message);
