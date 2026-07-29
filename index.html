@@ -652,6 +652,73 @@
         }
         .btn-public-type { background: #ff9800; color: white; }
         .btn-admin-type { background: #c62828; color: white; }
+
+        /* यूट्यूब सारखा ॲडव्हान्स व्हिडिओ प्लेअर मॉडेल डिझाईन */
+        .youtube-player-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .yt-player-header {
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.8);
+            color: white;
+        }
+        .yt-player-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: black;
+        }
+        .yt-player-body video {
+            width: 100%;
+            max-height: 60vh;
+            background: black;
+            outline: none;
+        }
+        .yt-player-footer {
+            background: #181818;
+            color: white;
+            padding: 15px;
+            max-height: 35vh;
+            overflow-y: auto;
+        }
+        .yt-action-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: 10px;
+            border-top: 1px solid #333;
+            padding-top: 10px;
+        }
+        .yt-action-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .yt-action-btn.liked {
+            background: #b71c1c;
+        }
     </style>
 
     <!-- Firebase SDKs -->
@@ -917,12 +984,37 @@
         </div>
     </div>
 
-    <!-- व्हिडिओ प्लेअर मॉडेल -->
-    <div id="videoPlayerModal" class="modal">
-        <div class="modal-content-box" style="text-align:center;">
-            <h3 id="playerVideoTitle" style="color:#b71c1c; margin-top:0; font-size:14px;"></h3>
-            <video id="historyVideoElement" controls autoplay style="width:100%; max-height:250px; background:black; border-radius:4px;"></video>
-            <button onclick="closeVideoPlayer()" style="margin-top:10px; background:#b71c1c; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;" id="t_closePlayerBtn">बंद करा</button>
+    <!-- युट्यूब सारखा ॲडव्हान्स व्हिडिओ प्लेअर मॉडेल (फुलेस्ट फिचर्ससह) -->
+    <div id="youtubePlayerModal" class="youtube-player-modal">
+        <div class="yt-player-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img id="playerUploaderDp" class="comment-dp" src="photo1.jpg" alt="DP">
+                <span id="playerUploaderName" style="font-size:13px; font-weight:bold;">नावा</span>
+            </div>
+            <button onclick="closeYoutubePlayer()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✖</button>
+        </div>
+        
+        <div class="yt-player-body">
+            <video id="advancedVideoElement" controls autoplay playsinline></video>
+        </div>
+
+        <div class="yt-player-footer">
+            <h3 id="ytPlayerTitle" style="margin:0 0 5px 0; font-size:14px; color:#ffccbc;">शीर्षक</h3>
+            <p id="ytPlayerDesc" style="margin:0; font-size:11px; color:#aaa;"></p>
+            <p id="ytPlayerTags" style="margin:4px 0 0 0; font-size:11px; color:#ff9800;"></p>
+            
+            <div class="yt-action-bar">
+                <button id="ytLikeBtn" class="yt-action-btn" onclick="toggleVideoLike()">👍 <span id="ytLikeCount">0</span></button>
+                <button class="yt-action-btn" onclick="document.getElementById('ytCommentInput').focus()">💬 कमेंट</button>
+            </div>
+
+            <div style="margin-top:10px;">
+                <div id="ytCommentList" style="max-height:80px; overflow-y:auto; font-size:11px; background:#222; padding:5px; border-radius:4px; margin-bottom:5px;"></div>
+                <div class="comment-input-row">
+                    <input type="text" id="ytCommentInput" placeholder="सार्वजनिक कमेंट लिहा...">
+                    <button onclick="sendYtComment()">पाठवा</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -946,6 +1038,7 @@
         let currentLang = 'mr';
         let globalHistoryList = [];
         let currentVideoTab = 'full';
+        let currentPlayingVideoId = null;
 
         window.onload = function() {
             let savedName = localStorage.getItem('mandir_app_username');
@@ -1111,6 +1204,14 @@
                 comments.sort((a, b) => a.id - b.id);
                 renderCommentsUI(comments);
             });
+
+            onSnapshot(collection(window.db, "mandir_videocomments"), (snapshot) => {
+                let vcomments = [];
+                snapshot.forEach((docSnap) => {
+                    vcomments.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                renderYtCommentsUI(vcomments);
+            });
         }
 
         async function addFirebaseNotification(title, message) {
@@ -1146,7 +1247,6 @@
                 item.className = 'notif-item';
                 item.innerHTML = `<strong>${n.title}</strong><br>${n.message} <span style="font-size:9px; color:#888; float:right;">${n.time}</span>`;
                 
-                // नोटिफिकेशनवर क्लिक केल्यावर संबंधित सेक्शनवर जाण्याची सुविधा
                 item.onclick = function() {
                     document.getElementById('notificationDropdown').style.display = 'none';
                     if(n.title.includes('लाईव्ह') || n.title.includes('Live')) {
@@ -1229,7 +1329,8 @@
                     url: url,
                     uploader: uploaderName,
                     dp: uploaderDp,
-                    isLive: isLive
+                    isLive: isLive,
+                    likes: []
                 });
             } catch(e) { console.error("Firebase save error:", e); }
         }
@@ -1287,7 +1388,7 @@
                         <p style="margin:2px 0;"><strong>हॅशटॅग:</strong> <span style="color:#d84315;">${item.tags}</span></p>
                     </div>
                     <div class="history-actions">
-                        ${item.url ? `<button class="btn-play" onclick="playHistoryVideo('${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}')">▶ प्ले</button>` : ''}
+                        ${item.url ? `<button class="btn-play" onclick="openYoutubePlayer('${item.id}', '${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">▶ प्ले</button>` : ''}
                     </div>
                 `;
                 container.appendChild(card);
@@ -1315,7 +1416,7 @@
                         <p style="margin:2px 0;"><strong>हॅशटॅग:</strong> <span style="color:#d84315;">${item.tags}</span></p>
                     </div>
                     <div class="history-actions">
-                        ${item.url ? `<button class="btn-play" onclick="playHistoryVideo('${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}')">▶ प्ले</button>` : ''}
+                        ${item.url ? `<button class="btn-play" onclick="openYoutubePlayer('${item.id}', '${item.url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">▶ प्ले</button>` : ''}
                         <button class="btn-delete" onclick="deleteHistoryItem(${item.id})">🗑️ डिलीट</button>
                     </div>
                 `;
@@ -1323,19 +1424,112 @@
             });
         }
 
-        function playHistoryVideo(url, title) {
-            document.getElementById('playerVideoTitle').innerText = title;
-            const videoElem = document.getElementById('historyVideoElement');
+        /* युट्यूब सारखा आधुनिक व्हिडिओ प्लेअर कंट्रोल्स */
+        function openYoutubePlayer(id, url, title, desc, tags, uploader, dp) {
+            currentPlayingVideoId = id;
+            document.getElementById('ytPlayerTitle').innerText = title;
+            document.getElementById('ytPlayerDesc').innerText = desc;
+            document.getElementById('ytPlayerTags').innerText = tags;
+            document.getElementById('playerUploaderName').innerText = uploader;
+            document.getElementById('playerUploaderDp').src = dp;
+            
+            const videoElem = document.getElementById('advancedVideoElement');
             videoElem.src = url;
-            document.getElementById('videoPlayerModal').style.display = 'flex';
-            videoElem.play().catch(e => console.log("Autoplay prevented:", e));
+            
+            updateLikeButtonUI();
+            document.getElementById('youtubePlayerModal').style.display = 'flex';
+            videoElem.play().catch(e => console.log("Autoplay error:", e));
         }
 
-        function closeVideoPlayer() {
-            document.getElementById('videoPlayerModal').style.display = 'none';
-            const videoElem = document.getElementById('historyVideoElement');
+        function closeYoutubePlayer() {
+            document.getElementById('youtubePlayerModal').style.display = 'none';
+            const videoElem = document.getElementById('advancedVideoElement');
             videoElem.pause();
             videoElem.src = "";
+            currentPlayingVideoId = null;
+        }
+
+        async function toggleVideoLike() {
+            if(!currentPlayingVideoId || !window.db) return;
+            const { collection, getDocs, doc, setDoc } = window.firebaseCols;
+            
+            try {
+                const querySnapshot = await getDocs(collection(window.db, "mandir_history"));
+                querySnapshot.forEach(async (documentSnapshot) => {
+                    let data = documentSnapshot.data();
+                    if(data.id == currentPlayingVideoId) {
+                        let likesArr = data.likes || [];
+                        let index = likesArr.indexOf(loggedInUserName);
+                        if(index > -1) {
+                            likesArr.splice(index, 1);
+                        } else {
+                            likesArr.push(loggedInUserName);
+                        }
+                        await setDoc(doc(window.db, "mandir_history", documentSnapshot.id), { ...data, likes: likesArr });
+                        
+                        // इन्स्टंट अपडेटसाठी लोकल लिस्ट अपडेट करा
+                        data.likes = likesArr;
+                        updateLikeButtonUI();
+                    }
+                });
+            } catch(e) { console.error("Like error:", e); }
+        }
+
+        function updateLikeButtonUI() {
+            let item = globalHistoryList.find(i => i.id == currentPlayingVideoId);
+            if(item) {
+                let likes = item.likes || [];
+                document.getElementById('ytLikeCount').innerText = likes.length;
+                let btn = document.getElementById('ytLikeBtn');
+                if(likes.includes(loggedInUserName)) {
+                    btn.classList.add('liked');
+                } else {
+                    btn.classList.remove('liked');
+                }
+            }
+        }
+
+        async function sendYtComment() {
+            const input = document.getElementById('ytCommentInput');
+            const val = input.value.trim();
+            if(val !== "" && currentPlayingVideoId) {
+                if(!window.db) return;
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_videocomments"), {
+                        videoId: currentPlayingVideoId,
+                        name: loggedInUserName,
+                        dp: loggedInUserDp,
+                        text: val,
+                        id: Date.now()
+                    });
+                    input.value = "";
+                } catch(e) { console.error("Video comment error:", e); }
+            }
+        }
+
+        function renderYtCommentsUI(vcomments) {
+            const listContainer = document.getElementById('ytCommentList');
+            if(!listContainer) return;
+            listContainer.innerHTML = '';
+            
+            let filtered = vcomments.filter(c => c.videoId == currentPlayingVideoId);
+            if(filtered.length === 0) {
+                listContainer.innerHTML = `<div style="color:#777; text-align:center;">कोणतीही कमेंट नाही. पहिली कमेंट करा!</div>`;
+                return;
+            }
+
+            filtered.forEach(c => {
+                const row = document.createElement('div');
+                row.className = 'comment-item-row';
+                row.style.borderBottom = '1px solid #333';
+                row.innerHTML = `
+                    <img class="comment-dp" src="${c.dp || 'photo1.jpg'}" alt="DP">
+                    <div style="color:white;"><strong>${c.name}:</strong> ${c.text}</div>
+                `;
+                listContainer.appendChild(row);
+            });
+            listContainer.scrollTop = listContainer.scrollHeight;
         }
 
         let mediaStream = null;
@@ -1415,6 +1609,7 @@
 
         function renderCommentsUI(comments) {
             const area = document.getElementById('commentArea');
+            if(!area) return;
             area.innerHTML = '';
             comments.forEach(c => {
                 const div = document.createElement('div');
