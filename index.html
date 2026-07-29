@@ -335,6 +335,7 @@
             font-size: 12px;
             white-space: pre-line;
             color: #444;
+            line-height: 1.7;
         }
 
         .live-container {
@@ -977,10 +978,10 @@
             <div id="ringtoneListContainer"></div>
         </div>
 
-        <!-- ५. ग्रंथ -->
+        <!-- ५. ग्रंथ व मंदिर निबंध माहिती -->
         <div id="section-texts" class="section-box">
-            <h2 id="t_textsTitle">५. पवित्र ग्रंथ, आरत्या व श्लोक</h2>
-            <input type="text" id="textSearch" class="search-box" placeholder="🔍 आरती, भजन किंवा श्लोक येथे सर्च करा..." onkeyup="filterTexts()">
+            <h2 id="t_textsTitle">५. पवित्र ग्रंथ, आरत्या, श्लोक व मंदिराचा निबंध माहिती</h2>
+            <input type="text" id="textSearch" class="search-box" placeholder="🔍 आरती, भजन, श्लोक किंवा निबंध येथे सर्च करा..." onkeyup="filterTexts()">
             <div id="textsListContainer"></div>
         </div>
 
@@ -1896,11 +1897,23 @@
             { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.youtube.com/results?search_query=Shiv+Tandav+Stotram+Shankar+Mahadevan" }
         ];
 
+        // येथे मंदिराची माहिती / निबंध स्वरूपात डेटा ॲड केला आहे
         const sacredTextsData = [
             {
                 category: "🕯️ श्री शंकराची आरती",
                 title: "जय देव जय देव जय श्री शंकरा",
                 content: `जय देव जय देव जय श्री शंकरा । आरती ओवाळू कपूरगौरा ॥ धृ ॥`
+            },
+            {
+                category: "📜 श्री कपिलेश्वर महादेव मंदिर: एक परिपूर्ण माहिती / निबंध",
+                title: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे - निबंध माहिती",
+                content: `महाराष्ट्रातील जळगाव जिल्ह्यातील भुसावळ तालुक्यात असलेले 'श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे' हे एक अत्यंत पवित्र, आध्यात्मिक आणि ऐतिहासिक श्रद्धास्थान आहे. निसर्गाच्या सानिध्यात आणि शांत वातावरणात वसलेले हे मंदिर भगवान शंकराला (महादेवांना) समर्पित आहे. 
+
+परिसराची महती:
+या मंदिराची वास्तुकला आणि प्राचीन नक्षीकाम लक्षवेधून घेणारे आहे. मंदिराच्या गाभाऱ्यात सुंदर पिंडी विराजमान असून, येथे वर्षभर भाविकांची अफाट गर्दी असते. विशेषतः महाशिवरात्री, श्रावण महिना आणि प्रत्येक सोमवारी येथे परिसरातील व दूरदूरवरून भाविक महादेवाचे दर्शन घेण्यासाठी आणि अभिषेक करण्यासाठी येतात.
+
+धार्मिक व सांस्कृतिक महत्त्व:
+मंदिरामध्ये नियमितपणे प्रातःकाळ व संध्याकाळची आरती, भजन, कीर्तन आणि धार्मिक अनुष्ठान पार पडतात. विल्होळे गावाच्या या पवित्र तीर्थक्षेत्रामुळे गावाला एक वेगळी आध्यात्मिक ओळख मिळाली आहे. येथे येणाऱ्या प्रत्येक भक्ताला असीम शांतता आणि मानसिक समाधान लाभते. ट्रस्टच्या वतीने मंदिराचा विकास, स्वच्छता आणि येणाऱ्या भाविकांच्या सुविधांची उत्तम काळजी घेतली जाते.`
             }
         ];
 
@@ -1950,7 +1963,7 @@
 
         function filterTexts() {
             const query = document.getElementById('textSearch').value.toLowerCase();
-            const filtered = sacredTextsData.filter(item => item.title.toLowerCase().includes(query));
+            const filtered = sacredTextsData.filter(item => item.title.toLowerCase().includes(query) || item.content.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
             renderTexts(filtered);
         }
 
@@ -1988,7 +2001,7 @@
                 scheduleTitle: "२. आरती आणि दर्शन वेळपत्रक",
                 locationTitle: "३. पत्ता व लोकेशन",
                 ringtoneTitle: "४. महादेवांच्या रिंगटोन व भक्ती ध्वनी",
-                textsTitle: "५. पवित्र ग्रंथ, आरत्या व श्लोक",
+                textsTitle: "५. पवित्र ग्रंथ, आरत्या, श्लोक व निबंध",
                 liveMainTitle: "🔴 मंदिर लाईव्ह दर्शन व आरती",
                 videosTitle: "🎥 व्हिडिओज आणि शॉर्ट्स",
                 historyTitle: "📂 माझी अपलोड व लाईव्ह हिस्ट्री",
@@ -2006,7 +2019,7 @@
                 scheduleTitle: "२. आरती और दर्शन समय सारणी",
                 locationTitle: "३. पता व लोकेशन",
                 ringtoneTitle: "४. महादेव रिंगटोन व भक्ति ध्वनि",
-                textsTitle: "५. पवित्र ग्रंथ, आरतियाँ व श्लोक",
+                textsTitle: "५. पवित्र ग्रंथ, आरतियाँ, श्लोक व निबंध",
                 liveMainTitle: "🔴 मंदिर लाइव दर्शन व आरती",
                 videosTitle: "🎥 वीडियोज़ और शॉर्ट्स",
                 historyTitle: "📂 मेरी अपलोड व लाइव हिस्ट्री",
@@ -2024,7 +2037,7 @@
                 scheduleTitle: "2. Aarti & Darshan Schedule",
                 locationTitle: "3. Address & Location",
                 ringtoneTitle: "4. Mahadev Ringtones & Bhakti Sounds",
-                textsTitle: "5. Sacred Texts, Aartis & Verses",
+                textsTitle: "5. Sacred Texts, Aartis & Essay",
                 liveMainTitle: "🔴 Temple Live Darshan & Aarti",
                 videosTitle: "🎥 Videos & Shorts",
                 historyTitle: "📂 My Upload & Live History",
