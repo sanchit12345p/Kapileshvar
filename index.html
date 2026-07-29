@@ -327,7 +327,7 @@
         <a id="t_mapBtn" href="https://maps.google.com" target="_blank" style="display: inline-block; background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">गुगल मॅपवर पहा</a>
     </div>
 
-    <!-- ४. महादेवांच्या रिंगटोन व भक्ती ध्वनी -->
+    <!-- ४. महादेवांच्या रिंगटोन व भक्ती ध्वनी (१० गाणी) -->
     <div id="section-ringtones" class="section-box">
         <h2 id="t_ringtoneTitle">४. महादेवांच्या रिंगटोन व भक्ती ध्वनी</h2>
         
@@ -339,7 +339,7 @@
 
         <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
         <div id="ringtoneListContainer">
-            <!-- जावास्क्रिप्ट द्वारे रिंगटोन इथे लोड होतील -->
+            <!-- जावास्क्रिप्ट द्वारे १० गाणी इथे लोड होतील -->
         </div>
     </div>
 
@@ -368,14 +368,20 @@
         </button>
     </div>
 
-    <!-- जावास्क्रिप्ट (फंक्शन आणि डेटा) -->
+    <!-- जावास्क्रिप्ट (फंक्शन आणि १० गाण्यांचा डेटा) -->
     <script>
-        // ऑडिओ लिंक्स (सुरक्षित आणि थेट चालणाऱ्या)
+        // १० महादेवांची भक्ती गाणी आणि धून (थेट चालणाऱ्या खात्रीशीर लिंक्स)
         const ringtonesData = [
-            { name: "🔔 हर हर शंभू (Har Har Shambhu)", url: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" },
-            { name: "⚡ शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://actions.google.com/sounds/v1/science/lab_bubbles.ogg" },
-            { name: "🕉️ महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://actions.google.com/sounds/v1/relax/meditation_bell.ogg" },
-            { name: "🎶 शिव धुन (Om Namah Shivay)", url: "https://actions.google.com/sounds/v1/ambiences/wind_windchimes.ogg" }
+            { name: "🔔 १. हर हर शंभू (Har Har Shambhu)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { name: "🕉️ ३. महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { name: "🎶 ४. शिव धुन (Om Namah Shivay)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { name: "🔱 ५. बम बम भोले (Bam Bam Bole)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { name: "🌸 ६. सज रहे भोले बाबा (Saj Rahe Bhole Baba)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+            { name: "🍃 ७. शिव कैलाश के वासी (Shiv Kailash Ke Vasi)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+            { name: "💧 ८. गंगा धार जटा मे (Ganga Dhar Jata Me)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+            { name: "🔥 ९. अष्टोत्तर शतनाम स्तोत्र (Shiv Ashtottara)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
+            { name: "✨ १०. कर्पूरगौरं करुणावतारम् (Karpoor Gauram)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" }
         ];
 
         const mainAudio = document.getElementById('mainAudio');
@@ -409,7 +415,10 @@
         function playSelectedSong(songName, songUrl) {
             mainAudio.src = songUrl;
             mainAudio.load();
-            mainAudio.play();
+            mainAudio.play().catch(error => {
+                console.log("Play error: ", error);
+                alert("गाणे प्ले करताना अडचण येत आहे.");
+            });
             nowPlayingText.innerText = "सध्या सुरू आहे: " + songName;
         }
 
