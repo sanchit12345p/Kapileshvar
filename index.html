@@ -71,7 +71,7 @@
             border: 1px solid #d84315;
         }
 
-        /* ग्लोबल लाईव्ह बझर / फ्लॅश बटण (दुसऱ्याच्या फोनमध्ये लाईव्ह दिसण्यासाठी) */
+        /* ग्लोबल लाईव्ह बझर / फ्लॅश बार */
         .global-live-alert {
             background: #ffebee;
             border: 1px solid #ffcdd2;
@@ -613,6 +613,29 @@
             display: none;
         }
     </style>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyDdoTltT76q_owd7-fFiMMPypbFdioAyiM",
+          authDomain: "kapileshwar-mandir.firebaseapp.com",
+          projectId: "kapileshwar-mandir",
+          storageBucket: "kapileshwar-mandir.firebasestorage.app",
+          messagingSenderId: "607915355395",
+          appId: "1:607915355395:web:fc1b297448bf345a350d36",
+          measurementId: "G-3P5K83XWNP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Global functions export
+        window.db = db;
+        window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc };
+    </script>
 </head>
 <body>
 
@@ -646,7 +669,7 @@
         </div>
     </div>
 
-    <!-- ग्लोबल लाईव्ह बझर बार (इतर फोनमध्ये लाईव्ह दिसण्यासाठी आणि क्लिक करून थेट लाईव्हमध्ये जाण्यासाठी) -->
+    <!-- ग्लोबल लाईव्ह बझर बार -->
     <div id="globalLiveAlertBar" class="global-live-alert">
         <div style="display:flex; align-items:center; gap:8px; cursor:pointer; flex:1;" onclick="jumpToLiveSection()">
             <span class="live-pulse-dot"></span>
@@ -842,7 +865,7 @@
         <button onclick="showSection('history', this)"><span id="t_iconHistory">📂</span><span id="t_navHistory">हिस्ट्री</span></button>
     </div>
 
-    <!-- जाॅवास्क्रिप्ट कोड -->
+    <!-- जाॅवास्क्रिप्ट कोडिंग (Firebase Live & Real-time Integration) -->
     <script>
         let currentUploadType = '';
         let pendingVideoBase64 = '';
@@ -873,12 +896,9 @@
             applyLanguage(currentLang);
             renderRingtones(ringtonesData);
             renderTexts(sacredTextsData);
-            renderHistory();
-            renderNotifications();
-            checkGlobalLiveStatus();
-
-            // दर २ सेकंदाने लाईव्ह स्टेटस चेक करण्यासाठी
-            setInterval(checkGlobalLiveStatus, 2000);
+            
+            // Firebase Real-time listeners initialize
+            initFirebaseRealtimeListeners();
         };
 
         function previewDP(input) {
@@ -912,7 +932,7 @@
             document.getElementById('displayUserName').innerText = loggedInUserName;
             document.getElementById('headerUserDp').src = loggedInUserDp;
             document.getElementById('nameGateModal').style.display = 'none';
-            addNotification('स्वागत आहे!', `${loggedInUserName} यांनी ॲपमध्ये प्रवेश केला आहे.`);
+            addFirebaseNotification('स्वागत आहे!', `${loggedInUserName} यांनी ॲपमध्ये प्रवेश केला आहे.`);
         }
 
         function logoutUser() {
@@ -939,32 +959,76 @@
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
 
-        function getNotificationsData() {
-            let data = localStorage.getItem('mandir_notifications_v1');
-            return data ? JSON.parse(data) : [];
-        }
+        // --- FIREBASE REALTIME SYNC FUNCTIONS ---
+        function initFirebaseRealtimeListeners() {
+            if(!window.db) return;
+            const { collection, onSnapshot } = window.firebaseCols;
 
-        function addNotification(title, message) {
-            let notifs = getNotificationsData();
-            notifs.unshift({
-                id: Date.now(),
-                title: title,
-                message: message,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            // 1. History & Live Streams Realtime Listener
+            onSnapshot(collection(window.db, "mandir_history"), (snapshot) => {
+                let historyList = [];
+                snapshot.forEach((docSnap) => {
+                    historyList.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                // Sort by id descending (latest first)
+                historyList.sort((a, b) => b.id - a.id);
+                renderHistoryUI(historyList);
+
+                // Check if any active live stream exists online
+                let activeLive = historyList.find(item => item.type === "🔴 लाईव्ह स्ट्रीम" && item.isLive === true);
+                let alertBar = document.getElementById('globalLiveAlertBar');
+                let dismissed = sessionStorage.getItem('live_alert_dismissed') === 'true';
+
+                if (activeLive && !dismissed) {
+                    alertBar.style.display = 'flex';
+                    document.getElementById('globalLiveText').innerText = `${activeLive.uploader} मंदिर लाईव्ह सुरू करत आहे! पाहण्यासाठी क्लिक करा 🔴`;
+                } else {
+                    alertBar.style.display = 'none';
+                }
             });
-            localStorage.setItem('mandir_notifications_v1', JSON.stringify(notifs));
-            renderNotifications();
+
+            // 2. Notifications Realtime Listener
+            onSnapshot(collection(window.db, "mandir_notifications"), (snapshot) => {
+                let notifs = [];
+                snapshot.forEach((docSnap) => {
+                    notifs.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                notifs.sort((a, b) => b.id - a.id);
+                renderNotificationsUI(notifs);
+            });
+
+            // 3. Comments Realtime Listener
+            onSnapshot(collection(window.db, "mandir_comments"), (snapshot) => {
+                let comments = [];
+                snapshot.forEach((docSnap) => {
+                    comments.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                comments.sort((a, b) => a.id - b.id);
+                renderCommentsUI(comments);
+            });
         }
 
-        function clearNotifications() {
-            localStorage.setItem('mandir_notifications_v1', JSON.stringify([]));
-            renderNotifications();
+        async function addFirebaseNotification(title, message) {
+            if(!window.db) return;
+            const { collection, addDoc } = window.firebaseCols;
+            try {
+                await addDoc(collection(window.db, "mandir_notifications"), {
+                    id: Date.now(),
+                    title: title,
+                    message: message,
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                });
+            } catch(e) { console.error("Notif error:", e); }
         }
 
-        function renderNotifications() {
+        async function clearNotifications() {
+            // Clears local view / or optional firebase bulk delete
+            document.getElementById('notifListContainerinnerHTML').innerHTML = '';
+        }
+
+        function renderNotificationsUI(notifs) {
             const container = document.getElementById('notifListContainer');
             const badge = document.getElementById('notifBadge');
-            const notifs = getNotificationsData();
             container.innerHTML = '';
             if(notifs.length === 0) {
                 container.innerHTML = `<div class="notif-item" style="color:#777; text-align:center;">कोणतीही नवीन नोटिफिकेशन नाही.</div>`;
@@ -978,25 +1042,12 @@
                 item.className = 'notif-item';
                 item.innerHTML = `<strong>${n.title}</strong><br>${n.message} <span style="font-size:9px; color:#888; float:right;">${n.time}</span>`;
                 item.onclick = function() {
-                    if(n.title.includes('लाईव्ह') || n.title.includes('Live')) {
+                    if(n.title.includes('लाईव्ह') || n.title.includes('Live') || n.title.includes('स्वागत')) {
                         jumpToLiveSection();
                     }
                 };
                 container.appendChild(item);
             });
-        }
-
-        // लाईव्ह स्टेटस चेक करून दुसऱ्यांच्या फोनमध्ये लाल गोल फिरणारे चिन्ह दाखवणे
-        function checkGlobalLiveStatus() {
-            let isLiveActive = localStorage.getItem('mandir_is_live_active') === 'true';
-            let alertBar = document.getElementById('globalLiveAlertBar');
-            let dismissed = sessionStorage.getItem('live_alert_dismissed') === 'true';
-
-            if (isLiveActive && !dismissed) {
-                alertBar.style.display = 'flex';
-            } else {
-                alertBar.style.display = 'none';
-            }
         }
 
         function dismissGlobalLiveAlert(event) {
@@ -1016,7 +1067,7 @@
             document.getElementById('inputVideoTitle').value = '';
             document.getElementById('inputVideoDesc').value = '';
             document.getElementById('inputVideoTags').value = '';
-            document.getElementById('modalHeaderTitle').innerText = translations[currentLang][typeKey + 'ModalTitle'];
+            document.getElementById('modalHeaderTitle').innerText = translations[currentLang][typeKey + 'ModalTitle'] || 'माहिती भरा';
             document.getElementById('uploadModal').style.display = 'flex';
         }
 
@@ -1037,7 +1088,7 @@
             }
         }
 
-        function confirmAndUpload() {
+        async function confirmAndUpload() {
             const title = document.getElementById('inputVideoTitle').value.trim() || 'शिवालय दर्शन';
             const desc = document.getElementById('inputVideoDesc').value.trim() || 'भक्तीमय व्हिडिओ';
             const tags = document.getElementById('inputVideoTags').value.trim() || '#Mahadev';
@@ -1048,48 +1099,48 @@
                 startLiveCameraStream(title, desc, tags);
             } else {
                 let typeNameText = currentUploadType === 'full' ? 'फुल व्हिडिओ' : 'शॉर्ट व्हिडिओ';
-                saveHistoryItem(typeNameText, title, desc, tags, pendingVideoBase64, loggedInUserName, loggedInUserDp);
-                addNotification('नवीन अपलोड!', `${loggedInUserName} "${title}" (${typeNameText}) अपलोड केला आहे.`);
-                alert('यशस्वी! तुमचे व्हिडिओ यशस्वीरित्या सेव्ह झाले आहे.');
+                await saveHistoryItemToFirebase(typeNameText, title, desc, tags, pendingVideoBase64, loggedInUserName, loggedInUserDp, false);
+                addFirebaseNotification('नवीन अपलोड!', `${loggedInUserName} "${title}" (${typeNameText}) अपलोड केला आहे.`);
+                alert('यशस्वी! तुमचे व्हिडिओ यशस्वीरित्या ऑनलाईन सेव्ह झाले आहे.');
             }
         }
 
-        function getHistoryData() {
-            let data = localStorage.getItem('mandir_history_v5');
-            return data ? JSON.parse(data) : [
-                { id: 1, type: "🔴 LIVE", title: "Temple Aarti Live Darshan", desc: "Evening Maha Aarti", tags: "#Aarti", url: "", uploader: "Trust Admin", dp: "photo1.jpg" }
-            ];
+        async function saveHistoryItemToFirebase(type, title, desc, tags, url, uploaderName, uploaderDp, isLive) {
+            if(!window.db) return;
+            const { collection, addDoc } = window.firebaseCols;
+            try {
+                await addDoc(collection(window.db, "mandir_history"), {
+                    id: Date.now(),
+                    type: type,
+                    title: title,
+                    desc: desc,
+                    tags: tags,
+                    url: url,
+                    uploader: uploaderName,
+                    dp: uploaderDp,
+                    isLive: isLive
+                });
+            } catch(e) { console.error("Firebase save error:", e); }
         }
 
-        function saveHistoryItem(type, title, desc, tags, url, uploaderName, uploaderDp) {
-            let history = getHistoryData();
-            let newItem = {
-                id: Date.now(),
-                type: type,
-                title: title,
-                desc: desc,
-                tags: tags,
-                url: url,
-                uploader: uploaderName,
-                dp: uploaderDp
-            };
-            history.unshift(newItem);
-            localStorage.setItem('mandir_history_v5', JSON.stringify(history));
-            renderHistory();
-        }
-
-        function deleteHistoryItem(id) {
+        async function deleteHistoryItem(id) {
             if(confirm('तुम्हाला हा व्हिडिओ डिलीट करायची आहे का?')) {
-                let history = getHistoryData();
-                history = history.filter(item => item.id !== id);
-                localStorage.setItem('mandir_history_v5', JSON.stringify(history));
-                renderHistory();
+                if(!window.db) return;
+                const { collection, getDocs, doc, deleteDoc } = window.firebaseCols;
+                try {
+                    const querySnapshot = await getDocs(collection(window.db, "mandir_history"));
+                    querySnapshot.forEach(async (documentSnapshot) => {
+                        let data = documentSnapshot.data();
+                        if(data.id === id) {
+                            await deleteDoc(doc(window.db, "mandir_history", documentSnapshot.id));
+                        }
+                    });
+                } catch(e) { console.error("Delete error:", e); }
             }
         }
 
-        function renderHistory() {
+        function renderHistoryUI(history) {
             const container = document.getElementById('historyListContainer');
-            const history = getHistoryData();
             container.innerHTML = '';
             if(history.length === 0) {
                 container.innerHTML = `<p style="font-size:11px; color:#777; text-align:center;">कोणतीही हिस्ट्री उपलब्ध नाही.</p>`;
@@ -1161,12 +1212,9 @@
                 controlsRow.style.display = 'flex';
                 viewerText.innerHTML = "👁️ 156 Viewers Watching Live";
                 
-                // लाईव्ह सुरू केल्याची नोंद सर्व फोनसाठी सेव्ह करा (ज्यामुळे दुसऱ्यांच्या फोनमध्ये लाल गोल दिसेल)
-                localStorage.setItem('mandir_is_live_active', 'true');
-                sessionStorage.removeItem('live_alert_dismissed');
-
-                saveHistoryItem("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", loggedInUserName, loggedInUserDp);
-                addNotification("🔴 लाईव्ह सुरू!", `${loggedInUserName} "${title}" लाईव्ह सुरू केली आहे.`);
+                // Save active live stream to Firebase online database (triggers instant notification for all users)
+                await saveHistoryItemToFirebase("🔴 लाईव्ह स्ट्रीम", title, desc, tags, "", loggedInUserName, loggedInUserDp, true);
+                addFirebaseNotification("🔴 लाईव्ह सुरू!", `${loggedInUserName} यांनी "${title}" लाईव्ह सुरू केली आहे!`);
             } catch (err) {
                 alert("कॅमेरा सुरू करण्याची परवानगी मिळाली नाही: " + err.message);
             }
@@ -1183,8 +1231,6 @@
             document.getElementById('liveControlsRow').style.display = 'none';
             document.getElementById('viewerStatusText').innerHTML = "👁️ Live Stream Ended";
             
-            // लाईव्ह बंद झाल्याची नोंद सर्व फोनसाठी अपडेट करा
-            localStorage.setItem('mandir_is_live_active', 'false');
             document.getElementById('globalLiveAlertBar').style.display = 'none';
         }
 
@@ -1193,23 +1239,39 @@
             startLiveCameraStream("श्री कपिलेश्वर महादेव मंदिर लाईव्ह", "कॅमेरा स्विच केला", '#Live');
         }
 
-        function sendComment() {
+        async function sendComment() {
             const commentInput = document.getElementById('userCommentInput');
             const commentVal = commentInput.value.trim();
             if(commentVal !== "") {
-                const area = document.getElementById('commentArea');
-                const div = document.createElement('div');
-                div.className = 'comment-item-row';
-                div.innerHTML = `
-                    <img class="comment-dp" src="${loggedInUserDp}" alt="DP">
-                    <div><strong>${loggedInUserName}:</strong> ${commentVal}</div>
-                `;
-                area.appendChild(div);
-                area.scrollTop = area.scrollHeight;
-                commentInput.value = "";
+                if(!window.db) return;
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_comments"), {
+                        id: Date.now(),
+                        name: loggedInUserName,
+                        dp: loggedInUserDp,
+                        text: commentVal
+                    });
+                    commentInput.value = "";
+                } catch(e) { console.error("Comment error:", e); }
             } else {
                 alert("कृपया काहीतरी कमेंट लिहा.");
             }
+        }
+
+        function renderCommentsUI(comments) {
+            const area = document.getElementById('commentArea');
+            area.innerHTML = '';
+            comments.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'comment-item-row';
+                div.innerHTML = `
+                    <img class="comment-dp" src="${c.dp || 'photo1.jpg'}" alt="DP">
+                    <div><strong>${c.name}:</strong> ${c.text}</div>
+                `;
+                area.appendChild(div);
+            });
+            area.scrollTop = area.scrollHeight;
         }
 
         const ringtonesData = [
@@ -1376,9 +1438,6 @@
             document.getElementById('t_navRingtones').innerText = t.navRingtones;
             document.getElementById('t_navTexts').innerText = t.navTexts;
             document.getElementById('t_navHistory').innerText = t.navHistory;
-
-            renderNotifications();
-            renderHistory();
         }
 
         function changeLanguage(lang) {
