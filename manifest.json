@@ -1,8 +1,9 @@
 {
   "name": "MH Kapileshwar Mahadev Mandir Vilhale",
   "short_name": "Kapileshwar Mandir",
-  "start_url": "index.html",
   "display": "standalone",
+  "scope": "/",
+  "start_url": "/"
   "background_color": "#f4f4f4",
   "theme_color": "#d84315",
   "icons": [
