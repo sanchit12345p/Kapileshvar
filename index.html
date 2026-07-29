@@ -3,6 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Permax Gaming</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-card {
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            width: 320px;
+            text-align: center;
+        }
+        h2 { margin-bottom: 15px; color: #ffcc00; }
+        .admin-brand {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        button, input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: none;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background: #0056b3; }
+        .btn-private { background: #ff4757; }
+        .btn-private:hover { background: #ff6b81; }
+        input {
+            background: #2d2d2d;
+            color: white;
+            border: 1px solid #444;
+            box-sizing: border-box;
+        }
+        .hidden { display: none; }
+        #error-msg { color: #ff4d4d; font-size: 14px; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card" id="login-screen">
+        <h2>Permax Gaming</h2>
+        <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
+        
+        <p>लॉगिन प्रकार निवडा:</p>
+        <button onclick="showPublic()">Public</button>
+        <button class="btn-private" onclick="showPrivateForm()">Private (Admin)</button>
+    </div>
+
+    <!-- ॲडमिन पासवर्ड टाकण्यासाठीचा फॉर्म -->
+    <div class="login-card hidden" id="admin-form">
+        <h2>Admin Login</h2>
+        <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
+        
+        <input type="password" id="admin-code-input" placeholder="ॲडमिन कोड टाका">
+        <button onclick="verifyAdmin()">प्रवेश करा (Open)</button>
+        <button style="background:#555;" onclick="goBack()">मागे जा</button>
+        <div id="error-msg"></div>
+    </div>
+
+    <!-- डॅशबोर्ड पेज (सुरुवातीला लपलेला असेल) -->
+    <div class="login-card hidden" id="dashboard-screen">
+        <h2>डॅशबोर्ड (Dashboard)</h2>
+        <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
+        <p>स्वागत आहे! तुम्ही यशस्वीरित्या लॉग इन केले आहे.</p>
+        <button style="background:#2ed573;" onclick="logout()">बाहेर पडा (Logout)</button>
+    </div>
+
+    <script>
+        // जुने लॉगिन डेटा साफ करण्यासाठी (जर आधीचा साठलेला असेल तर)
+        localStorage.removeItem('user_session');
+
+        function showPublic() {
+            // पब्लिक क्लिक केल्यावर थेट डॅशबोर्डवर जाईल
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-screen').classList.remove('hidden');
+        }
+
+        function showPrivateForm() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('admin-form').classList.remove('hidden');
+        }
+
+        function goBack() {
+            document.getElementById('admin-form').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('admin-code-input').value = '';
+            document.getElementById('error-msg').innerText = '';
+        }
+
+        function verifyAdmin() {
+            const enteredCode = document.getElementById('admin-code-input').value;
+            const correctCode = "SANCHIT9129";
+
+            if (enteredCode === correctCode) {
+                // कोड बरोबर असल्यास डॅशबोर्ड उघडेल
+                document.getElementById('admin-form').classList.add('hidden');
+                document.getElementById('dashboard-screen').classList.remove('hidden');
+                document.getElementById('admin-code-input').value = '';
+                document.getElementById('error-msg').innerText = '';
+            } else {
+                // चुकीचा कोड असल्यास लाल रंगात 'Incorrect' दिसेल
+                document.getElementById('error-msg').innerText = "Incorrect Code!";
+            }
+        }
+
+        function logout() {
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="appTitle">MH कपिलेश्वर महादेव मंदिर विल्होळे</title>
     <style>
         body {
