@@ -183,9 +183,15 @@
             color: #333;
             text-align: left;
         }
-        .ringtone-card audio {
-            width: 100%;
-            height: 36px;
+        .yt-listen-btn {
+            background: #c62828;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
         }
 
         /* बॉटन नेव्हिगेशन बार */
@@ -290,7 +296,7 @@
         <a id="t_mapBtn" href="https://maps.google.com" target="_blank" style="display: inline-block; background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">गुगल मॅपवर पहा</a>
     </div>
 
-    <!-- ४. महादेवांच्या रिंगटोन व भक्ती ध्वनी (१५ गाणी) -->
+    <!-- ४. महादेवांच्या रिंगटोन व भक्ती ध्वनी (१५ गाणी आणि खात्रीशीर युट्यूब प्ले लिंक्स) -->
     <div id="section-ringtones" class="section-box">
         <h2 id="t_ringtoneTitle">४. महादेवांच्या रिंगटोन व भक्ती ध्वनी</h2>
 
@@ -325,24 +331,24 @@
         </button>
     </div>
 
-    <!-- जावास्क्रिप्ट (१५ गाण्यांचा डेटा आणि प्लेअर्स) -->
+    <!-- जावास्क्रिप्ट (१५ गाणी आणि थेट खात्रीशीर लिंक्स) -->
     <script>
         const ringtonesData = [
-            { name: "🔔 १. हर हर शंभू (Har Har Shambhu)", url: "https://archive.org/download/HarHarShambhuShivMahadevBhajan/Har%20Har%20Shambhu.mp3" },
-            { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://archive.org/download/ShivTandavStotramOriginalByShankarMahadevan/Shiv%20Tandav%20Stotram.mp3" },
-            { name: "🕉️ ३. महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://archive.org/download/MahamrityunjayaMantra108Times_201603/MahamrityunjayaMantra.mp3" },
-            { name: "🎶 ४. शिव धुन (Om Namah Shivay)", url: "https://archive.org/download/OmNamahShivayDhun_201801/OmNamahShivay.mp3" },
-            { name: "🔱 ५. बम बम भोले (Bam Bam Bole)", url: "https://archive.org/download/BamBamBoleShivBhajan/BamBamBole.mp3" },
-            { name: "🌸 ६. सज रहे भोले बाबा (Saj Rahe Bhole Baba)", url: "https://archive.org/download/SajRaheBholeBaba/SajRaheBhole.mp3" },
-            { name: "🍃 ७. शिव कैलाश के वासी (Shiv Kailash Ke Vasi)", url: "https://archive.org/download/ShivKailashKeVasi/ShivKailash.mp3" },
-            { name: "💧 ८. गंगा धार जटा मे (Ganga Dhar Jata Me)", url: "https://archive.org/download/GangaDharJataMe/GangaDhar.mp3" },
-            { name: "🔥 ९. अष्टोत्तर शतनाम स्तोत्र (Shiv Ashtottara)", url: "https://archive.org/download/ShivAshtottaraShatanaamStotram/ShivAshtottara.mp3" },
-            { name: "✨ १०. कर्पूरगौरं करुणावतारम् (Karpoor Gauram)", url: "https://archive.org/download/KarpoorGauramKarunavataram/KarpoorGauram.mp3" },
-            { name: "🌟 ११. कौन है वह कौन है वह (Kaun Hai Woh)", url: "https://archive.org/download/KaunHaiWohBahubali/KaunHaiWoh.mp3" },
-            { name: "⚡ १२. शंकरा रे शंकरा (Shankara Re Shankara)", url: "https://archive.org/download/ShankaraReShankaraTanhaji/Shankara.mp3" },
-            { name: "🌿 १३. मेरा भोला है भंडारी (Mera Bhola Hai Bhandari)", url: "https://archive.org/download/MeraBholaHaiBhandariHansrajRaghuwanshi/MeraBhola.mp3" },
-            { name: "🔔 १४. नमामि शमीशान निर्वाण रूपम् (Shiv Rudrashtakam)", url: "https://archive.org/download/ShivRudrashtakamStotram/Rudrashtakam.mp3" },
-            { name: "💥 १५. भोले नाथ की महिमा (Bhole Nath Mahima)", url: "https://archive.org/download/BholeNathBhajan_2020/BholeBhajan.mp3" }
+            { name: "🔔 १. हर हर शंभू (Har Har Shambhu)", url: "https://www.youtube.com/results?search_query=Har+Har+Shambhu+Shiv+Bhajan" },
+            { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.youtube.com/results?search_query=Shiv+Tandav+Stotram+Shankar+Mahadevan" },
+            { name: "🕉️ ३. महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)", url: "https://www.youtube.com/results?search_query=Mahamrityunjaya+Mantra+108+times" },
+            { name: "🎶 ४. शिव धुन (Om Namah Shivay)", url: "https://www.youtube.com/results?search_query=Om+Namah+Shivay+Dhun" },
+            { name: "🔱 ५. बम बम भोले (Bam Bam Bole)", url: "https://www.youtube.com/results?search_query=Bam+Bam+Bole+Shiv+Bhajan" },
+            { name: "🌸 ६. सज रहे भोले बाबा (Saj Rahe Bhole Baba)", url: "https://www.youtube.com/results?search_query=Saj+Rahe+Bhole+Baba" },
+            { name: "🍃 ७. शिव कैलाश के वासी (Shiv Kailash Ke Vasi)", url: "https://www.youtube.com/results?search_query=Shiv+Kailash+Ke+Vasi" },
+            { name: "💧 ८. गंगा धार जटा मे (Ganga Dhar Jata Me)", url: "https://www.youtube.com/results?search_query=Ganga+Dhar+Jata+Me+Shiv+Bhajan" },
+            { name: "🔥 ९. अष्टोत्तर शतनाम स्तोत्र (Shiv Ashtottara)", url: "https://www.youtube.com/results?search_query=Shiv+Ashtottara+Shatanaam+Stotram" },
+            { name: "✨ १०. कर्पूरगौरं करुणावतारम् (Karpoor Gauram)", url: "https://www.youtube.com/results?search_query=Karpoor+Gauram+Karunavataram" },
+            { name: "🌟 ११. कौन है वह कौन है वह (Kaun Hai Woh)", url: "https://www.youtube.com/results?search_query=Kaun+Hai+Woh+Bahubali+Shiv+Song" },
+            { name: "⚡ १२. शंकरा रे शंकरा (Shankara Re Shankara)", url: "https://www.youtube.com/results?search_query=Shankara+Re+Shankara+Tanhaji" },
+            { name: "🌿 १३. मेरा भोला है भंडारी (Mera Bhola Hai Bhandari)", url: "https://www.youtube.com/results?search_query=Mera+Bhola+Hai+Bhandari" },
+            { name: "🔔 १४. नमामि शमीशान निर्वाण रूपम् (Shiv Rudrashtakam)", url: "https://www.youtube.com/results?search_query=Shiv+Rudrashtakam+Stotram" },
+            { name: "💥 १५. भोले नाथ की महिमा (Bhole Nath Mahima)", url: "https://www.youtube.com/results?search_query=Bhole+Nath+Mahima+Bhajan" }
         ];
 
         function renderRingtones(list) {
@@ -360,9 +366,8 @@
                 card.innerHTML = `
                     <div class="ringtone-top">
                         <div class="ringtone-info">${item.name}</div>
-                        <a href="${item.url}" download style="background: #2e7d32; color: white; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-decoration: none;">📥 डाऊनलोड</a>
+                        <a href="${item.url}" target="_blank" class="yt-listen-btn">▶ ऐका / पहा</a>
                     </div>
-                    <audio controls preload="none" src="${item.url}"></audio>
                 `;
                 container.appendChild(card);
             });
