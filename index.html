@@ -259,6 +259,7 @@
             margin-bottom: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
             border: 1px solid #334155;
+            position: relative;
         }
 
         .ringtone-top {
@@ -864,8 +865,12 @@
         </div>
 
         <div id="section-ringtones" class="section-box">
-            <h2>४. महादेवांच्या रिंगटोन्स, एसएमएस ट्यून व आरत्या</h2>
-            <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="margin:0;">४. महादेवांच्या रिंगटोन्स व एसएमएस ट्यून</h2>
+                <button id="addRingtoneBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openAddRingtoneModal()">➕ रिंगटोन ऍड करा</button>
+            </div>
+            <p style="font-size:11px; color:#94a3b8; margin-top:5px;">येथून रिंगटोन ऐका आणि डाऊनलोड करा.</p>
+            <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन सर्च करा..." onkeyup="filterRingtones()">
             <div id="ringtoneListContainer"></div>
         </div>
 
@@ -967,11 +972,29 @@
         </div>
     </div>
 
+    <!-- ॲडमिनसाठी रिंगटोन ऍड करण्याचा मॉडेल -->
+    <div id="addRingtoneModal" class="modal">
+        <div class="modal-content-box">
+            <h3 style="color:#f43f5e; margin-top:0; font-size:14px;">🎵 नवीन रिंगटोन ऍड करा</h3>
+            
+            <label style="font-size:11px; font-weight:bold;">रिंगटोन फाईल निवडा (MP3):</label>
+            <input type="file" id="inputRingtoneFile" accept="audio/mp3" style="margin-bottom:10px;">
+
+            <label style="font-size:11px; font-weight:bold;">रिंगटोनचे नाव (Title):</label>
+            <input type="text" id="inputRingtoneTitle" placeholder="उदा. SMS1.mp3">
+
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="document.getElementById('addRingtoneModal').style.display='none'">रद्द करा</button>
+                <button class="btn-save" onclick="confirmAddRingtone()">ऍड करा</button>
+            </div>
+        </div>
+    </div>
+
     <div id="groupManagerModal" class="modal">
         <div class="modal-content-box">
             <h3 style="color:#2dd4bf; margin-top:0; font-size:14px;">👥 नवीन कम्युनिटी ग्रुप किंवा पर्सनल चॅट बनवा</h3>
             <p style="font-size:11px; color:#94a3b8;">ग्रुप किंवा व्यक्तीचे नाव टाका:</p>
-            <input type="text" id="newGroupNameInput" placeholder="नाव टाка...">
+            <input type="text" id="newGroupNameInput" placeholder="नाव टाका...">
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="document.getElementById('groupManagerModal').style.display='none'">बंद करा</button>
                 <button class="btn-save" style="background:#0d9488;" onclick="createNewGroupAction()">सुरू करा</button>
@@ -1056,36 +1079,16 @@
         let tempDpBase64 = '';
         let globalHistoryList = [];
         let globalGalleryList = [];
+        let globalRingtonesList = [];
         let currentVideoTab = 'full';
         let isAdminLoggedIn = false;
         let activeGroupId = null;
         let activeGroupName = '';
 
-        // अचूक २० ऑडिओ ट्रॅक्स: (५ एसएमएस रिंगटोन + १० फोन कॉलिंग रिंगटोन + ४ भजने + १ आरती)
-        let ringtonesData = [
-            { id: 1, title: 'जय श्री राम (SMS Ringtone 1)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'एसएमएस रिंगटोन' },
-            { id: 2, title: 'शिव शंभू भोलेनाथ (SMS Ringtone 2)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', category: 'एसएमएस रिंगटोन' },
-            { id: 3, title: 'हर हर महादेव ट्यून (SMS Ringtone 3)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', category: 'एसएमएस रिंगटोन' },
-            { id: 4, title: 'बम बम भोले (SMS Ringtone 4)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', category: 'एसएमएस रिंगटोन' },
-            { id: 5, title: 'महाकाल रिंगटोन (SMS Ringtone 5)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', category: 'एसएमएस रिंगटोन' },
-            
-            { id: 6, title: 'कॉलिंग ट्यून १: महाकाल कॉल रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            { id: 7, title: 'कॉलिंग ट्यून २: हर हर शंभू कॉल ट्यून', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            { id: 8, title: 'कॉलिंग ट्यून ३: भोलेनाथ डमरू रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            { id: 9, title: 'कॉलिंग ट्यून ४: शिव तांडव कॉलिंग रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            { id: 10, title: 'कॉलिंग ट्यून ५: ॐ नमः शिवाय कॉलिंग', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            { id: 11, title: 'कॉलिंग ट्यून ६: काशी विश्वनाथ रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            { id: 12, title: 'कॉलिंग ट्यून ७: केदारनाथ स्पेशल रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            { id: 13, title: 'कॉलिंग ट्यून ८: भोले भंडारी रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            { id: 14, title: 'कॉलिंग ट्यून ९: महामृत्युंजय रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            { id: 15, title: 'कॉलिंग ट्यून १०: शिवशंभू कॉलिंग ट्यून', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', category: 'फोन कॉलिंग रिंगटोन' },
-            
-            { id: 16, title: 'भजन १: हर हर शंभू महादेवाचे भजन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', category: 'शंकराची भजने' },
-            { id: 17, title: 'भजन २: शंकरा भक्तांच्या हाकेला धाव', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3', category: 'शंकराची भजने' },
-            { id: 18, title: 'भजन ३: महामृत्युंजय मंत्र धून', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', category: 'शंकराची भजने' },
-            { id: 19, title: 'भजन ४: भोले भंडारी की जय', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', category: 'शंकराची भजने' },
-            
-            { id: 20, title: 'महादेवाची विशेष आरती (Lukar Aarti)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3', category: 'महादेवाची आरती' }
+        // सुरुवातीच्या फक्त SMS1.mp3 आणि SMS2.mp3 रिंगटोन्स
+        let defaultRingtones = [
+            { id: 1, title: 'SMS1.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'एसएमएस रिंगटोन' },
+            { id: 2, title: 'SMS2.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', category: 'एसएमएस रिंगटोन' }
         ];
 
         const sacredTextsData = [
@@ -1125,9 +1128,9 @@
 
             if(isAdminLoggedIn) {
                 document.getElementById('addGalleryPhotoBtn').style.display = 'block';
+                document.getElementById('addRingtoneBtn').style.display = 'block';
             }
 
-            renderRingtones(ringtonesData);
             renderTexts(sacredTextsData);
             initFirebaseRealtimeListeners();
         };
@@ -1318,6 +1321,62 @@
             document.getElementById('statusModal').style.display = 'flex';
         }
 
+        function openAddRingtoneModal() {
+            if(!isAdminLoggedIn) {
+                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
+                return;
+            }
+            document.getElementById('addRingtoneModal').style.display = 'flex';
+        }
+
+        async function confirmAddRingtone() {
+            let titleInput = document.getElementById('inputRingtoneTitle').value.trim();
+            let fileInput = document.getElementById('inputRingtoneFile');
+
+            if(titleInput === '') {
+                alert('कृपया रिंगटोनचे नाव टाка!');
+                return;
+            }
+
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    let audioBase64 = e.target.result;
+                    if(window.db) {
+                        const { collection, addDoc } = window.firebaseCols;
+                        try {
+                            await addDoc(collection(window.db, "mandir_ringtones"), {
+                                id: Date.now(),
+                                title: titleInput,
+                                audioUrl: audioBase64,
+                                category: 'एसएमएस रिंगटोन'
+                            });
+                            alert('रिंगटोन यशस्वीरित्या ऍड झाली!');
+                            document.getElementById('inputRingtoneTitle').value = '';
+                            document.getElementById('addRingtoneModal').style.display = 'none';
+                        } catch(err) { console.error(err); }
+                    }
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                alert('कृपया MP3 फाईल निवडा!');
+            }
+        }
+
+        async function deleteRingtone(docFirebaseId) {
+            if(!isAdminLoggedIn) {
+                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
+                return;
+            }
+            if(confirm('ही रिंगटोन डिलीट करायची का?') && window.db) {
+                const { doc, deleteDoc } = window.firebaseCols;
+                try {
+                    await deleteDoc(doc(window.db, "mandir_ringtones", docFirebaseId));
+                    alert('रिंगटोन यशस्वीरित्या डिलीट केली.');
+                } catch(e) { console.error(e); }
+            }
+        }
+
         async function createNewGroupAction() {
             let groupName = document.getElementById('newGroupNameInput').value.trim();
             if(groupName !== "" && window.db) {
@@ -1485,6 +1544,10 @@
         function renderRingtones(list) {
             const container = document.getElementById('ringtoneListContainer');
             container.innerHTML = '';
+            if(list.length === 0) {
+                container.innerHTML = `<p style="font-size:12px; color:#94a3b8; text-align:center; padding:15px;">कोणतीही रिंगटोन उपलब्ध नाही.</p>`;
+                return;
+            }
             list.forEach(r => {
                 let card = document.createElement('div');
                 card.className = 'ringtone-card';
@@ -1493,9 +1556,10 @@
                         <div class="ringtone-info">🎵 ${r.title}</div>
                         <div style="display:flex; gap:5px;">
                             <button class="yt-listen-btn" onclick="playInternalAudio('${r.audioUrl}', '${r.title.replace(/'/g, "\\'")}')">▶ ऐका</button>
-                            <a href="${r.audioUrl}" download class="yt-listen-btn" style="background:#16a34a; text-decoration:none;">📥 डाऊनलोड</a>
+                            <a href="${r.audioUrl}" download="${r.title}" class="yt-listen-btn" style="background:#16a34a; text-decoration:none;">📥 डाऊनलोड</a>
                         </div>
                     </div>
+                    ${isAdminLoggedIn && r.docFirebaseId ? `<button class="delete-btn-abs" style="top:-8px; right:-8px; width:20px; height:20px; font-size:10px;" onclick="deleteRingtone('${r.docFirebaseId}')">🗑️</button>` : ''}
                 `;
                 container.appendChild(card);
             });
@@ -1503,7 +1567,7 @@
 
         function filterRingtones() {
             let query = document.getElementById('ringtoneSearch').value.toLowerCase();
-            let filtered = ringtonesData.filter(r => r.title.toLowerCase().includes(query) || r.category.toLowerCase().includes(query));
+            let filtered = globalRingtonesList.filter(r => r.title.toLowerCase().includes(query));
             renderRingtones(filtered);
         }
 
@@ -1518,7 +1582,7 @@
             }
             audioElem.src = url;
             audioElem.play();
-            alert(`"${title}" हे ऑडिओ ट्यून आता ॲपमध्ये वाजवले जात आहे.`);
+            alert(`"${title}" हे ऑडिओ ट्यून आता वाजवले जात आहे.`);
         }
 
         function renderTexts(list) {
@@ -1580,6 +1644,16 @@
                     globalGalleryList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
                 });
                 renderGalleryUI();
+            });
+
+            onSnapshot(collection(window.db, "mandir_ringtones"), (snapshot) => {
+                globalRingtonesList = [];
+                snapshot.forEach((docSnap) => {
+                    globalRingtonesList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
+                });
+                // जर डेटाबेसमध्ये रिंगटोन नसतील तर डिफॉल्ट दोन दाखवा
+                let combinedRingtones = globalRingtonesList.length > 0 ? globalRingtonesList : defaultRingtones;
+                renderRingtones(combinedRingtones);
             });
 
             loadGroupsUI();
