@@ -343,6 +343,41 @@
             font-weight: bold;
         }
 
+        .whatsapp-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            background: #0f172a;
+            padding: 4px;
+            border-radius: 6px;
+        }
+        .whatsapp-tab-btn {
+            flex: 1;
+            padding: 8px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .whatsapp-tab-btn.active-w-tab {
+            background: #0d9488;
+            color: white;
+        }
+
+        .status-story-card {
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .youtube-video-card {
             background: #1e293b;
             border-radius: 10px;
@@ -787,7 +822,7 @@
 
     <div id="sideDrawerMenu" class="side-drawer-menu">
         <div style="font-size:13px; font-weight:bold; color:#f43f5e; border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:5px;">⚙️ ॲप सेटिंग्ज</div>
-        <button onclick="openGroupManager()">👥 ग्रुप्स मॅनेज करा</button>
+        <button onclick="openGroupManager()">👥 कम्युनिटी व ग्रुप्स मॅनेज करा</button>
         <button onclick="openBlockManager()">🚫 युझर ब्लॉक लिस्ट मॅनेज करा</button>
         <button onclick="logoutUser()">🚪 लॉग आउट</button>
     </div>
@@ -841,17 +876,32 @@
         </div>
 
         <div id="section-groups" class="section-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h2 style="margin:0;">👥 कम्युनिटी ग्रुप्स व चॅट</h2>
-                <button style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openGroupManager()">➕ नवीन ग्रुप बनवा</button>
+            <div class="whatsapp-tabs">
+                <button class="whatsapp-tab-btn active-w-tab" onclick="switchWhatsappTab('chats', this)">💬 चॅट्स व ग्रुप्स</button>
+                <button class="whatsapp-tab-btn" onclick="switchWhatsappTab('status', this)">🟢 स्टेटस (Status)</button>
             </div>
-            <p style="font-size:11px; color:#94a3b8;">येथे युझरचे ग्रुप्स दिसेल. ग्रुपमध्ये मेंबर ऍड करून चॅट करू शकता.</p>
-            
-            <div id="groupsMainListContainer"></div>
+
+            <div id="whatsappTabChats" class="whatsapp-sub-section">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h2 style="margin:0;">👥 कम्युनिटी ग्रुप्स व पर्सनल चॅट</h2>
+                    <button style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openGroupManager()">➕ नवीन ग्रुप बनवा</button>
+                </div>
+                <p style="font-size:11px; color:#94a3b8;">येथे ग्रुप्स आणि लोकांशी पर्सनली चॅटिंग करता येईल.</p>
+                <div id="groupsMainListContainer"></div>
+            </div>
+
+            <div id="whatsappTabStatus" class="whatsapp-sub-section" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h2 style="margin:0;">🟢 स्टेटस अपडेट्स</h2>
+                    <button style="background:#16a34a; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openAddStatusModal()">➕ स्टेटस ठेवा</button>
+                </div>
+                <p style="font-size:11px; color:#94a3b8;">भक्तांचे व ग्रुप्सचे ताजे स्टेटस येथे पाहता येतील.</p>
+                <div id="statusListContainer"></div>
+            </div>
 
             <div id="activeGroupChatRoom" class="chat-room-container" style="display:none;">
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #475569; padding-bottom:6px; margin-bottom:8px;">
-                    <span id="activeGroupTitle" style="font-weight:bold; color:#2dd4bf; font-size:14px;">ग्रुप नाव</span>
+                    <span id="activeGroupTitle" style="font-weight:bold; color:#2dd4bf; font-size:14px;">चॅट रूम</span>
                     <div>
                         <button onclick="openAddMemberModal()" style="background:#16a34a; color:white; border:none; padding:3px 8px; border-radius:3px; font-size:10px; cursor:pointer; font-weight:bold; margin-right:5px;">➕ मेंबर ऍड करा</button>
                         <button onclick="closeGroupChat()" style="background:none; border:none; color:#ef4444; font-size:14px; cursor:pointer; font-weight:bold;">✖</button>
@@ -919,12 +969,24 @@
 
     <div id="groupManagerModal" class="modal">
         <div class="modal-content-box">
-            <h3 style="color:#2dd4bf; margin-top:0; font-size:14px;">👥 नवीन कम्युनिटी ग्रुप तयार करा</h3>
-            <p style="font-size:11px; color:#94a3b8;">इतर लोकांसोबत बोलण्यासाठी ग्रुपचे नाव टाका:</p>
-            <input type="text" id="newGroupNameInput" placeholder="ग्रुपचे नाव...">
+            <h3 style="color:#2dd4bf; margin-top:0; font-size:14px;">👥 नवीन कम्युनिटी ग्रुप किंवा पर्सनल चॅट बनवा</h3>
+            <p style="font-size:11px; color:#94a3b8;">ग्रुप किंवा व्यक्तीचे नाव टाका:</p>
+            <input type="text" id="newGroupNameInput" placeholder="नाव टाка...">
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="document.getElementById('groupManagerModal').style.display='none'">बंद करा</button>
-                <button class="btn-save" style="background:#0d9488;" onclick="createNewGroupAction()">ग्रुप बनवा</button>
+                <button class="btn-save" style="background:#0d9488;" onclick="createNewGroupAction()">सुरू करा</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="statusModal" class="modal">
+        <div class="modal-content-box">
+            <h3 style="color:#16a34a; margin-top:0; font-size:14px;">🟢 नवीन स्टेटस ठेवा</h3>
+            <p style="font-size:11px; color:#94a3b8;">तुमचा विचार किंवा माहिती लिहा:</p>
+            <input type="text" id="newStatusTextInput" placeholder="उदा. हर हर महादेव! ॐ नमः शिवाय...">
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="document.getElementById('statusModal').style.display='none'">बंद करा</button>
+                <button class="btn-save" style="background:#16a34a;" onclick="confirmAddStatus()">स्टेटस ठेवा</button>
             </div>
         </div>
     </div>
@@ -932,7 +994,7 @@
     <div id="addMemberModal" class="modal">
         <div class="modal-content-box">
             <h3 style="color:#16a34a; margin-top:0; font-size:14px;">➕ ग्रुपमध्ये मेंबर ऍड करा</h3>
-            <p style="font-size:11px; color:#94a3b8;">ज्या युझरला ग्रुपमध्ये ऍड करायचे आहे त्याचे नाव टाका:</p>
+            <p style="font-size:11px; color:#94a3b8;">ज्या युझरला ऍड करायचे आहे त्याचे नाव टाका:</p>
             <input type="text" id="newMemberNameInput" placeholder="युझरचे नाव...">
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="document.getElementById('addMemberModal').style.display='none'">बंद करा</button>
@@ -980,7 +1042,7 @@
         <button class="nav-center-create" onclick="toggleCreateMenu(event)">+</button>
         <button onclick="showSection('videos', this)"><span>🎥</span>व्हिडिओज</button>
         <button onclick="showSection('ringtones', this)"><span>🔔</span>रिंगटोन</button>
-        <button onclick="showSection('groups', this)"><span>👥</span>ग्रुप्स</button>
+        <button onclick="showSection('groups', this)"><span>👥</span>चॅट व ग्रुप्स</button>
     </div>
 
     <script>
@@ -999,18 +1061,31 @@
         let activeGroupId = null;
         let activeGroupName = '';
 
-        // अचूक ५ एसएमएस रिंगटोन, ४ प्रमुख भजने आणि १ महादेवाची आरती (एकूण १० ऑडिओ ट्रॅक्स)
+        // अचूक २० ऑडिओ ट्रॅक्स: (५ एसएमएस रिंगटोन + १० फोन कॉलिंग रिंगटोन + ४ भजने + १ आरती)
         let ringtonesData = [
             { id: 1, title: 'जय श्री राम (SMS Ringtone 1)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'एसएमएस रिंगटोन' },
             { id: 2, title: 'शिव शंभू भोलेनाथ (SMS Ringtone 2)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', category: 'एसएमएस रिंगटोन' },
             { id: 3, title: 'हर हर महादेव ट्यून (SMS Ringtone 3)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', category: 'एसएमएस रिंगटोन' },
             { id: 4, title: 'बम बम भोले (SMS Ringtone 4)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', category: 'एसएमएस रिंगटोन' },
             { id: 5, title: 'महाकाल रिंगटोन (SMS Ringtone 5)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', category: 'एसएमएस रिंगटोन' },
-            { id: 6, title: 'भजन १: हर हर शंभू महादेवाचे भजन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', category: 'शंकराची भजने' },
-            { id: 7, title: 'भजन २: शंकरा भक्तांच्या हाकेला धाव', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3', category: 'शंकराची भजने' },
-            { id: 8, title: 'भजन ३: महामृत्युंजय मंत्र धून', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', category: 'शंकराची भजने' },
-            { id: 9, title: 'भजन ४: भोले भंडारी की जय', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', category: 'शंकराची भजने' },
-            { id: 10, title: 'महादेवाची विशेष आरती (Lukar Aarti)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3', category: 'महादेवाची आरती' }
+            
+            { id: 6, title: 'कॉलिंग ट्यून १: महाकाल कॉल रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            { id: 7, title: 'कॉलिंग ट्यून २: हर हर शंभू कॉल ट्यून', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            { id: 8, title: 'कॉलिंग ट्यून ३: भोलेनाथ डमरू रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            { id: 9, title: 'कॉलिंग ट्यून ४: शिव तांडव कॉलिंग रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            { id: 10, title: 'कॉलिंग ट्यून ५: ॐ नमः शिवाय कॉलिंग', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            { id: 11, title: 'कॉलिंग ट्यून ६: काशी विश्वनाथ रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            { id: 12, title: 'कॉलिंग ट्यून ७: केदारनाथ स्पेशल रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            { id: 13, title: 'कॉलिंग ट्यून ८: भोले भंडारी रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            { id: 14, title: 'कॉलिंग ट्यून ९: महामृत्युंजय रिंगटोन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            { id: 15, title: 'कॉलिंग ट्यून १०: शिवशंभू कॉलिंग ट्यून', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', category: 'फोन कॉलिंग रिंगटोन' },
+            
+            { id: 16, title: 'भजन १: हर हर शंभू महादेवाचे भजन', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', category: 'शंकराची भजने' },
+            { id: 17, title: 'भजन २: शंकरा भक्तांच्या हाकेला धाव', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3', category: 'शंकराची भजने' },
+            { id: 18, title: 'भजन ३: महामृत्युंजय मंत्र धून', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', category: 'शंकराची भजने' },
+            { id: 19, title: 'भजन ४: भोले भंडारी की जय', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', category: 'शंकराची भजने' },
+            
+            { id: 20, title: 'महादेवाची विशेष आरती (Lukar Aarti)', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3', category: 'महादेवाची आरती' }
         ];
 
         const sacredTextsData = [
@@ -1118,7 +1193,6 @@
             let inputPhone = document.getElementById('enteredUserPhone').value.trim();
             let inputName = document.getElementById('enteredUserName').value.trim();
             
-            // वैक्स इंडियन मोबाईल नंबर नियम (१, ६, ७, ८, ९ ने सुरू होणारे १० अंक)
             let phoneRegex = /^[6-9]\d{9}$/;
             if (!phoneRegex.test(inputPhone)) {
                 alert('कृपया वैध १० अंकी इंडियन मोबाईल नंबर टाका!');
@@ -1130,16 +1204,14 @@
                 return;
             }
 
-            // आधीपासून या मोबाईल नंबरने लॉगिन केले आहे का ते तपासणे (डबल लॉगिन प्रतिबंध)
             let existingPhoneList = JSON.parse(localStorage.getItem('mandir_registered_phones') || '[]');
             if(existingPhoneList.includes(inputPhone)) {
-                alert('⚠️ सुरक्षा नियम: या मोबाईल नंबरने आधीच अकाउंट तयार केले आहे! या नंबरवरून पुन्हा नवीन अकाउंट तयार करता येणार नाही. कृपया "Restore Account" चा वापर करा.');
+                alert('⚠️ सुरक्षा नियम: या मोबाईल नंबरने आधीच अकाउंट तयार केले आहे! कृपया "Restore Account" वापरा.');
                 return;
             }
 
             if (tempDpBase64 === '') tempDpBase64 = 'photo1.jpg';
             
-            // कठीण व युनिक कोड जनरेट करणे (उदा. Sanchit-Patil-9876@MH)
             let nameParts = inputName.split(' ');
             let firstName = nameParts[0] || 'User';
             let lastName = nameParts[1] || 'Bhakt';
@@ -1175,14 +1247,13 @@
             document.getElementById('displayUserName').innerText = loggedInUserName;
             document.getElementById('headerUserDp').src = loggedInUserDp;
             document.getElementById('nameGateModal').style.display = 'none';
-            alert(`✅ यशस्वी! तुमचा कठीण युनिक रिकव्हरी कोड हा आहे:\n\n"${uniqueGeneratedCode}"\n\nहा कोड सुरक्षित ठिकाणी लिहून किंवा सेव्ह करून ठेवा.`);
+            alert(`✅ यशस्वी! तुमचा कठीण युनिक रिकव्हरी कोड हा आहे:\n\n"${uniqueGeneratedCode}"\n\nहा कोड सुरक्षित ठिकाणी लिहून ठेवा.`);
             checkIfBlockedAndProceed(loggedInUserName);
         }
 
         function verifyAccountRecovery() {
             let enteredCode = document.getElementById('recoveryCodeInput').value.trim();
             let savedCode = localStorage.getItem('mandir_app_code');
-            let savedName = localStorage.getItem('mandir_app_username');
 
             if (enteredCode !== "" && (enteredCode === savedCode || savedCode === null)) {
                 document.getElementById('nameGateModal').style.display = 'none';
@@ -1223,9 +1294,28 @@
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
 
+        function switchWhatsappTab(tabName, btnElem) {
+            const buttons = document.querySelectorAll('.whatsapp-tab-btn');
+            buttons.forEach(b => b.classList.remove('active-w-tab'));
+            if(btnElem) btnElem.classList.add('active-w-tab');
+
+            if(tabName === 'chats') {
+                document.getElementById('whatsappTabChats').style.display = 'block';
+                document.getElementById('whatsappTabStatus').style.display = 'none';
+            } else {
+                document.getElementById('whatsappTabChats').style.display = 'none';
+                document.getElementById('whatsappTabStatus').style.display = 'block';
+                loadStatusList();
+            }
+        }
+
         function openGroupManager() {
             document.getElementById('sideDrawerMenu').style.display = 'none';
             document.getElementById('groupManagerModal').style.display = 'flex';
+        }
+
+        function openAddStatusModal() {
+            document.getElementById('statusModal').style.display = 'flex';
         }
 
         async function createNewGroupAction() {
@@ -1239,12 +1329,58 @@
                         creator: loggedInUserName,
                         members: [loggedInUserName]
                     });
-                    alert(`"${groupName}" ग्रुप यशस्वीरित्या तयार करण्यात आला आहे!`);
+                    alert(`"${groupName}" ग्रुप/चॅट यशस्वीरित्या तयार करण्यात आला आहे!`);
                     document.getElementById('newGroupNameInput').value = '';
                     document.getElementById('groupManagerModal').style.display = 'none';
                     loadGroupsUI();
                 } catch(e) { console.error(e); }
             }
+        }
+
+        async function confirmAddStatus() {
+            let statusText = document.getElementById('newStatusTextInput').value.trim();
+            if(statusText !== "" && window.db) {
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_statuses"), {
+                        id: Date.now(),
+                        author: loggedInUserName,
+                        dp: loggedInUserDp,
+                        text: statusText,
+                        time: Date.now()
+                    });
+                    alert('तुमचे स्टेटस यशस्वीरित्या पोस्ट झाले आहे!');
+                    document.getElementById('newStatusTextInput').value = '';
+                    document.getElementById('statusModal').style.display = 'none';
+                    loadStatusList();
+                } catch(e) { console.error(e); }
+            }
+        }
+
+        function loadStatusList() {
+            if(!window.db) return;
+            const { collection, getDocs } = window.firebaseCols;
+            getDocs(collection(window.db, "mandir_statuses")).then(snapshot => {
+                let container = document.getElementById('statusListContainer');
+                container.innerHTML = '';
+                if(snapshot.empty) {
+                    container.innerHTML = `<div style="text-align:center; padding:15px; color:#94a3b8; font-size:12px;">अद्याप कोणतेही स्टेटस नाही.</div>`;
+                    return;
+                }
+                snapshot.forEach(docSnap => {
+                    let s = docSnap.data();
+                    let div = document.createElement('div');
+                    div.className = 'status-story-card';
+                    div.innerHTML = `
+                        <img src="${s.dp || 'photo1.jpg'}" alt="DP" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #16a34a;">
+                        <div>
+                            <strong>${s.author}</strong><br>
+                            <span style="font-size:12px; color:#f8fafc;">${s.text}</span>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            });
         }
 
         function loadGroupsUI() {
@@ -1254,7 +1390,7 @@
                 let container = document.getElementById('groupsMainListContainer');
                 container.innerHTML = '';
                 if(snapshot.empty) {
-                    container.innerHTML = `<div style="text-align:center; padding:15px; color:#94a3b8; font-size:12px;">अद्याप कोणताही ग्रुप तयार केलेला नाही.</div>`;
+                    container.innerHTML = `<div style="text-align:center; padding:15px; color:#94a3b8; font-size:12px;">अद्याप कोणताही ग्रुप किंवा चॅट उपलब्ध नाही.</div>`;
                     return;
                 }
                 snapshot.forEach(docSnap => {
@@ -1264,7 +1400,7 @@
                     div.innerHTML = `
                         <div>
                             <strong>👥 ${data.name}</strong><br>
-                            <span style="font-size:10px; color:#94a3b8;">क्रिएटर्स: ${data.creator}</span>
+                            <span style="font-size:10px; color:#94a3b8;">संस्थापक/सदस्य: ${data.creator}</span>
                         </div>
                         <button onclick="openGroupChatRoom('${data.id}', '${data.name}')" style="background:#0d9488; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">चॅट उघडा 💬</button>
                     `;
@@ -1276,7 +1412,7 @@
         function openGroupChatRoom(groupId, groupName) {
             activeGroupId = groupId;
             activeGroupName = groupName;
-            document.getElementById('activeGroupTitle').innerText = "💬 ग्रुप: " + groupName;
+            document.getElementById('activeGroupTitle').innerText = "💬 चॅट रूम: " + groupName;
             document.getElementById('activeGroupChatRoom').style.display = 'block';
             loadGroupMessages();
         }
@@ -1293,7 +1429,7 @@
         async function confirmAddMemberToGroup() {
             let memberName = document.getElementById('newMemberNameInput').value.trim();
             if(memberName !== "" && activeGroupId) {
-                alert(`"${memberName}" या भक्ताला ग्रुपमध्ये यशस्वीरित्या ऍड करण्यात आले आहे!`);
+                alert(`"${memberName}" या भक्ताला चॅटमध्ये यशस्वीरित्या ऍड करण्यात आले आहे!`);
                 document.getElementById('newMemberNameInput').value = '';
                 document.getElementById('addMemberModal').style.display = 'none';
             }
@@ -1367,7 +1503,7 @@
 
         function filterRingtones() {
             let query = document.getElementById('ringtoneSearch').value.toLowerCase();
-            let filtered = ringtonesData.filter(r => r.title.toLowerCase().includes(query));
+            let filtered = ringtonesData.filter(r => r.title.toLowerCase().includes(query) || r.category.toLowerCase().includes(query));
             renderRingtones(filtered);
         }
 
