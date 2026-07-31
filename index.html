@@ -539,7 +539,7 @@
             border: 1px solid #475569;
         }
 
-        .modal-content-box input, .modal-content-box textarea {
+        .modal-content-box input, .modal-content-box textarea, .modal-content-box select {
             width: 100%;
             padding: 8px;
             margin: 6px 0 12px 0;
@@ -836,7 +836,7 @@
         <div id="section-gallery" class="section-box active-section">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h2 style="margin:0;">१. मंदिर दर्शन गॅलरी</h2>
-                <button id="addGalleryPhotoBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो جوडा</button>
+                <button id="addGalleryPhotoBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो जोडा</button>
                 <input type="file" id="galleryImageInput" accept="image/*" style="display:none;" onchange="uploadNewGalleryPhoto(this)">
             </div>
             <p style="font-size:11px; color:#94a3b8; margin-top:5px;">फोटोवर क्लिक करून फुल साइज मध्ये पाहू शकता.</p>
@@ -935,7 +935,7 @@
         <button onclick="openLiveStreamModal()">🔴 लाईव्ह स्ट्रीम क्रिएट करा</button>
     </div>
 
-    <!-- लाईव्ह स्ट्रीम तयार करण्याचा मॉडेल -->
+    <!-- लाईव्ह स्ट्रीम तयार करण्याचा मॉडेल (कॅमेरा फ्रंट/बॅक स्विचिंगसह) -->
     <div id="liveStreamModal" class="modal">
         <div class="modal-content-box">
             <h3 style="color:#e11d48; margin-top:0; font-size:14px;">🔴 नवीन लाईव्ह स्ट्रीम सुरू करा</h3>
@@ -949,13 +949,22 @@
 
             <label style="font-size:11px; font-weight:bold;">लाईव्ह स्ट्रीम टायटल:</label>
             <input type="text" id="inputLiveTitle" placeholder="उदा. महाकाल लाइव्ह आरती दर्शन">
+
+            <div style="background:#0f172a; padding:10px; border-radius:6px; margin-bottom:10px; border:1px solid #475569;">
+                <label style="font-size:11px; font-weight:bold; color:#f43f5e;">कॅमेरा लाईव्ह स्ट्रीम (थेट कॅमेरा):</label>
+                <div style="margin-top:5px; display:flex; gap:5px;">
+                    <button type="button" onclick="startCameraLiveStream()" style="flex:1; background:#16a34a; color:white; border:none; padding:6px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🎥 कॅमेरा लाईव्ह सुरू करा</button>
+                    <button type="button" onclick="switchCameraFacing()" style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 कॅमेरा बदला</button>
+                </div>
+                <video id="liveCameraPreview" autoplay playsinline muted style="width:100%; height:120px; background:black; margin-top:8px; border-radius:4px; object-fit:cover; display:none;"></video>
+            </div>
             
-            <label style="font-size:11px; font-weight:bold;">व्हिडिओ फाईल / लिंक (MP4):</label>
+            <label style="font-size:11px; font-weight:bold;">किंवा व्हिडिओ फाईल अपलोड करा (MP4):</label>
             <input type="file" id="inputLiveVideoFile" accept="video/*" style="margin-bottom:10px;">
 
             <div class="modal-buttons">
-                <button class="btn-cancel" onclick="document.getElementById('liveStreamModal').style.display='none'">रद्द करा</button>
-                <button class="btn-save" onclick="confirmCreateLiveStream()">लाईव्ह सुरू करा</button>
+                <button class="btn-cancel" onclick="stopCameraAndCloseLiveModal()">रद्द करा</button>
+                <button class="btn-save" onclick="confirmCreateLiveStream()">लाईव्ह प्रसारित करा</button>
             </div>
         </div>
     </div>
@@ -990,11 +999,35 @@
         </div>
     </div>
 
+    <!-- WhatsApp सारखा स्टेटस मॉडेल (विचार/माहिती किंवा इमेज एडिटिंग किंवा व्हिडिओ) -->
     <div id="statusModal" class="modal">
         <div class="modal-content-box">
             <h3 style="color:#16a34a; margin-top:0; font-size:14px;">🟢 नवीन स्टेटस ठेवा</h3>
-            <p style="font-size:11px; color:#94a3b8;">तुमचा विचार किंवा माहिती लिहा:</p>
-            <input type="text" id="newStatusTextInput" placeholder="उदा. हर हर महादेव! ॐ नमः शिवाय...">
+            
+            <label style="font-size:11px; font-weight:bold;">स्टेटसचा प्रकार निवडा:</label>
+            <select id="statusTypeSelect" onchange="onStatusTypeChange()" style="width:100%; padding:8px; font-size:12px; background:#0f172a; color:#fff; border:1px solid #475569; border-radius:4px; margin-bottom:10px;">
+                <option value="text">✍️ विचार किंवा माहिती लिहा</option>
+                <option value="media">🖼️ इमेज (व्हॉट्सॲप एडिटिंग/नाव) किंवा 🎥 व्हिडिओ</option>
+            </select>
+
+            <div id="statusTextViewContainer">
+                <label style="font-size:11px; font-weight:bold;">तुमचे विचार किंवा माहिती:</label>
+                <textarea id="newStatusTextInput" rows="3" placeholder="हर हर महादेव! ॐ नमः शिवाय..."></textarea>
+            </div>
+
+            <div id="statusMediaViewContainer" style="display:none;">
+                <label style="font-size:11px; font-weight:bold;">इमेज किंवा व्हिडिओ फाईल निवडा:</label>
+                <input type="file" id="newStatusMediaInput" accept="image/*,video/*" onchange="previewStatusMedia(this)" style="margin-bottom:8px;">
+                
+                <div id="statusMediaPreviewBox" style="width:100%; max-height:120px; overflow:hidden; border-radius:4px; margin-bottom:8px; display:none; text-align:center; background:black;">
+                    <img id="statusImagePreview" src="" alt="Preview" style="max-width:100%; max-height:120px; object-fit:contain; display:none;">
+                    <video id="statusVideoPreview" src="" controls style="max-width:100%; max-height:120px; display:none;"></video>
+                </div>
+
+                <label style="font-size:11px; font-weight:bold;">फोटोवर लिहिण्यासाठी नाव / गाणे / ओळ (Caption):</label>
+                <input type="text" id="newStatusCaptionInput" placeholder="उदा. हर हर महादेव गाणे / तुमचे नाव...">
+            </div>
+
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="document.getElementById('statusModal').style.display='none'">बंद करा</button>
                 <button class="btn-save" style="background:#16a34a;" onclick="confirmAddStatus()">स्टेटस ठेवा</button>
@@ -1078,6 +1111,12 @@
         let activeGroupName = '';
         let activeStreamDocId = null;
         let pendingLiveThumbBase64 = '';
+        let activeCameraStream = null;
+        let useFrontCamera = true;
+        let recordedCameraVideoData = null;
+
+        let statusMediaBase64 = '';
+        let statusMediaType = 'text';
 
         let defaultRingtones = [
             { id: 1, title: 'SMS1.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'एसएमएस रिंगटोन' },
@@ -1282,6 +1321,39 @@
             document.getElementById('liveStreamModal').style.display = 'flex';
         }
 
+        function stopCameraAndCloseLiveModal() {
+            if(activeCameraStream) {
+                activeCameraStream.getTracks().forEach(track => track.stop());
+                activeCameraStream = null;
+            }
+            document.getElementById('liveCameraPreview').style.display = 'none';
+            document.getElementById('liveStreamModal').style.display = 'none';
+        }
+
+        async function startCameraLiveStream() {
+            try {
+                if(activeCameraStream) {
+                    activeCameraStream.getTracks().forEach(track => track.stop());
+                }
+                const constraints = {
+                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
+                    audio: true
+                };
+                activeCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                const videoPreview = document.getElementById('liveCameraPreview');
+                videoPreview.srcObject = activeCameraStream;
+                videoPreview.style.display = 'block';
+                videoPreview.play();
+            } catch(err) {
+                alert('कॅमेरा चालू करण्यात अडचण आली: ' + err.message);
+            }
+        }
+
+        function switchCameraFacing() {
+            useFrontCamera = !useFrontCamera;
+            startCameraLiveStream();
+        }
+
         window.onclick = function(event) {
             if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu') && !event.target.closest('.notification-bell-btn') && !event.target.closest('#notificationDropdown') && !event.target.closest('.menu-hamburger-btn') && !event.target.closest('#sideDrawerMenu')) {
                 document.getElementById('createMenuBox').style.display = 'none';
@@ -1317,6 +1389,44 @@
 
         function openAddStatusModal() {
             document.getElementById('statusModal').style.display = 'flex';
+        }
+
+        function onStatusTypeChange() {
+            let val = document.getElementById('statusTypeSelect').value;
+            if(val === 'text') {
+                document.getElementById('statusTextViewContainer').style.display = 'block';
+                document.getElementById('statusMediaViewContainer').style.display = 'none';
+                statusMediaType = 'text';
+            } else {
+                document.getElementById('statusTextViewContainer').style.display = 'none';
+                document.getElementById('statusMediaViewContainer').style.display = 'block';
+                statusMediaType = 'media';
+            }
+        }
+
+        function previewStatusMedia(input) {
+            if(input.files && input.files[0]) {
+                let file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    statusMediaBase64 = e.target.result;
+                    let previewBox = document.getElementById('statusMediaPreviewBox');
+                    let imgElem = document.getElementById('statusImagePreview');
+                    let vidElem = document.getElementById('statusVideoPreview');
+                    previewBox.style.display = 'block';
+
+                    if(file.type.startsWith('image/')) {
+                        imgElem.src = statusMediaBase64;
+                        imgElem.style.display = 'block';
+                        vidElem.style.display = 'none';
+                    } else {
+                        vidElem.src = statusMediaBase64;
+                        vidElem.style.display = 'block';
+                        imgElem.style.display = 'none';
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
         }
 
         function openAddRingtoneModal() {
@@ -1396,18 +1506,29 @@
 
         async function confirmAddStatus() {
             let statusText = document.getElementById('newStatusTextInput').value.trim();
-            if(statusText !== "" && window.db) {
+            let captionText = document.getElementById('newStatusCaptionInput').value.trim();
+
+            if(statusMediaType === 'text' && statusText === '') {
+                alert('कृपया तुमचे विचार किंवा माहिती लिहा!');
+                return;
+            }
+
+            if(window.db) {
                 const { collection, addDoc } = window.firebaseCols;
                 try {
                     await addDoc(collection(window.db, "mandir_statuses"), {
                         id: Date.now(),
                         author: loggedInUserName,
                         dp: loggedInUserDp,
+                        type: statusMediaType,
                         text: statusText,
+                        mediaUrl: statusMediaBase64,
+                        caption: captionText,
                         time: Date.now()
                     });
                     alert('तुमचे स्टेटस यशस्वीरित्या पोस्ट झाले आहे!');
                     document.getElementById('newStatusTextInput').value = '';
+                    document.getElementById('newStatusCaptionInput').value = '';
                     document.getElementById('statusModal').style.display = 'none';
                     loadStatusList();
                 } catch(e) { console.error(e); }
@@ -1428,15 +1549,28 @@
                     let s = docSnap.data();
                     let div = document.createElement('div');
                     div.className = 'status-story-card';
+                    
+                    let contentHTML = '';
+                    if(s.type === 'media' && s.mediaUrl) {
+                        if(s.mediaUrl.startsWith('data:video/')) {
+                            contentHTML = `<video src="${s.mediaUrl}" controls style="width:100%; max-height:150px; border-radius:4px; margin-top:4px;"></video>`;
+                        } else {
+                            contentHTML = `<img src="${s.mediaUrl}" alt="Status" style="width:100%; max-height:150px; border-radius:4px; object-fit:cover; margin-top:4px;" onclick="openPhotoZoom('${s.mediaUrl}', '${s.caption || ''}')">`;
+                        }
+                    } else {
+                        contentHTML = `<span style="font-size:12px; color:#f8fafc;">${s.text}</span>`;
+                    }
+
                     div.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="display:flex; align-items:flex-start; gap:10px; width:100%;">
                             <img src="${s.dp || 'photo1.jpg'}" alt="DP" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #16a34a;">
-                            <div>
+                            <div style="flex:1;">
                                 <strong>${s.author}</strong><br>
-                                <span style="font-size:12px; color:#f8fafc;">${s.text}</span>
+                                ${contentHTML}
+                                ${s.caption ? `<div style="font-size:11px; color:#fca5a5; margin-top:3px;">🎵/✍️ ${s.caption}</div>` : ''}
                             </div>
                         </div>
-                        <button class="share-btn-action" onclick="shareContentText('${s.author} यांचे स्टेटस: ${s.text}')">शेअर 📤</button>
+                        <button class="share-btn-action" onclick="shareContentText('${s.author} यांचे स्टेटस: ${s.text || s.caption || ''}')">शेअर 📤</button>
                     `;
                     container.appendChild(div);
                 });
@@ -1733,10 +1867,34 @@
                 return;
             }
 
+            let finalVideoUrl = '';
+
+            if(activeCameraStream) {
+                alert('कॅमेरा लाईव्ह स्ट्रीम सुरू होत आहे...');
+                document.getElementById('liveStreamModal').style.display = 'none';
+                if(window.db) {
+                    const { collection, addDoc } = window.firebaseCols;
+                    await addDoc(collection(window.db, "mandir_live_streams"), {
+                        id: Date.now(),
+                        title: title,
+                        videoUrl: '',
+                        isCameraStream: true,
+                        thumbnail: thumbnail,
+                        uploader: loggedInUserName,
+                        dp: loggedInUserDp,
+                        likes: 0,
+                        likedUsers: []
+                    });
+                    alert('🔴 कॅमेरा लाईव्ह स्ट्रीम यशस्वीरित्या सुरू झाली!');
+                    document.getElementById('inputLiveTitle').value = '';
+                }
+                return;
+            }
+
             if(videoInput.files && videoInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = async function(e) {
-                    let videoUrl = e.target.result;
+                    finalVideoUrl = e.target.result;
                     document.getElementById('liveStreamModal').style.display = 'none';
 
                     if(window.db) {
@@ -1745,7 +1903,7 @@
                             await addDoc(collection(window.db, "mandir_live_streams"), {
                                 id: Date.now(),
                                 title: title,
-                                videoUrl: videoUrl,
+                                videoUrl: finalVideoUrl,
                                 thumbnail: thumbnail,
                                 uploader: loggedInUserName,
                                 dp: loggedInUserDp,
@@ -1759,7 +1917,7 @@
                 };
                 reader.readAsDataURL(videoInput.files[0]);
             } else {
-                alert('कृपया व्हिडिओ फाईल निवडा!');
+                alert('कृपया कॅमेरा लाईव्ह सुरू करा किंवा व्हिडिओ फाईल निवडा!');
             }
         }
 
@@ -1790,7 +1948,7 @@
                 const card = document.createElement('div');
                 card.className = 'youtube-video-card';
                 card.innerHTML = `
-                    <div class="yt-thumb-container" onclick="openLivePlayer('${item.docFirebaseId}', '${item.videoUrl || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}', ${item.likes || 0})">
+                    <div class="yt-thumb-container" onclick="openLivePlayer('${item.docFirebaseId}', '${item.videoUrl || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}', ${item.likes || 0}, ${item.isCameraStream || false})">
                         <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
                         <span style="position:absolute; top:8px; left:8px; background:#ef4444; color:white; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:bold;">🔴 LIVE</span>
                     </div>
@@ -1810,7 +1968,7 @@
             });
         }
 
-        function openLivePlayer(docId, url, title, uploader, dp, likesCount) {
+        async function openLivePlayer(docId, url, title, uploader, dp, likesCount, isCameraStream) {
             activeStreamDocId = docId;
             document.getElementById('ytPlayerTitle').innerText = title;
             document.getElementById('playerUploaderName').innerText = uploader;
@@ -1818,11 +1976,23 @@
             document.getElementById('streamLikeCount').innerText = likesCount;
             
             const videoElem = document.getElementById('advancedVideoElement');
-            if(url && url.trim() !== '') {
+            
+            if(isCameraStream) {
+                try {
+                    let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                    videoElem.srcObject = stream;
+                    videoElem.style.display = 'block';
+                    videoElem.play().catch(e => console.log(e));
+                } catch(err) {
+                    alert('लाईव्ह कॅमेरा स्ट्रीम जोडताना अडचण आली.');
+                }
+            } else if(url && url.trim() !== '') {
+                videoElem.srcObject = null;
                 videoElem.src = url;
                 videoElem.style.display = 'block';
                 videoElem.play().catch(e => console.log(e));
             } else {
+                videoElem.srcObject = null;
                 videoElem.src = '';
                 videoElem.style.display = 'none';
             }
@@ -1893,6 +2063,11 @@
         function closeYoutubePlayer() {
             document.getElementById('youtubePlayerModal').style.display = 'none';
             const videoElem = document.getElementById('advancedVideoElement');
+            if(videoElem.srcObject) {
+                let tracks = videoElem.srcObject.getTracks();
+                tracks.forEach(t => t.stop());
+                videoElem.srcObject = null;
+            }
             videoElem.pause();
             videoElem.src = "";
             activeStreamDocId = null;
