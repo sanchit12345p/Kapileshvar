@@ -433,27 +433,6 @@
             cursor: pointer;
         }
 
-        .video-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .video-tab-btn {
-            flex: 1;
-            padding: 8px;
-            background: #334155;
-            color: #cbd5e1;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .video-tab-btn.active-tab {
-            background: #e11d48;
-            color: white;
-        }
-
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -706,16 +685,19 @@
         }
         .yt-player-body video {
             width: 100%;
-            max-height: 60vh;
+            max-height: 50vh;
             background: black;
             outline: none;
         }
         .yt-player-footer {
             background: #181818;
             color: white;
-            padding: 15px;
-            max-height: 35vh;
+            padding: 12px;
+            max-height: 40vh;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         #photoZoomModal {
@@ -741,7 +723,7 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyDdoTltT76q_owd7-fFiMMPypbFdioAyiM",
@@ -757,7 +739,7 @@
         const db = getFirestore(app);
 
         window.db = db;
-        window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where };
+        window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion };
     </script>
 </head>
 <body>
@@ -854,7 +836,7 @@
         <div id="section-gallery" class="section-box active-section">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h2 style="margin:0;">१. मंदिर दर्शन गॅलरी</h2>
-                <button id="addGalleryPhotoBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो जोडा</button>
+                <button id="addGalleryPhotoBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो جوडा</button>
                 <input type="file" id="galleryImageInput" accept="image/*" style="display:none;" onchange="uploadNewGalleryPhoto(this)">
             </div>
             <p style="font-size:11px; color:#94a3b8; margin-top:5px;">फोटोवर क्लिक करून फुल साइज मध्ये पाहू शकता.</p>
@@ -933,13 +915,10 @@
             </div>
         </div>
 
-        <div id="section-videos" class="section-box">
-            <h2>🎥 ऑल इंडिया व्हिडिओज आणि शॉर्ट्स</h2>
-            <div class="video-tabs">
-                <button class="video-tab-btn active-tab" onclick="switchVideoTab('full', this)">📁 फुल व्हिडिओज</button>
-                <button class="video-tab-btn" onclick="switchVideoTab('short', this)">⚡ शॉर्ट्स</button>
-            </div>
-            <div id="videosListContainer"></div>
+        <div id="section-live" class="section-box">
+            <h2>🔴 लाईव्ह स्ट्रीमिंग (Live Streams)</h2>
+            <p style="font-size:11px; color:#94a3b8;">येथे चालू असलेल्या किंवा आधीच्या लाईव्ह स्ट्रिम्स पाहू शकता.</p>
+            <div id="liveStreamsListContainer"></div>
         </div>
 
         <div id="section-donation" class="section-box">
@@ -951,36 +930,32 @@
 
     </div>
 
+    <!-- प्लस बटण दाबल्यावर येणारा मेनू -->
     <div id="createMenuBox" class="create-menu">
-        <button onclick="document.getElementById('fullVideoFileInput').click()">📁 फुल व्हिडिओ टाका</button>
-        <input type="file" id="fullVideoFileInput" accept="video/*" style="display:none;" onchange="prepareVideoUpload(this, 'full')">
-        <button onclick="document.getElementById('shortVideoFileInput').click()">⚡ शॉर्ट व्हिडिओ टाका</button>
-        <input type="file" id="shortVideoFileInput" accept="video/*" style="display:none;" onchange="prepareVideoUpload(this, 'short')">
+        <button onclick="openLiveStreamModal()">🔴 लाईव्ह स्ट्रीम क्रिएट करा</button>
     </div>
 
-    <div id="uploadModal" class="modal">
+    <!-- लाईव्ह स्ट्रीम तयार करण्याचा मॉडेल -->
+    <div id="liveStreamModal" class="modal">
         <div class="modal-content-box">
-            <h3 style="color:#f43f5e; margin-top:0; font-size:14px;">व्हिडिओ माहिती भरा</h3>
+            <h3 style="color:#e11d48; margin-top:0; font-size:14px;">🔴 नवीन लाईव्ह स्ट्रीम सुरू करा</h3>
             
-            <label style="font-size:11px; font-weight:bold;">थंबनेल (Thumbnail) अपलोड करा:</label>
-            <div class="thumbnail-upload-box" onclick="document.getElementById('thumbnailFileInput').click()">
-                <span id="thumbPlaceholderText" style="font-size:11px; color:#94a3b8;">📸 थंबनेल फोटो निवडा</span>
-                <img id="thumbPreviewImg" src="" alt="Thumbnail">
+            <label style="font-size:11px; font-weight:bold;">लाईव्ह थंबनेल फोटो:</label>
+            <div class="thumbnail-upload-box" onclick="document.getElementById('liveThumbInput').click()">
+                <span id="liveThumbPlaceholder" style="font-size:11px; color:#94a3b8;">📸 फोटो निवडा</span>
+                <img id="liveThumbPreview" src="" alt="Thumbnail">
             </div>
-            <input type="file" id="thumbnailFileInput" accept="image/*" style="display:none;" onchange="previewThumbnail(this)">
+            <input type="file" id="liveThumbInput" accept="image/*" style="display:none;" onchange="previewLiveThumb(this)">
 
-            <label style="font-size:11px; font-weight:bold;">टायटल (Title):</label>
-            <input type="text" id="inputVideoTitle" placeholder="उदा. महाकाल आरती दर्शन">
+            <label style="font-size:11px; font-weight:bold;">लाईव्ह स्ट्रीम टायटल:</label>
+            <input type="text" id="inputLiveTitle" placeholder="उदा. महाकाल लाइव्ह आरती दर्शन">
             
-            <label style="font-size:11px; font-weight:bold;">वर्णन (Description):</label>
-            <textarea id="inputVideoDesc" rows="2" placeholder="थोडक्यात माहिती लिहा..."></textarea>
-            
-            <label style="font-size:11px; font-weight:bold;">हॅशटॅग (Hashtags):</label>
-            <input type="text" id="inputVideoTags" placeholder="#Mahadev #Vilhale">
+            <label style="font-size:11px; font-weight:bold;">व्हिडिओ फाईल / लिंक (MP4):</label>
+            <input type="file" id="inputLiveVideoFile" accept="video/*" style="margin-bottom:10px;">
 
             <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeUploadModal()">रद्द करा</button>
-                <button class="btn-save" onclick="confirmAndUpload()">सेव्ह करा</button>
+                <button class="btn-cancel" onclick="document.getElementById('liveStreamModal').style.display='none'">रद्द करा</button>
+                <button class="btn-save" onclick="confirmCreateLiveStream()">लाईव्ह सुरू करा</button>
             </div>
         </div>
     </div>
@@ -1051,6 +1026,7 @@
         </div>
     </div>
 
+    <!-- लाईव्ह स्ट्रीम प्लेयर व चॅटिंग मॉडेल -->
     <div id="youtubePlayerModal" class="youtube-player-modal">
         <div class="yt-player-header">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1065,9 +1041,16 @@
         </div>
 
         <div class="yt-player-footer">
-            <h3 id="ytPlayerTitle" style="margin:0 0 5px 0; font-size:14px; color:#fca5a5;">शीर्षक</h3>
-            <p id="ytPlayerDesc" style="margin:0; font-size:11px; color:#cbd5e1;"></p>
-            <p id="ytPlayerTags" style="margin:4px 0 0 0; font-size:11px; color:#f59e0b;"></p>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 id="ytPlayerTitle" style="margin:0; font-size:14px; color:#fca5a5;">शीर्षक</h3>
+                <button onclick="likeCurrentStream()" id="streamLikeBtn" style="background:#e11d48; color:white; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">❤️ लाईक (<span id="streamLikeCount">0</span>)</button>
+            </div>
+            <div style="font-size:11px; color:#2dd4bf; font-weight:bold;">💬 लाईव्ह चॅट बॉक्स</div>
+            <div id="liveChatMessagesArea" style="height:100px; background:#0f172a; border:1px solid #475569; border-radius:4px; padding:5px; overflow-y:auto; font-size:11px;"></div>
+            <div style="display:flex; gap:5px;">
+                <input type="text" id="liveChatInput" placeholder="चॅटमध्ये मेसेज लिहा..." style="flex:1; padding:6px; font-size:11px; background:#0f172a; border:1px solid #475569; color:white; border-radius:4px;">
+                <button onclick="sendLiveChatMessage()" style="background:#0d9488; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">पाठवा</button>
+            </div>
         </div>
     </div>
 
@@ -1076,27 +1059,25 @@
         <button onclick="showSection('schedule', this)"><span>⏰</span>वेळपत्रक</button>
         <button onclick="showSection('location', this)"><span>📍</span>लोकेशन</button>
         <button class="nav-center-create" onclick="toggleCreateMenu(event)">+</button>
-        <button onclick="showSection('videos', this)"><span>🎥</span>व्हिडिओज</button>
+        <button onclick="showSection('live', this)"><span>🔴</span>लाईव्ह</button>
         <button onclick="showSection('ringtones', this)"><span>🔔</span>रिंगटोन</button>
         <button onclick="showSection('groups', this)"><span>👥</span>चॅट व ग्रुप्स</button>
     </div>
 
     <script>
-        let currentUploadType = '';
-        let pendingVideoObjectUrl = '';
-        let pendingThumbnailBase64 = '';
         let loggedInUserName = '';
         let loggedInUserDp = '';
         let loggedInUserPhone = '';
         let loggedInUserCode = '';
         let tempDpBase64 = '';
-        let globalHistoryList = [];
+        let globalLiveStreamsList = [];
         let globalGalleryList = [];
         let globalRingtonesList = [];
-        let currentVideoTab = 'full';
         let isAdminLoggedIn = false;
         let activeGroupId = null;
         let activeGroupName = '';
+        let activeStreamDocId = null;
+        let pendingLiveThumbBase64 = '';
 
         let defaultRingtones = [
             { id: 1, title: 'SMS1.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'एसएमएस रिंगटोन' },
@@ -1190,15 +1171,15 @@
             }
         }
 
-        function previewThumbnail(input) {
+        function previewLiveThumb(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    pendingThumbnailBase64 = e.target.result;
-                    const preview = document.getElementById('thumbPreviewImg');
-                    preview.src = pendingThumbnailBase64;
+                    pendingLiveThumbBase64 = e.target.result;
+                    const preview = document.getElementById('liveThumbPreview');
+                    preview.src = pendingLiveThumbBase64;
                     preview.style.display = 'block';
-                    document.getElementById('thumbPlaceholderText').style.display = 'none';
+                    document.getElementById('liveThumbPlaceholder').style.display = 'none';
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -1294,6 +1275,11 @@
             if(event) event.stopPropagation();
             const menu = document.getElementById('createMenuBox');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function openLiveStreamModal() {
+            document.getElementById('createMenuBox').style.display = 'none';
+            document.getElementById('liveStreamModal').style.display = 'flex';
         }
 
         window.onclick = function(event) {
@@ -1652,13 +1638,13 @@
             if(!window.db) return;
             const { collection, onSnapshot } = window.firebaseCols;
 
-            onSnapshot(collection(window.db, "mandir_history"), (snapshot) => {
-                globalHistoryList = [];
+            onSnapshot(collection(window.db, "mandir_live_streams"), (snapshot) => {
+                globalLiveStreamsList = [];
                 snapshot.forEach((docSnap) => {
-                    globalHistoryList.push({ id: docSnap.id, docFirebaseId: docSnap.id, ...docSnap.data() });
+                    globalLiveStreamsList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
                 });
-                globalHistoryList.sort((a, b) => b.id - a.id);
-                renderVideosUI();
+                globalLiveStreamsList.sort((a, b) => b.id - a.id);
+                renderLiveStreamsUI();
             });
 
             onSnapshot(collection(window.db, "mandir_gallery"), (snapshot) => {
@@ -1737,124 +1723,99 @@
             document.getElementById('photoZoomModal').style.display = 'none';
         }
 
-        function prepareVideoUpload(input, typeKey) {
-            document.getElementById('createMenuBox').style.display = 'none';
-            if(!isAdminLoggedIn) {
-                alert('⚠️ सूचना: व्हिडिओ अपलोड करण्याचा अधिकार फक्त ॲडमिनकडे आहे!');
+        async function confirmCreateLiveStream() {
+            let title = document.getElementById('inputLiveTitle').value.trim();
+            let videoInput = document.getElementById('inputLiveVideoFile');
+            let thumbnail = pendingLiveThumbBase64 || 'photo1.jpg';
+
+            if(title === '') {
+                alert('कृपया लाईव्ह स्ट्रीमचे टायटल टाका!');
                 return;
             }
-            if (input.files && input.files[0]) {
+
+            if(videoInput.files && videoInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingVideoObjectUrl = e.target.result;
-                    currentUploadType = typeKey;
-                    document.getElementById('uploadModal').style.display = 'flex';
+                reader.onload = async function(e) {
+                    let videoUrl = e.target.result;
+                    document.getElementById('liveStreamModal').style.display = 'none';
+
+                    if(window.db) {
+                        const { collection, addDoc } = window.firebaseCols;
+                        try {
+                            await addDoc(collection(window.db, "mandir_live_streams"), {
+                                id: Date.now(),
+                                title: title,
+                                videoUrl: videoUrl,
+                                thumbnail: thumbnail,
+                                uploader: loggedInUserName,
+                                dp: loggedInUserDp,
+                                likes: 0,
+                                likedUsers: []
+                            });
+                            alert('🔴 लाईव्ह स्ट्रीम यशस्वीरित्या सुरू झाली!');
+                            document.getElementById('inputLiveTitle').value = '';
+                        } catch(err) { console.error(err); }
+                    }
                 };
-                reader.readAsDataURL(input.files[0]);
+                reader.readAsDataURL(videoInput.files[0]);
+            } else {
+                alert('कृपया व्हिडिओ फाईल निवडा!');
             }
         }
 
-        function closeUploadModal() {
-            document.getElementById('uploadModal').style.display = 'none';
-        }
-
-        async function confirmAndUpload() {
-            const title = document.getElementById('inputVideoTitle').value.trim() || 'शिवालय दर्शन';
-            const desc = document.getElementById('inputVideoDesc').value.trim() || 'भक्तीमय व्हिडिओ';
-            const tags = document.getElementById('inputVideoTags').value.trim() || '#Mahadev';
-            let finalThumbnail = pendingThumbnailBase64 || 'photo1.jpg';
-            
-            closeUploadModal();
-
-            let typeNameText = currentUploadType === 'full' ? 'फुल व्हिडिओ' : 'शॉर्ट व्हिडिओ';
-            if(window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                try {
-                    await addDoc(collection(window.db, "mandir_history"), {
-                        id: Date.now(),
-                        type: typeNameText,
-                        title: title,
-                        desc: desc,
-                        tags: tags,
-                        url: pendingVideoObjectUrl,
-                        thumbnail: finalThumbnail,
-                        uploader: loggedInUserName,
-                        dp: loggedInUserDp
-                    });
-                    alert('यशस्वी! तुमचा व्हिडिओ ऑल इंडिया युझर्ससाठी अपलोड झाला आहे.');
-                } catch(e) {
-                    console.error(e);
-                }
-            }
-        }
-
-        async function deleteUploadedVideo(docFirebaseId) {
+        async function deleteLiveStream(docFirebaseId) {
             if(!isAdminLoggedIn) {
                 alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
                 return;
             }
-            if(confirm('हा व्हिडिओ डिलीट करायचा का?') && window.db) {
+            if(confirm('ही लाईव्ह स्ट्रीम डिलीट करायची का?') && window.db) {
                 const { doc, deleteDoc } = window.firebaseCols;
                 try {
-                    await deleteDoc(doc(window.db, "mandir_history", docFirebaseId));
-                    alert('व्हिडिओ यशस्वीरित्या डिलीट केला.');
+                    await deleteDoc(doc(window.db, "mandir_live_streams", docFirebaseId));
+                    alert('लाईव्ह स्ट्रीम डिलीट केली.');
                 } catch(e) { console.error(e); }
             }
         }
 
-        function switchVideoTab(tabType, btnElem) {
-            currentVideoTab = tabType;
-            const buttons = document.querySelectorAll('.video-tab-btn');
-            buttons.forEach(b => b.classList.remove('active-tab'));
-            if(btnElem) btnElem.classList.add('active-tab');
-            renderVideosUI();
-        }
-
-        function renderVideosUI() {
-            const container = document.getElementById('videosListContainer');
+        function renderLiveStreamsUI() {
+            const container = document.getElementById('liveStreamsListContainer');
             container.innerHTML = '';
             
-            let filtered = globalHistoryList.filter(item => {
-                if(currentVideoTab === 'full') return item.type === 'फुल व्हिडिओ';
-                if(currentVideoTab === 'short') return item.type === 'शॉर्ट व्हिडिओ';
-                return false;
-            });
-
-            if(filtered.length === 0) {
-                container.innerHTML = `<p style="font-size:12px; color:#94a3b8; text-align:center; padding:20px;">कोणतेही व्हिडिओ उपलब्ध नाहीत.</p>`;
+            if(globalLiveStreamsList.length === 0) {
+                container.innerHTML = `<p style="font-size:12px; color:#94a3b8; text-align:center; padding:20px;">सध्या कोणतीही लाईव्ह स्ट्रीम सुरू नाही.</p>`;
                 return;
             }
 
-            filtered.forEach(item => {
+            globalLiveStreamsList.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'youtube-video-card';
                 card.innerHTML = `
-                    <div class="yt-thumb-container" onclick="openYoutubePlayer('${item.url || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">
+                    <div class="yt-thumb-container" onclick="openLivePlayer('${item.docFirebaseId}', '${item.videoUrl || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}', ${item.likes || 0})">
                         <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
+                        <span style="position:absolute; top:8px; left:8px; background:#ef4444; color:white; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:bold;">🔴 LIVE</span>
                     </div>
                     <div class="yt-card-details">
                         <div style="display:flex; gap:10px; align-items:center;">
                             <img src="${item.dp || 'photo1.jpg'}" alt="DP" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
                             <div class="yt-card-meta">
                                 <h4 class="yt-card-title">${item.title}</h4>
-                                <p class="yt-card-channel">${item.uploader || 'Unknown'}</p>
-                                <p style="font-size:11px; color:#94a3b8; margin:2px 0 0 0;">${item.tags}</p>
+                                <p class="yt-card-channel">प्रसारक: ${item.uploader || 'Unknown'}</p>
                             </div>
                         </div>
-                        <button class="share-btn-action" onclick="shareContentText('व्हिडिओ पहा: ${item.title} - ${item.tags}')">शेअर 📤</button>
+                        <button class="share-btn-action" onclick="shareContentText('श्री क्षेत्र कपिलेश्वर महादेव मंदिर लाईव्ह पहा: ${item.title}')">शेअर 📤</button>
                     </div>
-                    ${isAdminLoggedIn ? `<button class="delete-btn-abs" onclick="deleteUploadedVideo('${item.docFirebaseId}')">🗑️</button>` : ''}
+                    ${isAdminLoggedIn ? `<button class="delete-btn-abs" onclick="deleteLiveStream('${item.docFirebaseId}')">🗑️</button>` : ''}
                 `;
                 container.appendChild(card);
             });
         }
 
-        function openYoutubePlayer(url, title, desc, tags, uploader, dp) {
+        function openLivePlayer(docId, url, title, uploader, dp, likesCount) {
+            activeStreamDocId = docId;
             document.getElementById('ytPlayerTitle').innerText = title;
-            document.getElementById('ytPlayerDesc').innerText = desc;
-            document.getElementById('ytPlayerTags').innerText = tags;
             document.getElementById('playerUploaderName').innerText = uploader;
             document.getElementById('playerUploaderDp').src = dp;
+            document.getElementById('streamLikeCount').innerText = likesCount;
             
             const videoElem = document.getElementById('advancedVideoElement');
             if(url && url.trim() !== '') {
@@ -1866,6 +1827,67 @@
                 videoElem.style.display = 'none';
             }
             document.getElementById('youtubePlayerModal').style.display = 'flex';
+            loadLiveChatMessages();
+        }
+
+        async function likeCurrentStream() {
+            if(!activeStreamDocId || !window.db) return;
+            const { doc, getDoc, updateDoc } = window.firebaseCols;
+            let docRef = doc(window.db, "mandir_live_streams", activeStreamDocId);
+            let snap = await getDoc(docRef);
+            if(snap.exists()) {
+                let data = snap.data();
+                let likedUsers = data.likedUsers || [];
+                if(likedUsers.includes(loggedInUserName)) {
+                    alert('तुम्ही या लाईव्ह स्ट्रीमला आधीच लाईक केले आहे!');
+                    return;
+                }
+                likedUsers.push(loggedInUserName);
+                let newLikes = (data.likes || 0) + 1;
+                await updateDoc(docRef, { likes: newLikes, likedUsers: likedUsers });
+                document.getElementById('streamLikeCount').innerText = newLikes;
+            }
+        }
+
+        async function sendLiveChatMessage() {
+            let input = document.getElementById('liveChatInput');
+            let text = input.value.trim();
+            if(text !== "" && activeStreamDocId && window.db) {
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_live_chats"), {
+                        streamId: activeStreamDocId,
+                        sender: loggedInUserName,
+                        dp: loggedInUserDp,
+                        text: text,
+                        time: Date.now()
+                    });
+                    input.value = '';
+                } catch(e) { console.error(e); }
+            }
+        }
+
+        function loadLiveChatMessages() {
+            if(!window.db || !activeStreamDocId) return;
+            const { collection, onSnapshot } = window.firebaseCols;
+            onSnapshot(collection(window.db, "mandir_live_chats"), (snapshot) => {
+                let msgs = [];
+                snapshot.forEach(docSnap => {
+                    let d = docSnap.data();
+                    if(d.streamId == activeStreamDocId) msgs.push(d);
+                });
+                msgs.sort((a, b) => a.time - b.time);
+                
+                let area = document.getElementById('liveChatMessagesArea');
+                area.innerHTML = '';
+                msgs.forEach(m => {
+                    let div = document.createElement('div');
+                    div.style.cssText = "margin-bottom:4px;";
+                    div.innerHTML = `<strong style="color:#2dd4bf;">${m.sender}:</strong> <span style="color:#fff;">${m.text}</span>`;
+                    area.appendChild(div);
+                });
+                area.scrollTop = area.scrollHeight;
+            });
         }
 
         function closeYoutubePlayer() {
@@ -1873,6 +1895,7 @@
             const videoElem = document.getElementById('advancedVideoElement');
             videoElem.pause();
             videoElem.src = "";
+            activeStreamDocId = null;
         }
 
         function showSection(sectionKey, btnElem) {
