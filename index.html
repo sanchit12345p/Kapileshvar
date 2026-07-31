@@ -2078,6 +2078,442 @@
             sections.forEach(s => s.classList.remove('active-section'));
             document.getElementById('section-' + sectionKey).classList.add('active-section');
         }
+        <!DOCTYPE html>
+<html lang="mr" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="appTitle">MH कपिलेश्वर महादेव मंदिर विल्होळे</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); color: #e2e8f0; padding-bottom: 70px; }
+        header { background: linear-gradient(135deg, #0f172a, #1e293b, #b91c1c); color: white; padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); position: relative; border-bottom: 2px solid #e11d48; }
+        .menu-hamburger-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; color: white; font-size: 22px; cursor: pointer; }
+        header img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #f43f5e; object-fit: cover; }
+        .admin-brand { font-size: 11px; color: #fca5a5; margin-top: 4px; letter-spacing: 1px; font-weight: bold; }
+        .container { padding: 15px; max-width: 800px; margin: auto; }
+        h2 { color: #f43f5e; border-bottom: 2px solid #881337; padding-bottom: 5px; font-size: 18px; margin-top: 20px; }
+        .delete-btn-abs { position: absolute; top: 5px; right: 5px; background: rgba(239, 68, 68, 0.9); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 12px; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 10; }
+        .youtube-video-card { background: #1e293b; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); position: relative; border: 1px solid #334155; }
+        .yt-thumb-container { width: 100%; height: 180px; position: relative; background: #000; cursor: pointer; }
+        .yt-thumb-container img { width: 100%; height: 100%; object-fit: cover; }
+        .yt-card-details { display: flex; padding: 10px; gap: 10px; align-items: center; justify-content: space-between; }
+        .yt-card-meta { flex: 1; }
+        .yt-card-title { font-size: 14px; font-weight: bold; color: #f8fafc; margin: 0 0 4px 0; }
+        .yt-card-channel { font-size: 12px; color: #94a3b8; margin: 0; }
+        .create-menu { display: none; position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); background: #1e293b; width: 250px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); border-radius: 8px; z-index: 1000; padding: 8px; border: 1px solid #475569; text-align: center; }
+        .create-menu button { width: 100%; padding: 8px; margin: 4px 0; background: #0f172a; border: 1px solid #334155; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; color: #f8fafc; text-align: left; }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
+        .modal-content-box { background: #1e293b; color: #fff; padding: 20px; border-radius: 8px; width: 90%; max-width: 350px; text-align: left; position: relative; max-height: 90vh; overflow-y: auto; border: 1px solid #475569; }
+        .modal-content-box input, .modal-content-box textarea, .modal-content-box select { width: 100%; padding: 8px; margin: 6px 0 12px 0; border: 1px solid #475569; background: #0f172a; color: white; border-radius: 4px; font-size: 12px; box-sizing: border-box; }
+        .thumbnail-upload-box { width: 100%; height: 110px; border: 2px dashed #e11d48; border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; background: #0f172a; margin-bottom: 12px; position: relative; overflow: hidden; }
+        .thumbnail-upload-box img { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; }
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; }
+        .modal-buttons button { padding: 6px 12px; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .btn-cancel { background: #64748b; color: white; }
+        .btn-save { background: #e11d48; color: white; }
+        .youtube-player-modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); flex-direction: column; justify-content: space-between; }
+        .yt-player-header { padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); color: white; }
+        .yt-player-body { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; background: black; }
+        .yt-player-body video { width: 100%; max-height: 50vh; background: black; outline: none; }
+        .yt-player-footer { background: #181818; color: white; padding: 12px; max-height: 40vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .live-control-overlay { position: absolute; top: 10px; right: 10px; display: flex; gap: 10px; z-index: 3500; }
+        .switch-cam-btn { background: rgba(13, 148, 136, 0.8); color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold; }
+    </style>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyDdoTltT76q_owd7-fFiMMPypbFdioAyiM",
+          authDomain: "kapileshwar-mandir.firebaseapp.com",
+          projectId: "kapileshwar-mandir",
+          storageBucket: "kapileshwar-mandir.firebasestorage.app",
+          messagingSenderId: "607915355395",
+          appId: "1:607915355395:web:fc1b297448bf345a350d36",
+          measurementId: "G-3P5K83XWNP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion, getDoc };
+    </script>
+</head>
+<body>
+
+    <!-- प्लस बटण दाबल्यावर येणारा मेनू -->
+    <div id="createMenuBox" class="create-menu">
+        <button onclick="openLiveStreamModal()">🔴 लाईव्ह स्ट्रीम क्रिएट करा</button>
+    </div>
+
+    <!-- लाईव्ह स्ट्रीम लिस्ट कन्टेनर -->
+    <div class="container">
+        <h2>🔴 मंदीर लाईव्ह दर्शन</h2>
+        <div id="liveStreamsListContainer"></div>
+    </div>
+
+    <!-- लाईव्ह स्ट्रीम तयार करण्याचा मॉडेल -->
+    <div id="liveStreamModal" class="modal">
+        <div class="modal-content-box">
+            <h3 style="color:#e11d48; margin-top:0; font-size:14px;">🔴 नवीन लाईव्ह स्ट्रीम सुरू करा</h3>
+            
+            <label style="font-size:11px; font-weight:bold;">लाईव्ह थंबनेल फोटो:</label>
+            <div class="thumbnail-upload-box" onclick="document.getElementById('liveThumbInput').click()">
+                <span id="liveThumbPlaceholder" style="font-size:11px; color:#94a3b8;">📸 फोटो निवडा</span>
+                <img id="liveThumbPreview" src="" alt="Thumbnail">
+            </div>
+            <input type="file" id="liveThumbInput" accept="image/*" style="display:none;" onchange="previewLiveThumb(this)">
+
+            <label style="font-size:11px; font-weight:bold;">लाईव्ह स्ट्रीम टायटल:</label>
+            <input type="text" id="inputLiveTitle" placeholder="उदा. महाकाल लाईव्ह आरती दर्शन">
+
+            <div style="background:#0f172a; padding:10px; border-radius:6px; margin-bottom:10px; border:1px solid #475569;">
+                <label style="font-size:11px; font-weight:bold; color:#f43f5e;">थेट मोबाईल कॅमेरा लाईव्ह (पर्याय १):</label>
+                <div style="margin-top:5px; display:flex; gap:5px;">
+                    <button type="button" onclick="startLocalCameraPreview()" style="flex:1; background:#16a34a; color:white; border:none; padding:6px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🎥 कॅमेरा चालू करा</button>
+                    <button type="button" onclick="switchCameraFacing()" style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 कॅमेरा बदला</button>
+                </div>
+                <video id="liveCameraPreview" autoplay playsinline muted style="width:100%; height:120px; background:black; margin-top:8px; border-radius:4px; object-fit:cover; display:none;"></video>
+            </div>
+            
+            <label style="font-size:11px; font-weight:bold;">किंवा व्हिडिओ फाईल अपलोड करा (पर्याय २ - Optional):</label>
+            <input type="file" id="inputLiveVideoFile" accept="video/*" style="margin-bottom:10px;">
+
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="stopCameraAndCloseLiveModal()">रद्द करा</button>
+                <button class="btn-save" onclick="confirmCreateLiveStream()">लाईव्ह सुरू करा</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- लाईव्ह स्ट्रीम प्लेयर व WebRTC मॉडेल -->
+    <div id="youtubePlayerModal" class="youtube-player-modal">
+        <div class="live-control-overlay" id="broadcasterControls" style="display:none;">
+            <button class="switch-cam-btn" onclick="switchCameraFacing()">🔄 कॅमेरा बदला</button>
+        </div>
+
+        <div class="yt-player-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img id="playerUploaderDp" src="photo1.jpg" alt="DP" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+                <span id="playerUploaderName" style="font-size:13px; font-weight:bold;">नावा</span>
+            </div>
+            <button onclick="closeLivePlayer()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✖</button>
+        </div>
+        
+        <div class="yt-player-body">
+            <video id="advancedVideoElement" controls autoplay playsinline></video>
+        </div>
+
+        <div class="yt-player-footer">
+            <h3 id="ytPlayerTitle" style="margin:0; font-size:14px; color:#fca5a5;">शीर्षक</h3>
+            <div style="font-size:11px; color:#2dd4bf; font-weight:bold;">🔴 लाईव्ह कनेक्शन सुरू आहे...</div>
+        </div>
+    </div>
+
+    <script>
+        let loggedInUserName = 'भक्त सं치가';
+        let loggedInUserDp = 'photo1.jpg';
+        let isAdminLoggedIn = true; // तुझ्यासाठी ॲडमिन चालू ठेवले आहे
+        let globalLiveStreamsList = [];
+        let activeStreamDocId = null;
+        let pendingLiveThumbBase64 = '';
+        
+        let activeCameraStream = null;
+        let useFrontCamera = true;
+        let isBroadcastingNow = false;
+        let peerConnection = null;
+
+        const rtcConfig = {
+            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+        };
+
+        function previewLiveThumb(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    pendingLiveThumbBase64 = e.target.result;
+                    document.getElementById('liveThumbPreview.src').src = e.target.result; // correction
+                    let prev = document.getElementById('liveThumbPreview');
+                    prev.src = e.target.result;
+                    prev.style.display = 'block';
+                    document.getElementById('liveThumbPlaceholder').style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function openLiveStreamModal() {
+            document.getElementById('createMenuBox').style.display = 'none';
+            document.getElementById('liveStreamModal').style.display = 'flex';
+        }
+
+        function stopCameraAndCloseLiveModal() {
+            if(activeCameraStream) {
+                activeCameraStream.getTracks().forEach(track => track.stop());
+                activeCameraStream = null;
+            }
+            document.getElementById('liveCameraPreview').style.display = 'none';
+            document.getElementById('liveStreamModal').style.display = 'none';
+        }
+
+        async function startLocalCameraPreview() {
+            try {
+                if(activeCameraStream) {
+                    activeCameraStream.getTracks().forEach(track => track.stop());
+                }
+                const constraints = {
+                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
+                    audio: true
+                };
+                activeCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                const videoPreview = document.getElementById('liveCameraPreview');
+                videoPreview.srcObject = activeCameraStream;
+                videoPreview.style.display = 'block';
+                videoPreview.play();
+            } catch(err) {
+                alert('कॅमेरा चालू करण्यात अडचण आली: ' + err.message);
+            }
+        }
+
+        async function switchCameraFacing() {
+            useFrontCamera = !useFrontCamera;
+            if (activeCameraStream) {
+                activeCameraStream.getTracks().forEach(t => t.stop());
+                const constraints = { video: { facingMode: useFrontCamera ? 'user' : 'environment' }, audio: true };
+                activeCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                const modalPreview = document.getElementById('liveCameraPreview');
+                if (modalPreview.style.display === 'block') {
+                    modalPreview.srcObject = activeCameraStream;
+                }
+
+                const playerVideo = document.getElementById('advancedVideoElement');
+                if (isBroadcastingNow) {
+                    playerVideo.srcObject = activeCameraStream;
+                    if(peerConnection) {
+                        const senders = peerConnection.getSenders();
+                        const videoTrack = activeCameraStream.getVideoTracks()[0];
+                        senders.find(s => s.track.kind === 'video').replaceTrack(videoTrack);
+                    }
+                }
+            }
+        }
+
+        async function confirmCreateLiveStream() {
+            let title = document.getElementById('inputLiveTitle').value.trim();
+            let videoInput = document.getElementById('inputLiveVideoFile');
+            let thumbnail = pendingLiveThumbBase64 || 'photo1.jpg';
+
+            if(title === '') {
+                alert('कृपया लाईव्ह स्ट्रीमचे टायटल टाका!');
+                return;
+            }
+
+            document.getElementById('liveStreamModal').style.display = 'none';
+
+            if(videoInput.files && videoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    saveStreamToDB(title, e.target.result, thumbnail, false);
+                };
+                reader.readAsDataURL(videoInput.files[0]);
+            } else if (activeCameraStream) {
+                saveStreamToDB(title, '', thumbnail, true);
+            } else {
+                alert('कृपया कॅमेरा चालू करा किंवा व्हिडिओ फाईल निवडा!');
+                document.getElementById('liveStreamModal').style.display = 'flex';
+            }
+        }
+
+        async function saveStreamToDB(title, url, thumb, isCam) {
+            if(window.db) {
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    let docRef = await addDoc(collection(window.db, "mandir_live_streams"), {
+                        id: Date.now(),
+                        title: title,
+                        videoUrl: url,
+                        isCameraStream: isCam,
+                        thumbnail: thumb,
+                        uploader: loggedInUserName,
+                        dp: loggedInUserDp,
+                        status: 'live'
+                    });
+                    
+                    alert('🔴 लाईव्ह स्ट्रीम यशस्वीरित्या सुरू झाली!');
+                    document.getElementById('inputLiveTitle').value = '';
+                    
+                    if(isCam) {
+                        openLivePlayer(docRef.id, '', title, loggedInUserName, loggedInUserDp, true, true);
+                    }
+                } catch(err) { console.error(err); }
+            }
+        }
+
+        // रियल-टाइम लाईव्ह लिस्ट लोड करण्यासाठी
+        function listenLiveStreams() {
+            if(window.db) {
+                const { collection, onSnapshot } = window.firebaseCols;
+                onSnapshot(collection(window.db, "mandir_live_streams"), (snapshot) => {
+                    globalLiveStreamsList = [];
+                    snapshot.forEach((docSnap) => {
+                        globalLiveStreamsList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
+                    });
+                    renderLiveStreamsUI();
+                });
+            }
+        }
+
+        function renderLiveStreamsUI() {
+            const container = document.getElementById('liveStreamsListContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            if(globalLiveStreamsList.length === 0) {
+                container.innerHTML = `<p style="font-size:12px; color:#94a3b8; text-align:center; padding:20px;">सध्या कोणतीही लाईव्ह स्ट्रीम सुरू नाही.</p>`;
+                return;
+            }
+
+            globalLiveStreamsList.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'youtube-video-card';
+                card.innerHTML = `
+                    <div class="yt-thumb-container" onclick="openLivePlayer('${item.docFirebaseId}', '${item.videoUrl || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}', ${item.isCameraStream || false}, false)">
+                        <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
+                        <span style="position:absolute; top:8px; left:8px; background:#ef4444; color:white; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:bold;">🔴 LIVE</span>
+                    </div>
+                    <div class="yt-card-details">
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <img src="${item.dp || 'photo1.jpg'}" alt="DP" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                            <div class="yt-card-meta">
+                                <h4 class="yt-card-title">${item.title}</h4>
+                                <p class="yt-card-channel">प्रसारक: ${item.uploader || 'Unknown'}</p>
+                            </div>
+                        </div>
+                    </div>
+                    ${isAdminLoggedIn ? `<button class="delete-btn-abs" onclick="deleteLiveStream('${item.docFirebaseId}')">🗑️</button>` : ''}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // WebRTC Signaling & Player Logic
+        async function openLivePlayer(docId, url, title, uploader, dp, isCameraStream, amIBroadcaster) {
+            activeStreamDocId = docId;
+            document.getElementById('ytPlayerTitle').innerText = title;
+            document.getElementById('playerUploaderName').innerText = uploader;
+            document.getElementById('playerUploaderDp').src = dp;
+            
+            const videoElem = document.getElementById('advancedVideoElement');
+            const broadcasterControls = document.getElementById('broadcasterControls');
+            
+            document.getElementById('youtubePlayerModal').style.display = 'flex';
+
+            if(amIBroadcaster) {
+                isBroadcastingNow = true;
+                broadcasterControls.style.display = 'flex';
+                videoElem.srcObject = activeCameraStream;
+                videoElem.muted = true;
+                videoElem.play().catch(e => console.log(e));
+
+                // WebRTC Offer तयार करून Firebase मध्ये ठेवणे
+                peerConnection = new RTCPeerConnection(rtcConfig);
+                activeCameraStream.getTracks().forEach(track => peerConnection.addTrack(track, activeCameraStream));
+
+                const offerCol = window.firebaseCols.collection(window.db, `mandir_live_streams/${docId}/offerCandidates`);
+                peerConnection.onicecandidate = event => {
+                    if (event.candidate) {
+                        window.firebaseCols.addDoc(offerCol, event.candidate.toJSON());
+                    }
+                };
+
+                const offer = await peerConnection.createOffer();
+                await peerConnection.setLocalDescription(offer);
+                await window.firebaseCols.updateDoc(window.firebaseCols.doc(window.db, "mandir_live_streams", docId), {
+                    offer: { type: offer.type, sdp: offer.sdp }
+                });
+
+                // Answer ऐकणे
+                window.firebaseCols.onSnapshot(window.firebaseCols.doc(window.db, "mandir_live_streams", docId), async (snapshot) => {
+                    const data = snapshot.data();
+                    if (data && data.answer && !peerConnection.currentRemoteDescription) {
+                        const rtcAnswer = new RTCSessionDescription(data.answer);
+                        await peerConnection.setRemoteDescription(rtcAnswer);
+                    }
+                });
+
+            } else if(isCameraStream && !amIBroadcaster) {
+                broadcasterControls.style.display = 'none';
+                isBroadcastingNow = false;
+                
+                peerConnection = new RTCPeerConnection(rtcConfig);
+                peerConnection.ontrack = event => {
+                    videoElem.srcObject = event.streams[0];
+                };
+
+                const docRef = window.firebaseCols.doc(window.db, "mandir_live_streams", docId);
+                const docSnap = await window.firebaseCols.getDoc(docRef);
+                const data = docSnap.data();
+
+                if(data && data.offer) {
+                    await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+                    const answer = await peerConnection.createAnswer();
+                    await peerConnection.setLocalDescription(answer);
+
+                    await window.firebaseCols.updateDoc(docRef, {
+                        answer: { type: answer.type, sdp: answer.sdp }
+                    });
+
+                    const answerCol = window.firebaseCols.collection(window.db, `mandir_live_streams/${docId}/answerCandidates`);
+                    peerConnection.onicecandidate = event => {
+                        if (event.candidate) {
+                            window.firebaseCols.addDoc(answerCol, event.candidate.toJSON());
+                        }
+                    };
+                }
+            } else if(url && url.trim() !== '') {
+                broadcasterControls.style.display = 'none';
+                videoElem.srcObject = null;
+                videoElem.src = url;
+                videoElem.play().catch(e => console.log(e));
+            }
+        }
+
+        function closeLivePlayer() {
+            document.getElementById('youtubePlayerModal').style.display = 'none';
+            const videoElem = document.getElementById('advancedVideoElement');
+            if(activeCameraStream && isBroadcastingNow) {
+                activeCameraStream.getTracks().forEach(t => t.stop());
+                activeCameraStream = null;
+            }
+            if(peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
+            }
+            videoElem.pause();
+            videoElem.src = "";
+            videoElem.srcObject = null;
+            isBroadcastingNow = false;
+            activeStreamDocId = null;
+        }
+
+        async function deleteLiveStream(docId) {
+            if(confirm('तुम्हाला ही लाईव्ह स्ट्रीम डिलीट करायची आहे का?')) {
+                await window.firebaseCols.deleteDoc(window.firebaseCols.doc(window.db, "mandir_live_streams", docId));
+                alert('लाईव्ह स्ट्रीम डिलीट झाली!');
+            }
+        }
+
+        window.onload = function() {
+            listenLiveStreams();
+        };
+    </script>
+</body>
+</html>
+
     </script>
 </body>
 </html>
