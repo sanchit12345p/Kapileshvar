@@ -376,7 +376,7 @@
             border: 1px solid #334155;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
         }
 
         .youtube-video-card {
@@ -404,6 +404,8 @@
             display: flex;
             padding: 10px;
             gap: 10px;
+            align-items: center;
+            justify-content: space-between;
         }
         .yt-card-meta {
             flex: 1;
@@ -418,6 +420,17 @@
             font-size: 12px;
             color: #94a3b8;
             margin: 0;
+        }
+
+        .share-btn-action {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         .video-tabs {
@@ -1085,7 +1098,6 @@
         let activeGroupId = null;
         let activeGroupName = '';
 
-        // सुरुवातीच्या फक्त SMS1.mp3 आणि SMS2.mp3 रिंगटोन्स
         let defaultRingtones = [
             { id: 1, title: 'SMS1.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'एसएमएस रिंगटोन' },
             { id: 2, title: 'SMS2.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', category: 'एसएमएस रिंगटोन' }
@@ -1334,7 +1346,7 @@
             let fileInput = document.getElementById('inputRingtoneFile');
 
             if(titleInput === '') {
-                alert('कृपया रिंगटोनचे नाव टाка!');
+                alert('कृपया रिंगटोनचे नाव टाका!');
                 return;
             }
 
@@ -1431,15 +1443,26 @@
                     let div = document.createElement('div');
                     div.className = 'status-story-card';
                     div.innerHTML = `
-                        <img src="${s.dp || 'photo1.jpg'}" alt="DP" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #16a34a;">
-                        <div>
-                            <strong>${s.author}</strong><br>
-                            <span style="font-size:12px; color:#f8fafc;">${s.text}</span>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <img src="${s.dp || 'photo1.jpg'}" alt="DP" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #16a34a;">
+                            <div>
+                                <strong>${s.author}</strong><br>
+                                <span style="font-size:12px; color:#f8fafc;">${s.text}</span>
+                            </div>
                         </div>
+                        <button class="share-btn-action" onclick="shareContentText('${s.author} यांचे स्टेटस: ${s.text}')">शेअर 📤</button>
                     `;
                     container.appendChild(div);
                 });
             });
+        }
+
+        function shareContentText(textToShare) {
+            if (navigator.share) {
+                navigator.share({ title: 'MH कपिलेश्वर महादेव', text: textToShare }).catch(err => console.log(err));
+            } else {
+                prompt('हा मेसेज कॉपी करा:', textToShare);
+            }
         }
 
         function loadGroupsUI() {
@@ -1651,7 +1674,6 @@
                 snapshot.forEach((docSnap) => {
                     globalRingtonesList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
                 });
-                // जर डेटाबेसमध्ये रिंगटोन नसतील तर डिफॉल्ट दोन दाखवा
                 let combinedRingtones = globalRingtonesList.length > 0 ? globalRingtonesList : defaultRingtones;
                 renderRingtones(combinedRingtones);
             });
@@ -1717,6 +1739,10 @@
 
         function prepareVideoUpload(input, typeKey) {
             document.getElementById('createMenuBox').style.display = 'none';
+            if(!isAdminLoggedIn) {
+                alert('⚠️ सूचना: व्हिडिओ अपलोड करण्याचा अधिकार फक्त ॲडमिनकडे आहे!');
+                return;
+            }
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -1807,12 +1833,15 @@
                         <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
                     </div>
                     <div class="yt-card-details">
-                        <img src="${item.dp || 'photo1.jpg'}" alt="DP" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
-                        <div class="yt-card-meta">
-                            <h4 class="yt-card-title">${item.title}</h4>
-                            <p class="yt-card-channel">${item.uploader || 'Unknown'}</p>
-                            <p style="font-size:11px; color:#94a3b8; margin:2px 0 0 0;">${item.tags}</p>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <img src="${item.dp || 'photo1.jpg'}" alt="DP" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                            <div class="yt-card-meta">
+                                <h4 class="yt-card-title">${item.title}</h4>
+                                <p class="yt-card-channel">${item.uploader || 'Unknown'}</p>
+                                <p style="font-size:11px; color:#94a3b8; margin:2px 0 0 0;">${item.tags}</p>
+                            </div>
                         </div>
+                        <button class="share-btn-action" onclick="shareContentText('व्हिडिओ पहा: ${item.title} - ${item.tags}')">शेअर 📤</button>
                     </div>
                     ${isAdminLoggedIn ? `<button class="delete-btn-abs" onclick="deleteUploadedVideo('${item.docFirebaseId}')">🗑️</button>` : ''}
                 `;
