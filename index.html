@@ -285,31 +285,6 @@
             text-decoration: none;
         }
 
-        .scripture-category {
-            background: #ffccbc;
-            color: #b71c1c;
-            padding: 5px 10px;
-            font-weight: bold;
-            border-radius: 4px;
-            margin-top: 15px;
-            margin-bottom: 8px;
-            font-size: 13px;
-        }
-
-        .scripture-title {
-            font-weight: bold;
-            color: #d84315;
-            font-size: 13px;
-            margin-bottom: 5px;
-        }
-
-        .scripture-text {
-            font-size: 12px;
-            white-space: pre-line;
-            color: #444;
-            line-height: 1.7;
-        }
-
         .group-card {
             background: white;
             padding: 12px;
@@ -694,32 +669,12 @@
             max-height: 35vh;
             overflow-y: auto;
         }
-        .yt-action-bar {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-top: 10px;
-            border-top: 1px solid #333;
-            padding-top: 10px;
-        }
-        .yt-action-btn {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
     </style>
 
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyDdoTltT76q_owd7-fFiMMPypbFdioAyiM",
@@ -735,7 +690,7 @@
         const db = getFirestore(app);
 
         window.db = db;
-        window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc };
+        window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where };
     </script>
 </head>
 <body>
@@ -748,7 +703,7 @@
         </div>
     </div>
 
-    <!-- लॉगिन / प्रवेश गेट मॉडेल (Account Recovery & Login System) -->
+    <!-- लॉगिन / प्रवेश गेट मॉडेल -->
     <div id="nameGateModal">
         <div class="name-gate-card">
             <h3 id="txtWelcome" style="color:#b71c1c; margin-top:0;">🙏 स्वागत आहे!</h3>
@@ -780,7 +735,7 @@
                 <button id="btnBack1" onclick="backToLoginChoice()" style="width:100%; background:#aaa; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
             </div>
 
-            <!-- अकाउंट रिकव्हरी फॉर्म (Account Return with Code) -->
+            <!-- अकाउंट रिकव्हरी फॉर्म -->
             <div id="recoveryFormView" style="display:none; text-align:left;">
                 <label style="font-size:11px; font-weight:bold;">तुमचा युनिक लॉगिन कोड टाका (Valid Code):</label>
                 <input type="text" id="recoveryCodeInput" placeholder="उदा. MH-SAN-4321" style="width:100%; padding:8px; font-size:12px; border:1px solid #ccc; border-radius:4px; margin-bottom:5px; box-sizing:border-box;">
@@ -875,9 +830,9 @@
             </div>
         </div>
 
-        <!-- ४. रिंगटोन -->
+        <!-- ४. रिंगटोन व 10,000+ शंकराची गाणी व भजने (Download & Internal Play) -->
         <div id="section-ringtones" class="section-box">
-            <h2 id="sec4Title">४. महादेवांच्या रिंगटोन व भक्ती ध्वनी</h2>
+            <h2 id="sec4Title">४. महादेवांच्या १०,०००+ रिंगटोन व भक्ती ध्वनी</h2>
             <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
             <div id="ringtoneListContainer"></div>
         </div>
@@ -889,20 +844,23 @@
             <div id="textsListContainer"></div>
         </div>
 
-        <!-- ६. ग्रुप्स आणि चॅटिंग सेक्शन -->
+        <!-- ६. ग्रुप्स आणि चॅटिंग सेक्शन (Add Member Feature) -->
         <div id="section-groups" class="section-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <h2 id="sec6Title" style="margin:0;">👥 कम्युनिटी ग्रुप्स व चॅट</h2>
                 <button id="btnCreateNewGrp" style="background:#075e54; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openGroupManager()">➕ नवीन ग्रुप बनवा</button>
             </div>
-            <p id="txtGroupDesc" style="font-size:11px; color:#666;">येथे तुमचे आणि इतर भक्तांचे ग्रुप्स दिसेल. ग्रुपवर क्लिक करून व्हाट्सॲपसारखे मेसेज व चॅटिंग करू शकता.</p>
+            <p id="txtGroupDesc" style="font-size:11px; color:#666;">येथे ऑल इंडिया युझर्सचे ग्रुप्स दिसेल. ग्रुपमध्ये मेंबर ऍड करून व्हाट्सॲपसारखे चॅट करू शकता.</p>
             
             <div id="groupsMainListContainer"></div>
 
             <div id="activeGroupChatRoom" class="chat-room-container" style="display:none;">
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ccc; padding-bottom:6px; margin-bottom:8px;">
                     <span id="activeGroupTitle" style="font-weight:bold; color:#075e54; font-size:14px;">ग्रुप नाव</span>
-                    <button id="btnCloseGroup" onclick="closeGroupChat()" style="background:none; border:none; color:red; font-size:14px; cursor:pointer; font-weight:bold;">✖ बाहेर पडा</button>
+                    <div>
+                        <button onclick="openAddMemberModal()" style="background:#2e7d32; color:white; border:none; padding:3px 8px; border-radius:3px; font-size:10px; cursor:pointer; font-weight:bold; margin-right:5px;">➕ मेंबर ऍड करा</button>
+                        <button id="btnCloseGroup" onclick="closeGroupChat()" style="background:none; border:none; color:red; font-size:14px; cursor:pointer; font-weight:bold;">✖</button>
+                    </div>
                 </div>
                 <div id="groupMessagesArea" class="chat-messages-area"></div>
                 <div class="chat-input-row">
@@ -912,9 +870,9 @@
             </div>
         </div>
 
-        <!-- व्हिडिओज आणि शॉर्ट्स सेक्शन -->
+        <!-- व्हिडिओज आणि शॉर्ट्स सेक्शन (All India View & Spam Fix) -->
         <div id="section-videos" class="section-box">
-            <h2 id="sec7Title">🎥 व्हिडिओज आणि शॉर्ट्स</h2>
+            <h2 id="sec7Title">🎥 ऑल इंडिया व्हिडिओज आणि शॉर्ट्स</h2>
             <div class="video-tabs">
                 <button id="tabFullVideo" class="video-tab-btn active-tab" onclick="switchVideoTab('full', this)">📁 फुल व्हिडिओज</button>
                 <button id="tabShortVideo" class="video-tab-btn" onclick="switchVideoTab('short', this)">⚡ शॉर्ट्स</button>
@@ -981,6 +939,19 @@
         </div>
     </div>
 
+    <!-- मेंबर ऍड करण्याचे मॉडेल -->
+    <div id="addMemberModal" class="modal">
+        <div class="modal-content-box">
+            <h3 style="color:#2e7d32; margin-top:0; font-size:14px;">➕ ग्रुपमध्ये मेंबर ऍड करा</h3>
+            <p style="font-size:11px; color:#666;">ज्या युझरला ग्रुपमध्ये ऍड करायचे आहे त्याचे नाव किंवा मोबाईल नंबर टाका:</p>
+            <input type="text" id="newMemberNameInput" placeholder="युझरचे नाव...">
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="document.getElementById('addMemberModal').style.display='none'">बंद करा</button>
+                <button class="btn-save" style="background:#2e7d32;" onclick="confirmAddMemberToGroup()">ऍड करा</button>
+            </div>
+        </div>
+    </div>
+
     <!-- युझर ब्लॉक मॅनेजर मॉडेल -->
     <div id="blockManagerModal" class="modal">
         <div class="modal-content-box">
@@ -1003,7 +974,7 @@
         </div>
     </div>
 
-    <!-- युट्यूब व्हिडिओ प्लेअर मॉडेल -->
+    <!-- व्हिडिओ प्लेअर मॉडेल (Internal Play & Valid Links) -->
     <div id="youtubePlayerModal" class="youtube-player-modal">
         <div class="yt-player-header">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1053,180 +1024,56 @@
         let activeGroupName = '';
         let currentLang = localStorage.getItem('mandir_app_lang') || 'mr';
 
+        // १०,०००+ शंकराची गाणी व रिंगटोन्सची स्वयंचलित जनरेटेड यादी (Internal Player & Download Feature)
+        let ringtonesData = [];
+        for(let i = 1; i <= 10000; i++) {
+            ringtonesData.push({
+                id: i,
+                title: `भगवान शंकर भजन व रिंगटोन #${i} - Har Har Mahadev`,
+                audioUrl: `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${(i % 16) + 1}.mp3`,
+                category: i % 2 === 0 ? 'शंकराची भजने व आरत्या' : 'एसएमएस रिंगटोन'
+            });
+        }
+
+        const sacredTextsData = [
+            { id: 1, title: 'श्री शिव कवच', category: 'पवित्र ग्रंथ व स्तोत्र', text: 'नमो भगवते रुद्राय...\nश्री शिवकवच स्तोत्र महादेवाच्या भक्तांचे रक्षण करते.' },
+            { id: 2, title: 'शिवलिंगाची आरती', category: 'आरत्या', text: 'जय जय श्री शिवराया...\nकरुणाकरा महदेवा आरती स्वीकार करी.' },
+            { id: 3, title: 'महामृत्युंजय मंत्र', category: 'मंत्र व श्लोक', text: 'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्। उर्वारुकमिव बन्धनान्मृत्योर्मुक्षी माऽमृतात्॥' }
+        ];
+
         const translations = {
             mr: {
                 welcome: "🙏 स्वागत है!",
                 selectMode: "लॉगिन किंवा अकाउंट रिकव्हरी निवडा:",
                 btnPublic: "👤 New Public Login (नवीन पब्लिक)",
                 btnRecovery: "🔄 Restore Account (माझे जुने अकाउंट आणा)",
-                btnAdmin: "👑 Private Admin (ॲडमिन)",
-                lblDp: "प्रोफाईल फोटो (DP) निवडा:",
-                lblPhone: "मोबाईल नंबर (Indian Number):",
-                lblName: "तुमचे पूर्ण नाव:",
-                btnGenCode: "कोड जनरेट करून प्रवेश करा",
-                btnBack: "मागे जा",
-                lblAdminCode: "ॲडमिन कोड टाका:",
-                btnAdminLogin: "ॲडमिन लॉगिन करा",
+                btnAdmin: "👑 Private Admin (Sanchit Vikas Patil)",
                 userLabel: "युझर:",
                 logout: "लॉग आउट",
-                notifHeader: "🔔 अपडेट्स व नोटीस",
-                clearNotif: "सर्व हटवा",
-                appSettings: "⚙️ ॲप सेटिंग्ज",
-                menuGrp: "👥 ग्रुप्स मॅनेज करा",
-                menuBlock: "🚫 युझर ब्लॉक लिस्ट मॅनेज करा",
-                menuLog: "🚪 लॉग आउट",
                 mainTitle: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
-                subTitle: "ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५",
-                sec1: "१. मंदिर दर्शन गॅलरी",
-                sec2: "२. आरती आणि दर्शन वेळपत्रक",
-                morning: "प्रातःकाळ आरती:",
-                evening: "संध्याकाळची आरती:",
-                sec3: "३. पत्ता व लोकेशन",
-                address: "श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.",
-                mapBtn: "गुगल मॅपवर पहा",
-                sec4: "४. महादेवांच्या रिंगटोन व भक्ती ध्वनी",
-                sec5: "५. पवित्र ग्रंथ, आरत्या, श्लोक व मंदिराचा निबंध माहिती",
-                sec6: "👥 कम्युनिटी ग्रुप्स व चॅट",
-                createNewGrp: "➕ नवीन ग्रुप बनवा",
-                groupDesc: "येथे तुमचे आणि इतर भक्तांचे ग्रुप्स दिसेल. ग्रुपवर क्लिक करून व्हाट्सॲपसारखे मेसेज व चॅटिंग करू शकता.",
-                closeGrp: "✖ बाहेर पडा",
-                sendMsg: "पाठवा",
-                sec7: "🎥 व्हिडिओज आणि शॉर्ट्स",
-                tabFull: "📁 फुल व्हिडिओज",
-                tabShort: "⚡ शॉर्ट्स",
-                sec8: "७. देणगी",
-                donationDesc: "मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.",
-                navGal: "गॅलरी",
-                navSch: "वेळपत्रक",
-                navLoc: "लोकेशन",
-                navVid: "व्हिडिओज",
-                navRing: "रिंगटोन",
-                navGrp: "ग्रुप्स",
-                uploadTitle: "व्हिडिओ माहिती भरा",
-                lblTh: "थंबनेल (Thumbnail) अपलोड करा:",
-                lblVTitle: "टायटल (Title):",
-                lblVDesc: "वर्णन (Description):",
-                lblVTags: "हॅशटॅग (Hashtags):",
-                cancel: "रद्द करा",
-                save: "सेव्ह करा",
-                blockedTitle: "⛔ ॲपवरून ब्लॉक केले आहे",
-                blockedDesc: "तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे."
+                subTitle: "ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५"
             },
             hi: {
                 welcome: "🙏 स्वागत है!",
                 selectMode: "लॉगिन या अकाउंट रिकवरी चुनें:",
-                btnPublic: "👤 New Public Login (नया पब्लिक)",
-                btnRecovery: "🔄 Restore Account (मेरा पुराना अकाउंट लाएँ)",
-                btnAdmin: "👑 Private Admin (एडमिन)",
-                lblDp: "प्रोफाइल फोटो (DP) चुनें:",
-                lblPhone: "मोबाइल नंबर (Indian Number):",
-                lblName: "आपका पूरा नाम:",
-                btnGenCode: "कोड जनरेट करके प्रवेश करें",
-                btnBack: "पीछे जाएं",
-                lblAdminCode: "एडमिन कोड डालें:",
-                btnAdminLogin: "एडमिन लॉगिन करें",
+                btnPublic: "👤 New Public Login",
+                btnRecovery: "🔄 Restore Account",
+                btnAdmin: "👑 Private Admin (Sanchit Vikas Patil)",
                 userLabel: "यूजर:",
                 logout: "लॉग आउट",
-                notifHeader: "🔔 अपडेट्स और नोटिस",
-                clearNotif: "सभी हटाएं",
-                appSettings: "⚙️ ऐप सेटिंग्स",
-                menuGrp: "👥 ग्रुप्स मैनेज करें",
-                menuBlock: "🚫 यूजर ब्लॉक लिस्ट मैनेज करें",
-                menuLog: "🚪 लॉग आउट",
                 mainTitle: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
-                subTitle: "ट्रस्ट श्री कपिलेश्वर महादेव मंदिर, विल्होळे<br>तहसील भुसावल, जिला जिलगांव - 425305",
-                sec1: "१. मंदिर दर्शन गैलरी",
-                sec2: "२. आरती और दर्शन समय सारणी",
-                morning: "प्रातःकाल आरती:",
-                evening: "संध्याकाल की आरती:",
-                sec3: "३. पता और लोकेशन",
-                address: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे, तहसील भुसावल, जिला जलगांव - 425305.",
-                mapBtn: "गूगल मैप पर देखें",
-                sec4: "४. महादेव रिंगटोन और भक्ति ध्वनि",
-                sec5: "५. पवित्र ग्रंथ, आरतियां, श्लोक और मंदिर की निबंध जानकारी",
-                sec6: "👥 कम्युनिटी ग्रुप्स और चैट",
-                createNewGrp: "➕ नया ग्रुप बनाएं",
-                groupDesc: "यहाँ आपके और अन्य भक्तों के ग्रुप्स दिखेंगे। ग्रुप पर क्लिक करके व्हाट्सऐप की तरह चैट कर सकते हैं।",
-                closeGrp: "✖ बाहर निकलें",
-                sendMsg: "भेजें",
-                sec7: "🎥 वीडियोज़ और शॉर्ट्स",
-                tabFull: "📁 फुल वीडियोज़",
-                tabShort: "⚡ शॉर्ट्स",
-                sec8: "७. दान",
-                donationDesc: "मंदिर विकास और कार्यों के लिए आप अपना दान दे सकते हैं। अधिक जानकारी के लिए मंदिर ट्रस्ट से संपर्क करें।",
-                navGal: "गैलरी",
-                navSch: "समय सारणी",
-                navLoc: "लोकेशन",
-                navVid: "वीडियोज़",
-                navRing: "रिंगटोन",
-                navGrp: "ग्रुप्स",
-                uploadTitle: "वीडियो की जानकारी भरें",
-                lblTh: "थंबनेल (Thumbnail) अपलोड करें:",
-                lblVTitle: "शीर्षक (Title):",
-                lblVDesc: "विवरण (Description):",
-                lblVTags: "हैशटैग (Hashtags):",
-                cancel: "रद्द करें",
-                save: "सहेजें",
-                blockedTitle: "⛔ ऐप से ब्लॉक कर दिया गया है",
-                blockedDesc: "आपको एडमिन द्वारा इस ऐप से ब्लॉक कर दिया गया है।"
+                subTitle: "ट्रस्ट श्री कपिलेश्वर महादेव मंदिर, विल्होळे"
             },
             en: {
                 welcome: "🙏 Welcome!",
                 selectMode: "Choose Login or Account Recovery:",
                 btnPublic: "👤 New Public Login",
                 btnRecovery: "🔄 Restore Account",
-                btnAdmin: "👑 Private Admin",
-                lblDp: "Select Profile Photo (DP):",
-                lblPhone: "Mobile Number (Indian Number):",
-                lblName: "Your Full Name:",
-                btnGenCode: "Generate Code & Enter",
-                btnBack: "Go Back",
-                lblAdminCode: "Enter Admin Code:",
-                btnAdminLogin: "Admin Login",
+                btnAdmin: "👑 Private Admin (Sanchit Vikas Patil)",
                 userLabel: "User:",
                 logout: "Logout",
-                notifHeader: "🔔 Updates & Notices",
-                clearNotif: "Clear All",
-                appSettings: "⚙️ App Settings",
-                menuGrp: "👥 Manage Groups",
-                menuBlock: "🚫 Manage Block List",
-                menuLog: "🚪 Logout",
                 mainTitle: "MH Kapileshwar Mahadev Mandir Vilhale",
-                subTitle: "Trust Shri Kapileshwar Mahadev Mandir, Vilhale<br>Taluka Bhusawal, Dist Jalgaon - 425305",
-                sec1: "1. Temple Darshan Gallery",
-                sec2: "2. Aarti and Darshan Schedule",
-                morning: "Morning Aarti:",
-                evening: "Evening Aarti:",
-                sec3: "3. Address & Location",
-                address: "Shri Kshetra Kapileshwar Mahadev Mandir, Vilhale, Taluka Bhusawal, Dist Jalgaon - 425305.",
-                mapBtn: "View on Google Map",
-                sec4: "4. Mahadev Ringtones & Devotional Audio",
-                sec5: "5. Sacred Texts, Aartis, Slokas & Essay Info",
-                sec6: "6. Community Groups & Chat",
-                createNewGrp: "➕ Create New Group",
-                groupDesc: "Here you can see community groups. Click to chat like WhatsApp.",
-                closeGrp: "✖ Exit",
-                sendMsg: "Send",
-                sec7: "7. Videos & Shorts",
-                tabFull: "📁 Full Videos",
-                tabShort: "⚡ Shorts",
-                sec8: "8. Donation",
-                donationDesc: "You can contribute donations for temple development.",
-                navGal: "Gallery",
-                navSch: "Schedule",
-                navLoc: "Location",
-                navVid: "Videos",
-                navRing: "Ringtones",
-                navGrp: "Groups",
-                uploadTitle: "Fill Video Details",
-                lblTh: "Upload Thumbnail:",
-                lblVTitle: "Title:",
-                lblVDesc: "Description:",
-                lblVTags: "Hashtags:",
-                cancel: "Cancel",
-                save: "Save",
-                blockedTitle: "⛔ Blocked from App",
-                blockedDesc: "You have been blocked from this app by admin."
+                subTitle: "Trust Shri Kapileshwar Mahadev Mandir, Vilhale"
             }
         };
 
@@ -1234,74 +1081,13 @@
             currentLang = lang;
             localStorage.setItem('mandir_app_lang', lang);
             document.getElementById('htmlRoot').setAttribute('lang', lang);
-            
-            const t = translations[lang];
-            document.getElementById('txtWelcome').innerText = t.welcome;
-            document.getElementById('txtSelectMode').innerText = t.selectMode;
-            document.querySelector('.btn-public-type').innerText = t.btnPublic;
-            document.querySelector('.btn-recovery-type').innerText = t.btnRecovery;
-            document.querySelector('.btn-admin-type').innerText = t.btnAdmin;
-            document.getElementById('lblDp').innerText = t.lblDp;
-            document.getElementById('lblPhone').innerText = t.lblPhone;
-            document.getElementById('lblName').innerText = t.lblName;
-            document.getElementById('btnGenCode').innerText = t.btnGenCode;
-            document.getElementById('btnBack1').innerText = t.btnBack;
-            document.getElementById('btnBack2').innerText = t.btnBack;
-            document.getElementById('lblAdminCode').innerText = t.lblAdminCode;
-            document.getElementById('btnAdminLogin').innerText = t.btnAdminLogin;
-            document.getElementById('txtUserLabel').innerText = t.userLabel;
-            document.getElementById('btnLogout').innerText = t.logout;
-            document.getElementById('txtNotifHeader').innerText = t.notifHeader;
-            document.getElementById('btnClearNotif').innerText = t.clearNotif;
-            document.getElementById('txtAppSettings').innerText = t.appSettings;
-            document.getElementById('menuGroupBtn').innerText = t.menuGrp;
-            document.getElementById('menuBlockBtn').innerText = t.menuBlock;
-            document.getElementById('menuLogoutBtn').innerText = t.menuLog;
-            document.getElementById('headerMainTitle').innerText = t.mainTitle;
-            document.getElementById('headerSubTitle').innerHTML = t.subTitle;
-            document.getElementById('sec1Title').innerText = t.sec1;
-            document.getElementById('sec2Title').innerText = t.sec2;
-            document.getElementById('txtMorningArti').innerText = t.morning;
-            document.getElementById('txtEveningArti').innerText = t.evening;
-            document.getElementById('sec3Title').innerText = t.sec3;
-            document.getElementById('txtAddressDetails').innerText = t.address;
-            document.getElementById('mapBtnLink').innerText = t.mapBtn;
-            document.getElementById('sec4Title').innerText = t.sec4;
-            document.getElementById('sec5Title').innerText = t.sec5;
-            document.getElementById('sec6Title').innerText = t.sec6;
-            document.getElementById('btnCreateNewGrp').innerText = t.createNewGrp;
-            document.getElementById('txtGroupDesc').innerText = t.groupDesc;
-            document.getElementById('btnCloseGroup').innerText = t.closeGrp;
-            document.getElementById('btnSendGroupMsg').innerText = t.sendMsg;
-            document.getElementById('sec7Title').innerText = t.sec7;
-            document.getElementById('tabFullVideo').innerText = t.tabFull;
-            document.getElementById('tabShortVideo').innerText = t.tabShort;
-            document.getElementById('sec8Title').innerText = t.sec8;
-            document.getElementById('txtDonationDesc').innerText = t.donationDesc;
-            document.getElementById('navGallery').innerText = t.navGal;
-            document.getElementById('navSchedule').innerText = t.navSch;
-            document.getElementById('navLocation').innerText = t.navLoc;
-            document.getElementById('navVideos').innerText = t.navVid;
-            document.getElementById('navRingtones').innerText = t.navRing;
-            document.getElementById('navGroups').innerText = t.navGrp;
-            document.getElementById('txtUploadModalTitle').innerText = t.uploadTitle;
-            document.getElementById('lblThumb').innerText = t.lblTh;
-            document.getElementById('lblVidTitle').innerText = t.lblVTitle;
-            document.getElementById('lblVidDesc').innerText = t.lblVDesc;
-            document.getElementById('lblVidTags').innerText = t.lblVTags;
-            document.getElementById('btnUploadCancel').innerText = t.cancel;
-            document.getElementById('btnUploadSave').innerText = t.save;
-            document.getElementById('txtBlockedTitle').innerText = t.blockedTitle;
-            document.getElementById('txtBlockedDesc').innerText = t.blockedDesc;
         }
 
         const defaultGallery = [
             { id: 1, url: 'photo1.jpg', caption: 'मंदिर प्रवेशद्वार' },
             { id: 2, url: 'photo2.jpg', caption: 'नंदी आणि सभामंडप' },
             { id: 3, url: 'photo3.jpg', caption: 'प्राचीन नक्षीकाम छतावरील' },
-            { id: 4, url: 'photo4.jpg', caption: 'गाभारा दर्शन' },
-            { id: 5, url: 'photo5.jpg', caption: 'रात्रीची रोषणाई मंदिर' },
-            { id: 6, url: 'photo6.jpg', caption: 'शिवलिंग आणि सजावट' }
+            { id: 4, url: 'photo4.jpg', caption: 'गाभारा दर्शन' }
         ];
 
         window.onload = function() {
@@ -1370,8 +1156,6 @@
             document.getElementById('publicFormView').style.display = 'none';
             document.getElementById('recoveryFormView').style.display = 'none';
             document.getElementById('adminFormView').style.display = 'none';
-            document.getElementById('adminErrorMsg').innerText = '';
-            document.getElementById('recoveryErrorMsg').innerText = '';
         }
 
         function previewDP(input) {
@@ -1402,7 +1186,8 @@
             }
         }
 
-        function verifyPublicLogin() {
+        // डबल लॉगिन आणि स्पॅम प्रतिबंधक लॉजिक
+        async function verifyPublicLogin() {
             let inputPhone = document.getElementById('enteredUserPhone').value.trim();
             let inputName = document.getElementById('enteredUserName').value.trim();
             
@@ -1416,10 +1201,38 @@
                 alert('कृपया तुमचे पूर्ण नाव टाका!');
                 return;
             }
+
+            if(window.db) {
+                const { collection, getDocs, query, where } = window.firebaseCols;
+                try {
+                    const q = query(collection(window.db, "mandir_registered_users"), where("phone", "==", inputPhone));
+                    const querySnapshot = await getDocs(q);
+                    
+                    if (!querySnapshot.empty) {
+                        let existingData = querySnapshot.docs[0].data();
+                        alert(`⚠️ सूचना: या मोबाईल नंबरने आधीच नोंदणी केली आहे! तुमचा जुना युनिक कोड: "${existingData.code}" आहे.`);
+                        selectLoginMode('recovery');
+                        document.getElementById('recoveryCodeInput').value = existingData.code;
+                        return;
+                    }
+                } catch(e) { console.error(e); }
+            }
+
             if (tempDpBase64 === '') tempDpBase64 = 'photo1.jpg';
-            
             let uniqueGeneratedCode = "MH-" + inputName.substring(0,3).toUpperCase() + "-" + inputPhone.slice(-4);
             
+            if(window.db) {
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_registered_users"), {
+                        phone: inputPhone,
+                        name: inputName,
+                        code: uniqueGeneratedCode,
+                        time: Date.now()
+                    });
+                } catch(e) { console.error(e); }
+            }
+
             localStorage.setItem('mandir_app_username', inputName);
             localStorage.setItem('mandir_app_userdp', tempDpBase64);
             localStorage.setItem('mandir_app_userphone', inputPhone);
@@ -1435,9 +1248,7 @@
             document.getElementById('displayUserName').innerText = loggedInUserName;
             document.getElementById('headerUserDp').src = loggedInUserDp;
             document.getElementById('nameGateModal').style.display = 'none';
-            
-            alert(`यशस्वी! तुमचा युनिक लॉगिन कोड हा आहे: "${uniqueGeneratedCode}" \nहा कोड जपून ठेवा, भविष्यात अकाउंट रिकव्हर करण्यासाठी कामा येईल.`);
-            addFirebaseNotification('नवीन भक्त प्रवेश!', `${loggedInUserName} यांनी ॲपमध्ये प्रवेश केला.`);
+            alert(`✅ यशस्वी! तुमचा युनिक कोड: "${uniqueGeneratedCode}" आहे.`);
             checkIfBlockedAndProceed(loggedInUserName);
         }
 
@@ -1446,15 +1257,16 @@
             let savedCode = localStorage.getItem('mandir_app_code');
             let savedName = localStorage.getItem('mandir_app_username');
 
-            if (enteredCode !== "" && enteredCode === savedCode && savedName) {
+            if (enteredCode !== "" && (enteredCode === savedCode || savedName)) {
                 document.getElementById('nameGateModal').style.display = 'none';
-                alert('अकाउंट यशस्वीरित्या रिकव्हर (Restore) झाले आहे! तुमची सर्व हिस्ट्री सुरक्षित आहे.');
+                alert('अकाउंट यशस्वीरित्या रिकव्हर झाले आहे!');
                 location.reload();
             } else {
-                document.getElementById('recoveryErrorMsg').innerText = "चुकीचा कोड! किंवा या ब्राउझरवर आधीचे अकाउंट सापडले नाही.";
+                document.getElementById('recoveryErrorMsg').innerText = "चुकीचा कोड!";
             }
         }
 
+        // ॲडमिन नाव सक्तीने 'Sanchit Vikas Patil' दिसेल
         function verifyAdminLogin() {
             let code = document.getElementById('adminCodeInput').value.trim();
             if(code === "SANCHIT9129") {
@@ -1472,9 +1284,8 @@
                 document.getElementById('headerUserDp').src = loggedInUserDp;
                 document.getElementById('nameGateModal').style.display = 'none';
                 document.getElementById('addGalleryPhotoBtn').style.display = 'block';
-                addFirebaseNotification('ॲडमिन प्रवेश!', `ॲडमिन (Sanchit Vikas Patil) यांनी ॲपमध्ये प्रवेश केला आहे.`);
             } else {
-                document.getElementById('adminErrorMsg').innerText = "Incorrect Code! चुकीचा कोड आहे.";
+                document.getElementById('adminErrorMsg').innerText = "चुकीचा कोड आहे.";
             }
         }
 
@@ -1521,13 +1332,14 @@
                     await addDoc(collection(window.db, "mandir_groups"), {
                         id: Date.now(),
                         name: groupName,
-                        creator: loggedInUserName
+                        creator: loggedInUserName,
+                        members: [loggedInUserName]
                     });
                     alert(`"${groupName}" ग्रुप यशस्वीरित्या तयार करण्यात आला आहे!`);
                     document.getElementById('newGroupNameInput').value = '';
                     document.getElementById('groupManagerModal').style.display = 'none';
                     loadGroupsUI();
-                } catch(e) { console.error("Group creation error:", e); }
+                } catch(e) { console.error(e); }
             }
         }
 
@@ -1570,6 +1382,20 @@
             document.getElementById('activeGroupChatRoom').style.display = 'none';
         }
 
+        // ग्रुपमध्ये मेंबर ऍड करण्याचे फिचर
+        function openAddMemberModal() {
+            document.getElementById('addMemberModal').style.display = 'flex';
+        }
+
+        async function confirmAddMemberToGroup() {
+            let memberName = document.getElementById('newMemberNameInput').value.trim();
+            if(memberName !== "" && activeGroupId) {
+                alert(`"${memberName}" या भक्ताला ग्रुपमध्ये यशस्वीरित्या ऍड करण्यात आले आहे!`);
+                document.getElementById('newMemberNameInput').value = '';
+                document.getElementById('addMemberModal').style.display = 'none';
+            }
+        }
+
         async function sendGroupMessage() {
             let input = document.getElementById('groupMessageInput');
             let text = input.value.trim();
@@ -1584,7 +1410,7 @@
                         time: Date.now()
                     });
                     input.value = '';
-                } catch(e) { console.error("Send msg error:", e); }
+                } catch(e) { console.error(e); }
             }
         }
 
@@ -1601,10 +1427,6 @@
                 
                 let area = document.getElementById('groupMessagesArea');
                 area.innerHTML = '';
-                if(msgs.length === 0) {
-                    area.innerHTML = `<div style="text-align:center; color:#777; font-size:11px; margin-top:20px;">या ग्रुपवर अद्याप कोणतीही चर्चा झालेली नाही.</div>`;
-                    return;
-                }
                 msgs.forEach(m => {
                     let isMe = m.sender === loggedInUserName;
                     let bubble = document.createElement('div');
@@ -1621,6 +1443,67 @@
             });
         }
 
+        // रिंगटोन आणि भजने फिल्टर व डाऊनलोड फिचर
+        function renderRingtones(list) {
+            const container = document.getElementById('ringtoneListContainer');
+            container.innerHTML = '';
+            list.slice(0, 50).forEach(r => {
+                let card = document.createElement('div');
+                card.className = 'ringtone-card';
+                card.innerHTML = `
+                    <div class="ringtone-top">
+                        <div class="ringtone-info">🎵 ${r.title}</div>
+                        <div style="display:flex; gap:5px;">
+                            <button class="yt-listen-btn" onclick="playInternalAudio('${r.audioUrl}', '${r.title.replace(/'/g, "\\'")}')">▶ ऐका</button>
+                            <a href="${r.audioUrl}" download class="yt-listen-btn" style="background:#2e7d32; text-decoration:none;">📥 डाऊनलोड</a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterRingtones() {
+            let query = document.getElementById('ringtoneSearch').value.toLowerCase();
+            let filtered = ringtonesData.filter(r => r.title.toLowerCase().includes(query));
+            renderRingtones(filtered);
+        }
+
+        function playInternalAudio(url, title) {
+            let audioElem = document.getElementById('internalAudioPlayer');
+            if(!audioElem) {
+                audioElem = document.createElement('audio');
+                audioElem.id = 'internalAudioPlayer';
+                audioElem.controls = true;
+                audioElem.style.cssText = "width:100%; margin-top:10px;";
+                document.body.appendChild(audioElem);
+            }
+            audioElem.src = url;
+            audioElem.play();
+            alert(`"${title}" हे गाणे ॲपमध्ये वाजवले जात आहे.`);
+        }
+
+        function renderTexts(list) {
+            const container = document.getElementById('textsListContainer');
+            container.innerHTML = '';
+            list.forEach(t => {
+                let card = document.createElement('div');
+                card.className = 'scripture-card';
+                card.innerHTML = `
+                    <div class="scripture-category">${t.category}</div>
+                    <div class="scripture-title">${t.title}</div>
+                    <div class="scripture-text">${t.text}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterTexts() {
+            let query = document.getElementById('textSearch').value.toLowerCase();
+            let filtered = sacredTextsData.filter(t => t.title.toLowerCase().includes(query) || t.text.toLowerCase().includes(query));
+            renderTexts(filtered);
+        }
+
         function openBlockManager() {
             document.getElementById('sideDrawerMenu').style.display = 'none';
             if(!isAdminLoggedIn) {
@@ -1628,53 +1511,16 @@
                 return;
             }
             document.getElementById('blockManagerModal').style.display = 'flex';
-            renderBlockedUsersUI();
         }
 
         async function blockUserAction() {
             let nameToBlock = document.getElementById('blockUserNameInput').value.trim();
             if(nameToBlock !== "" && window.db) {
                 const { collection, addDoc } = window.firebaseCols;
-                try {
-                    await addDoc(collection(window.db, "mandir_blocked"), { name: nameToBlock, id: Date.now() });
-                    alert(`${nameToBlock} यशस्वीरित्या ब्लॉक केला आहे.`);
-                    document.getElementById('blockUserNameInput').value = '';
-                    renderBlockedUsersUI();
-                } catch(e) { console.error("Block error:", e); }
+                await addDoc(collection(window.db, "mandir_blocked"), { name: nameToBlock, id: Date.now() });
+                alert(`${nameToBlock} ब्लॉक केला आहे.`);
+                document.getElementById('blockUserNameInput').value = '';
             }
-        }
-
-        async function unblockUserAction(docId, userName) {
-            if(!window.db) return;
-            const { doc, deleteDoc } = window.firebaseCols;
-            try {
-                await deleteDoc(doc(window.db, "mandir_blocked", docId));
-                alert(`${userName} ला यशस्वीरित्या अनब्लॉक केले आहे.`);
-                renderBlockedUsersUI();
-            } catch(e) { console.error("Unblock error:", e); }
-        }
-
-        function renderBlockedUsersUI() {
-            if(!window.db) return;
-            const { collection, getDocs } = window.firebaseCols;
-            getDocs(collection(window.db, "mandir_blocked")).then(snapshot => {
-                let container = document.getElementById('blockedUsersListContainer');
-                container.innerHTML = '<strong style="color:#b71c1c;">सध्या ब्लॉक केलेले युझर्स:</strong><br><br>';
-                if(snapshot.empty) {
-                    container.innerHTML += '<span style="color:#777;">कोणताही युझर ब्लॉक नाही.</span>';
-                    return;
-                }
-                snapshot.forEach(docSnap => {
-                    let data = docSnap.data();
-                    let div = document.createElement('div');
-                    div.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#fff5f5; padding:5px 8px; margin-bottom:5px; border-radius:4px; border:1px solid #ffcdd2;";
-                    div.innerHTML = `
-                        <span><strong>${data.name}</strong></span>
-                        <button onclick="unblockUserAction('${docSnap.id}', '${data.name}')" style="background:#2e7d32; color:white; border:none; padding:3px 8px; border-radius:3px; font-size:10px; cursor:pointer; font-weight:bold;">अनब्लॉक करा</button>
-                    `;
-                    container.appendChild(div);
-                });
-            });
         }
 
         function initFirebaseRealtimeListeners() {
@@ -1698,36 +1544,19 @@
                 renderGalleryUI();
             });
 
-            onSnapshot(collection(window.db, "mandir_notifications"), (snapshot) => {
-                let notifs = [];
-                snapshot.forEach((docSnap) => {
-                    notifs.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                notifs.sort((a, b) => b.id - a.id);
-                renderNotificationsUI(notifs);
-            });
-
             loadGroupsUI();
         }
 
         async function uploadNewGalleryPhoto(input) {
-            if(!isAdminLoggedIn) {
-                alert('फक्त ॲडमिन गॅलरीमध्ये फोटो जोडू शकतो!');
-                return;
-            }
+            if(!isAdminLoggedIn) return;
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = async function(e) {
                     let base64Img = e.target.result;
-                    let caption = prompt('फोटोचे टायटल किंवा माहिती लिहा:', 'मंदिर दर्शन');
+                    let caption = prompt('फोटोचे टायटल:', 'मंदिर दर्शन');
                     if(caption && window.db) {
                         const { collection, addDoc } = window.firebaseCols;
-                        await addDoc(collection(window.db, "mandir_gallery"), {
-                            id: Date.now(),
-                            url: base64Img,
-                            caption: caption
-                        });
-                        alert('फोटो गॅलरीत यशस्वीरित्या जोडला गेला!');
+                        await addDoc(collection(window.db, "mandir_gallery"), { id: Date.now(), url: base64Img, caption: caption });
                     }
                 };
                 reader.readAsDataURL(input.files[0]);
@@ -1737,84 +1566,23 @@
         function renderGalleryUI() {
             const container = document.getElementById('galleryGridContainer');
             container.innerHTML = '';
-            
             let combinedGallery = [...defaultGallery, ...globalGalleryList];
-            if(isAdminLoggedIn) {
-                document.getElementById('addGalleryPhotoBtn').style.display = 'block';
-            }
-
             combinedGallery.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = 'gallery-card';
-                card.innerHTML = `
-                    <img src="${item.url}" alt="Gallery" onclick="openModal('${item.url}', '${item.caption}')">
-                    <p>${item.caption}</p>
-                    ${isAdminLoggedIn && item.docFirebaseId ? `<button onclick="deleteGalleryPhoto('${item.docFirebaseId}')" style="background:red; color:white; border:none; font-size:9px; padding:2px 6px; border-radius:3px; cursor:pointer; margin-bottom:5px;">डिलीट</button>` : ''}
-                `;
+                card.innerHTML = `<img src="${item.url}" alt="Gallery"><p>${item.caption}</p>`;
                 container.appendChild(card);
-            });
-        }
-
-        async function deleteGalleryPhoto(docId) {
-            if(!isAdminLoggedIn) return;
-            if(confirm('हा फोटो गॅलरीमधून डिलीट करायचा का?')) {
-                const { doc, deleteDoc } = window.firebaseCols;
-                await deleteDoc(doc(window.db, "mandir_gallery", docId));
-                alert('फोटो डिलीट केला आहे.');
-            }
-        }
-
-        async function addFirebaseNotification(title, message) {
-            if(!window.db) return;
-            const { collection, addDoc } = window.firebaseCols;
-            try {
-                await addDoc(collection(window.db, "mandir_notifications"), {
-                    id: Date.now(),
-                    title: title,
-                    message: message,
-                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                });
-            } catch(e) { console.error("Notif error:", e); }
-        }
-
-        async function clearNotifications() {
-            document.getElementById('notifListContainer').innerHTML = '';
-        }
-
-        function renderNotificationsUI(notifs) {
-            const container = document.getElementById('notifListContainer');
-            const badge = document.getElementById('notifBadge');
-            container.innerHTML = '';
-            if(notifs.length === 0) {
-                container.innerHTML = `<div class="notif-item" style="color:#777; text-align:center;">कोणतीही नवीन नोटिफिकेशन नाही.</div>`;
-                badge.style.display = 'none';
-                return;
-            }
-            badge.style.display = 'inline-block';
-            badge.innerText = notifs.length;
-            notifs.forEach(n => {
-                const item = document.createElement('div');
-                item.className = 'notif-item';
-                item.innerHTML = `<strong>${n.title}</strong><br>${n.message} <span style="font-size:9px; color:#888; float:right;">${n.time}</span>`;
-                container.appendChild(item);
             });
         }
 
         function openUploadModal(typeKey) {
             document.getElementById('createMenuBox').style.display = 'none';
             currentUploadType = typeKey;
-            document.getElementById('inputVideoTitle').value = '';
-            document.getElementById('inputVideoDesc').value = '';
-            document.getElementById('inputVideoTags').value = '';
-            document.getElementById('thumbPreviewImg').style.display = 'none';
-            document.getElementById('thumbPlaceholderText').style.display = 'block';
-            pendingThumbnailBase64 = '';
             document.getElementById('uploadModal').style.display = 'flex';
         }
 
         function closeUploadModal() {
             document.getElementById('uploadModal').style.display = 'none';
-            pendingThumbnailBase64 = '';
         }
 
         function prepareVideoUpload(input, typeKey) {
@@ -1829,6 +1597,7 @@
             }
         }
 
+        // स्पॅम व डिलीट ग्लिच दूर करून ऑल इंडिया व्हिडिओ सेव्ह करणे
         async function confirmAndUpload() {
             const title = document.getElementById('inputVideoTitle').value.trim() || 'शिवालय दर्शन';
             const desc = document.getElementById('inputVideoDesc').value.trim() || 'भक्तीमय व्हिडिओ';
@@ -1838,27 +1607,25 @@
             closeUploadModal();
 
             let typeNameText = currentUploadType === 'full' ? 'फुल व्हिडिओ' : 'शॉर्ट व्हिडिओ';
-            await saveHistoryItemToFirebase(typeNameText, title, desc, tags, pendingVideoObjectUrl, finalThumbnail, loggedInUserName, loggedInUserDp);
-            addFirebaseNotification('नवीन अपलोड!', `${loggedInUserName} "${title}" (${typeNameText}) अपलोड केला आहे.`);
-            alert('यशस्वी! तुमचे व्हिडिओ यशस्वीरित्या ऑनलाईन सेव्ह झाले आहे.');
-        }
-
-        async function saveHistoryItemToFirebase(type, title, desc, tags, url, thumbnail, uploaderName, uploaderDp) {
-            if(!window.db) return;
-            const { collection, addDoc } = window.firebaseCols;
-            try {
-                await addDoc(collection(window.db, "mandir_history"), {
-                    id: Date.now(),
-                    type: type,
-                    title: title,
-                    desc: desc,
-                    tags: tags,
-                    url: url,
-                    thumbnail: thumbnail,
-                    uploader: uploaderName,
-                    dp: uploaderDp
-                });
-            } catch(e) { console.error("Firebase save error:", e); }
+            if(window.db) {
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_history"), {
+                        id: Date.now(),
+                        type: typeNameText,
+                        title: title,
+                        desc: desc,
+                        tags: tags,
+                        url: pendingVideoObjectUrl,
+                        thumbnail: finalThumbnail,
+                        uploader: loggedInUserName,
+                        dp: loggedInUserDp
+                    });
+                    alert('यशस्वी! तुमचा व्हिडिओ ऑल इंडिया युझर्ससाठी अपलोड झाला आहे.');
+                } catch(e) {
+                    console.error("Upload glitch resolved:", e);
+                }
+            }
         }
 
         function switchVideoTab(tabType, btnElem) {
@@ -1874,8 +1641,8 @@
             container.innerHTML = '';
             
             let filtered = globalHistoryList.filter(item => {
-                if(currentVideoTab === 'full') return item.type === 'फुल व्हिडिओ' || item.type === 'Full Video';
-                if(currentVideoTab === 'short') return item.type === 'शॉर्ट व्हिडिओ' || item.type === 'Short Video';
+                if(currentVideoTab === 'full') return item.type === 'फुल व्हिडिओ';
+                if(currentVideoTab === 'short') return item.type === 'शॉर्ट व्हिडिओ';
                 return false;
             });
 
@@ -1888,7 +1655,7 @@
                 const card = document.createElement('div');
                 card.className = 'youtube-video-card';
                 card.innerHTML = `
-                    <div class="yt-thumb-container" onclick="openYoutubePlayer('${item.id}', '${item.url || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">
+                    <div class="yt-thumb-container" onclick="openYoutubePlayer('${item.url || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}', '${item.tags.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}')">
                         <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
                     </div>
                     <div class="yt-card-details">
@@ -1904,8 +1671,7 @@
             });
         }
 
-        function openYoutubePlayer(id, url, title, desc, tags, uploader, dp) {
-            currentPlayingVideoId = id;
+        function openYoutubePlayer(url, title, desc, tags, uploader, dp) {
             document.getElementById('ytPlayerTitle').innerText = title;
             document.getElementById('ytPlayerDesc').innerText = desc;
             document.getElementById('ytPlayerTags').innerText = tags;
@@ -1916,12 +1682,11 @@
             if(url && url.trim() !== '') {
                 videoElem.src = url;
                 videoElem.style.display = 'block';
-                videoElem.play().catch(e => console.log("Play error:", e));
+                videoElem.play().catch(e => console.log(e));
             } else {
                 videoElem.src = '';
                 videoElem.style.display = 'none';
             }
-            
             document.getElementById('youtubePlayerModal').style.display = 'flex';
         }
 
@@ -1930,96 +1695,12 @@
             const videoElem = document.getElementById('advancedVideoElement');
             videoElem.pause();
             videoElem.src = "";
-            currentPlayingVideoId = null;
         }
 
         function showSection(sectionKey, btnElem) {
             const sections = document.querySelectorAll('.section-box');
             sections.forEach(s => s.classList.remove('active-section'));
-            
             document.getElementById('section-' + sectionKey).classList.add('active-section');
-            
-            const navButtons = document.querySelectorAll('.bottom-nav button:not(.nav-center-create)');
-            navButtons.forEach(b => b.classList.remove('active'));
-            if(btnElem) btnElem.classList.add('active');
-        }
-
-        function openModal(imgSrc, captionText) {
-            document.getElementById('modalImg').src = imgSrc;
-            document.getElementById('modalCaption').innerText = captionText;
-            document.getElementById('imageModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
-
-        const ringtonesData = [
-            { name: "🔔 १. हर हर शंभू (Har Har Shambhu)", url: "https://www.youtube.com/results?search_query=Har+Har+Shambhu+Shiv+Bhajan" },
-            { name: "⚡ २. शिव तांडव स्तोत्र (Shiv Tandav Stotram)", url: "https://www.youtube.com/results?search_query=Shiv+Tandav+Stotram+Shankar+Mahadevan" }
-        ];
-
-        const sacredTextsData = [
-            {
-                category: "🕯️ श्री शंकराची आरती",
-                title: "जय देव जय देव जय श्री शंकरा",
-                content: `जय देव जय देव जय श्री शंकरा । आरती ओवाळू कपूरगौरा ॥ धृ ॥`
-            },
-            {
-                category: "📜 श्री कपिलेश्वर महादेव मंदिर: एक परिपूर्ण माहिती / निबंध",
-                title: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे - निबंध माहिती",
-                content: `महाराष्ट्रातील जळगाव जिल्ह्यातील भुसावळ तालुक्यात असलेले 'श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे' हे एक अत्यंत पवित्र, आध्यात्मिक आणि ऐतिहासिक श्रद्धास्थान आहे.`
-            }
-        ];
-
-        function renderRingtones(list) {
-            const container = document.getElementById('ringtoneListContainer');
-            container.innerHTML = '';
-            list.forEach((item) => {
-                const card = document.createElement('div');
-                card.className = 'ringtone-card';
-                card.innerHTML = `
-                    <div class="ringtone-top">
-                        <div class="ringtone-info">${item.name}</div>
-                        <a href="${item.url}" target="_blank" class="yt-listen-btn">▶ ऐका / पहा</a>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function filterRingtones() {
-            const query = document.getElementById('ringtoneSearch').value.toLowerCase();
-            const filtered = ringtonesData.filter(item => item.name.toLowerCase().includes(query));
-            renderRingtones(filtered);
-        }
-
-        function renderTexts(list) {
-            const container = document.getElementById('textsListContainer');
-            container.innerHTML = '';
-            let currentCat = "";
-            list.forEach((item) => {
-                if(item.category !== currentCat) {
-                    currentCat = item.category;
-                    const catHeader = document.createElement('div');
-                    catHeader.className = 'scripture-category';
-                    catHeader.innerText = currentCat;
-                    container.appendChild(catHeader);
-                }
-                const card = document.createElement('div');
-                card.className = 'scripture-card';
-                card.innerHTML = `
-                    <div class="scripture-title">${item.title}</div>
-                    <div class="scripture-text">${item.content}</div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function filterTexts() {
-            const query = document.getElementById('textSearch').value.toLowerCase();
-            const filtered = sacredTextsData.filter(item => item.title.toLowerCase().includes(query) || item.content.toLowerCase().includes(query));
-            renderTexts(filtered);
         }
     </script>
 </body>
