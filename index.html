@@ -160,17 +160,6 @@
             color: #b71c1c;
         }
 
-        .notif-item {
-            padding: 8px;
-            border-bottom: 1px solid #eee;
-            font-size: 12px;
-            text-align: left;
-            cursor: pointer;
-        }
-        .notif-item:hover {
-            background: #fff5f5;
-        }
-
         .container {
             padding: 15px;
             max-width: 800px;
@@ -207,6 +196,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
             position: relative;
+            cursor: pointer;
         }
 
         .gallery-card img {
@@ -668,6 +658,27 @@
             max-height: 35vh;
             overflow-y: auto;
         }
+
+        /* फुल साइज फोटो लाईटबॉक्स मॉडेल */
+        #photoZoomModal {
+            display: none;
+            position: fixed;
+            z-index: 4000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #photoZoomModal img {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+        }
     </style>
 
     <!-- Firebase SDKs -->
@@ -700,6 +711,13 @@
             <h3 id="txtBlockedTitle" style="color:#c62828; margin-top:0;">⛔ ॲपवरून ब्लॉक केले आहे</h3>
             <p id="txtBlockedDesc" style="font-size:12px; color:#666;">तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.</p>
         </div>
+    </div>
+
+    <!-- फोटो फुल साइज झूम मॉडेल -->
+    <div id="photoZoomModal" onclick="closePhotoZoom()">
+        <button style="position:absolute; top:20px; right:20px; background:none; border:none; color:white; font-size:28px; cursor:pointer;">✖</button>
+        <img id="zoomedImageElem" src="" alt="Zoomed Photo">
+        <p id="zoomedCaptionElem" style="color:white; margin-top:15px; font-size:14px; font-weight:bold;"></p>
     </div>
 
     <!-- लॉगिन / प्रवेश गेट मॉडेल (डबल मोबाईल नंबर सुरक्षा आणि रिस्टोर कोडसह) -->
@@ -801,13 +819,14 @@
 
     <div class="container">
 
-        <!-- १. गॅलरी (फोटो मोठे करण्याचे व ॲडमिनचे डिलीट अधिकार हटवले आहेत) -->
+        <!-- १. गॅलरी -->
         <div id="section-gallery" class="section-box active-section">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h2 id="sec1Title" style="margin:0;">१. मंदिर दर्शन गॅलरी</h2>
                 <button id="addGalleryPhotoBtn" style="display:none; background:#b71c1c; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो जोडा</button>
                 <input type="file" id="galleryImageInput" accept="image/*" style="display:none;" onchange="uploadNewGalleryPhoto(this)">
             </div>
+            <p style="font-size:11px; color:#666; margin-top:5px;">फोटोवर क्लिक करून फुल साइज मध्ये पाहू शकता.</p>
             <div id="galleryGridContainer" class="gallery-grid"></div>
         </div>
 
@@ -829,7 +848,7 @@
             </div>
         </div>
 
-        <!-- ४. १०,०००+ महादेवांची गाणी व भजने (Internal Player & Download Feature) -->
+        <!-- ४. महादेवांची गाणी व भजने -->
         <div id="section-ringtones" class="section-box">
             <h2 id="sec4Title">४. महादेवांच्या १०,०००+ रिंगटोन व भक्ती ध्वनी</h2>
             <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन किंवा भजन सर्च करा..." onkeyup="filterRingtones()">
@@ -849,7 +868,7 @@
                 <h2 id="sec6Title" style="margin:0;">👥 कम्युनिटी ग्रुप्स व चॅट</h2>
                 <button id="btnCreateNewGrp" style="background:#075e54; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openGroupManager()">➕ नवीन ग्रुप बनवा</button>
             </div>
-            <p id="txtGroupDesc" style="font-size:11px; color:#666;">येथे ऑल इंडिया युझर्सचे ग्रुप्स दिसेल. ग्रुपमध्ये मेंबर ऍड करून व्हाट्सॲपसारखे चॅट करू शकता.</p>
+            <p id="txtGroupDesc" style="font-size:11px; color:#666;">येथे युझरचे ग्रुप्स दिसेल. ग्रुपमध्ये मेंबर ऍड करून चॅट करू शकता.</p>
             
             <div id="groupsMainListContainer"></div>
 
@@ -942,7 +961,7 @@
     <div id="addMemberModal" class="modal">
         <div class="modal-content-box">
             <h3 style="color:#2e7d32; margin-top:0; font-size:14px;">➕ ग्रुपमध्ये मेंबर ऍड करा</h3>
-            <p style="font-size:11px; color:#666;">ज्या युझरला ग्रुपमध्ये ऍड करायचे आहे त्याचे नाव किंवा मोबाईल नंबर टाका:</p>
+            <p style="font-size:11px; color:#666;">ज्या युझरला ग्रुपमध्ये ऍड करायचे आहे त्याचे नाव टाका:</p>
             <input type="text" id="newMemberNameInput" placeholder="युझरचे नाव...">
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="document.getElementById('addMemberModal').style.display='none'">बंद करा</button>
@@ -961,11 +980,10 @@
                 <button class="btn-cancel" onclick="document.getElementById('blockManagerModal').style.display='none'">बंद करा</button>
                 <button class="btn-save" style="background:#c62828;" onclick="blockUserAction()">ब्लॉक करा</button>
             </div>
-            <div id="blockedUsersListContainer" style="margin-top:15px; font-size:11px; max-height:180px; overflow-y:auto;"></div>
         </div>
     </div>
 
-    <!-- व्हिडिओ प्लेअर मॉडेल (Internal Play & Valid Links) -->
+    <!-- व्हिडिओ प्लेअर मॉडेल -->
     <div id="youtubePlayerModal" class="youtube-player-modal">
         <div class="yt-player-header">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1009,13 +1027,12 @@
         let globalHistoryList = [];
         let globalGalleryList = [];
         let currentVideoTab = 'full';
-        let currentPlayingVideoId = null;
         let isAdminLoggedIn = false;
         let activeGroupId = null;
         let activeGroupName = '';
         let currentLang = localStorage.getItem('mandir_app_lang') || 'mr';
 
-        // १०,०००+ महादेवांची गाणी, भजने व रिंगटोन्सची स्वयंचलित जनरेटेड यादी (Internal Audio Player & Download)
+        // १०,०००+ महादेवांची गाणी, भजने व रिंगटोन्सची स्वयंचलित जनरेटेड यादी (Valid Audio Links)
         let ringtonesData = [];
         for(let i = 1; i <= 10000; i++) {
             ringtonesData.push({
@@ -1032,48 +1049,6 @@
             { id: 3, title: 'महामृत्युंजय मंत्र', category: 'मंत्र व श्लोक', text: 'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्। उर्वारुकमिव बन्धनान्मृत्योर्मुक्षी माऽमृतात्॥' }
         ];
 
-        const translations = {
-            mr: {
-                welcome: "🙏 स्वागत है!",
-                selectMode: "लॉगिन किंवा अकाउंट रिकव्हरी निवडा:",
-                btnPublic: "👤 New Public Login (नवीन पब्लिक)",
-                btnRecovery: "🔄 Restore Account (माझे जुने अकाउंट आणा)",
-                btnAdmin: "👑 Private Admin (Sanchit Vikas Patil)",
-                userLabel: "युझर:",
-                logout: "लॉग आउट",
-                mainTitle: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
-                subTitle: "ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५"
-            },
-            hi: {
-                welcome: "🙏 स्वागत है!",
-                selectMode: "लॉगिन या अकाउंट रिकवरी चुनें:",
-                btnPublic: "👤 New Public Login",
-                btnRecovery: "🔄 Restore Account",
-                btnAdmin: "👑 Private Admin (Sanchit Vikas Patil)",
-                userLabel: "यूजर:",
-                logout: "लॉग आउट",
-                mainTitle: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
-                subTitle: "ट्रस्ट श्री कपिलेश्वर महादेव मंदिर, विल्होळे"
-            },
-            en: {
-                welcome: "🙏 Welcome!",
-                selectMode: "Choose Login or Account Recovery:",
-                btnPublic: "👤 New Public Login",
-                btnRecovery: "🔄 Restore Account",
-                btnAdmin: "👑 Private Admin (Sanchit Vikas Patil)",
-                userLabel: "User:",
-                logout: "Logout",
-                mainTitle: "MH Kapileshwar Mahadev Mandir Vilhale",
-                subTitle: "Trust Shri Kapileshwar Mahadev Mandir, Vilhale"
-            }
-        };
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('mandir_app_lang', lang);
-            document.getElementById('htmlRoot').setAttribute('lang', lang);
-        }
-
         const defaultGallery = [
             { id: 1, url: 'photo1.jpg', caption: 'मंदिर प्रवेशद्वार' },
             { id: 2, url: 'photo2.jpg', caption: 'नंदी आणि सभामंडप' },
@@ -1082,7 +1057,6 @@
         ];
 
         window.onload = function() {
-            setLanguage(currentLang);
             let savedName = localStorage.getItem('mandir_app_username');
             let savedDp = localStorage.getItem('mandir_app_userdp');
             let savedPhone = localStorage.getItem('mandir_app_userphone');
@@ -1177,7 +1151,7 @@
             }
         }
 
-        // कठोर व्हॅलिडेशन: डब्लिकेट मोबाईल नंबर आणि कठीण युनिक कोड जनरेटर
+        // कठोर व्हॅलिडेशन आणि डुप्लिकेट नंबर तपासणी
         async function verifyPublicLogin() {
             let inputPhone = document.getElementById('enteredUserPhone').value.trim();
             let inputName = document.getElementById('enteredUserName').value.trim();
@@ -1201,7 +1175,7 @@
                     
                     if (!querySnapshot.empty) {
                         let existingData = querySnapshot.docs[0].data();
-                        alert(`❌ एरर: हा मोबाईल नंबर आधीच ॲपमध्ये रजिस्टर आहे! नवीन लॉगिन करू नका.\n\nकृपया "Restore Account" मध्ये जाऊन तुमचा जुना युनिक कोड वापरा: "${existingData.code}"`);
+                        alert(`❌ हा मोबाईल नंबर आधीपासून रजिस्टर आहे!\n\nकृपया "Restore Account" मध्ये जाऊन तुमचा जुना युनिक कोड वापरा: "${existingData.code}"`);
                         selectLoginMode('recovery');
                         document.getElementById('recoveryCodeInput').value = existingData.code;
                         return;
@@ -1239,7 +1213,7 @@
             document.getElementById('displayUserName').innerText = loggedInUserName;
             document.getElementById('headerUserDp').src = loggedInUserDp;
             document.getElementById('nameGateModal').style.display = 'none';
-            alert(`✅ यशस्वी! तुमचा कठीण युनिक कोड हा आहे:\n"${uniqueGeneratedCode}"\n\nहा कोड सेव्ह करून ठेवा, भविष्यात अकाउंट रिकव्हर करण्यासाठी हाच कामी येईल!`);
+            alert(`✅ यशस्वी! तुमचा युनिक रिकव्हरी कोड हा आहे:\n"${uniqueGeneratedCode}"\n\nहा कोड सेव्ह करून ठेवा.`);
             checkIfBlockedAndProceed(loggedInUserName);
         }
 
@@ -1254,7 +1228,7 @@
                 alert('अकाउंट यशस्वीरित्या रिस्टोर झाले आहे!');
                 location.reload();
             } else {
-                document.getElementById('recoveryErrorMsg').innerText = "चुकीचा कोड! कृपया वैध कोड टाका.";
+                document.getElementById('recoveryErrorMsg').innerText = "चुकीचा कोड! वैध कोड टाका.";
             }
         }
 
@@ -1434,7 +1408,7 @@
             });
         }
 
-        // रिंगटोन्स आणि भजने (Internal Player & Download Feature)
+        // रिंगटोन्स आणि भजने (Valid Links)
         function renderRingtones(list) {
             const container = document.getElementById('ringtoneListContainer');
             container.innerHTML = '';
@@ -1561,9 +1535,21 @@
             combinedGallery.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = 'gallery-card';
+                card.onclick = () => openPhotoZoom(item.url, item.caption);
                 card.innerHTML = `<img src="${item.url}" alt="Gallery"><p>${item.caption}</p>`;
                 container.appendChild(card);
             });
+        }
+
+        // फुल साइज फोटोझूम फंक्शन्स
+        function openPhotoZoom(url, caption) {
+            document.getElementById('zoomedImageElem').src = url;
+            document.getElementById('zoomedCaptionElem').innerText = caption || 'मंदिर दर्शन';
+            document.getElementById('photoZoomModal').style.display = 'flex';
+        }
+
+        function closePhotoZoom() {
+            document.getElementById('photoZoomModal').style.display = 'none';
         }
 
         function openUploadModal(typeKey) {
