@@ -81,6 +81,16 @@
             gap: 10px;
         }
 
+        .language-select {
+            background: #0f172a;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
         .notification-bell-btn {
             background: none;
             border: none;
@@ -422,7 +432,7 @@
 
         .video-tabs {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 12px;
         }
         .video-tab-btn {
@@ -434,7 +444,8 @@
             border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
+            text-align: center;
         }
         .video-tab-btn.active-tab {
             background: #e11d48;
@@ -723,6 +734,105 @@
             max-height: 80vh;
             border-radius: 8px;
         }
+
+        /* लाईव्ह स्ट्रीम रूमसाठी स्टाईल */
+        .live-stream-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 5000;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .live-stream-header {
+            background: rgba(0,0,0,0.8);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            border-bottom: 1px solid #334155;
+        }
+        .live-badge {
+            background: #ef4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+        .live-video-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0f172a;
+            overflow: hidden;
+        }
+        .live-video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .live-chat-overlay-box {
+            position: absolute;
+            bottom: 70px;
+            left: 10px;
+            right: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .live-chat-msg-item {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #fff;
+            width: fit-content;
+            max-width: 80%;
+            word-break: break-word;
+        }
+        .live-footer-controls {
+            background: rgba(0,0,0,0.9);
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .live-footer-controls input {
+            flex: 1;
+            padding: 8px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .live-action-btn {
+            background: #e11d48;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 
     <!-- Firebase SDKs -->
@@ -751,8 +861,8 @@
 
     <div id="blockedModal" style="display:none;">
         <div class="name-gate-card">
-            <h3 style="color:#ef4444; margin-top:0;">⛔ ॲपवरून ब्लॉक केले आहे</h3>
-            <p style="font-size:12px; color:#94a3b8;">तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.</p>
+            <h3 id="txtBlockedTitle" style="color:#ef4444; margin-top:0;">⛔ ॲपवरून ब्लॉक केले आहे</h3>
+            <p id="txtBlockedDesc" style="font-size:12px; color:#94a3b8;">तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.</p>
         </div>
     </div>
 
@@ -764,40 +874,40 @@
 
     <div id="nameGateModal">
         <div class="name-gate-card">
-            <h3 style="color:#f43f5e; margin-top:0;">🙏 हर हर महादेव!</h3>
+            <h3 id="txtGateHeader" style="color:#f43f5e; margin-top:0;">🙏 हर हर महादेव!</h3>
             <div class="admin-brand" style="color:#94a3b8; margin-bottom:12px;">Admin By : Sanchit Vikas Patil</div>
-            <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;">पब्लिक लॉगिन किंवा अकाउंट रिकव्हरी निवडा:</p>
+            <p id="txtGateSub" style="font-size:12px; color:#94a3b8; margin-bottom:15px;">पब्लिक लॉगिन किंवा अकाउंट रिकव्हरी निवडा:</p>
             
             <div id="loginChoiceView">
-                <button class="login-type-btn btn-public-type" onclick="selectLoginMode('public')">👤 New Public Login (नवीन पब्लिक)</button>
-                <button class="login-type-btn btn-recovery-type" onclick="selectLoginMode('recovery')">🔄 Restore Account (माझे जुने अकाउंट आणा)</button>
+                <button id="btnPublicLoginChoice" class="login-type-btn btn-public-type" onclick="selectLoginMode('public')">👤 New Public Login (नवीन पब्लिक)</button>
+                <button id="btnRecoveryLoginChoice" class="login-type-btn btn-recovery-type" onclick="selectLoginMode('recovery')">🔄 Restore Account (माझे जुने अकाउंट आणा)</button>
             </div>
 
             <div id="publicFormView" style="display:none; text-align:left;">
-                <label style="font-size:11px; font-weight:bold;">प्रोफाईल फोटो (DP) निवडा:</label>
+                <label id="lblDpSelect" style="font-size:11px; font-weight:bold;">प्रोफाईल फोटो (DP) निवडा:</label>
                 <div class="dp-upload-circle" onclick="document.getElementById('dpFileInput').click()">
                     <span id="dpPlaceholderText" style="font-size:10px; color:#94a3b8;">➕ फोटो</span>
                     <img id="dpPreviewImg" src="" alt="DP">
                 </div>
                 <input type="file" id="dpFileInput" accept="image/*" style="display:none;" onchange="previewDP(this)">
 
-                <label style="font-size:11px; font-weight:bold;">मोबाईल नंबर (Valid Indian Number):</label>
+                <label id="lblPhoneInput" style="font-size:11px; font-weight:bold;">मोबाईल नंबर (Valid Indian Number):</label>
                 <input type="tel" id="enteredUserPhone" placeholder="उदा. 9876543210" maxlength="10" style="width:100%; padding:8px; font-size:12px; border:1px solid #475569; background:#0f172a; color:#fff; border-radius:4px; margin-bottom:8px; box-sizing:border-box;">
 
-                <label style="font-size:11px; font-weight:bold;">नाव व आडनाव:</label>
+                <label id="lblNameInput" style="font-size:11px; font-weight:bold;">नाव व आडनाव:</label>
                 <input type="text" id="enteredUserName" placeholder="पूर्ण नाव आणि आडनाव टाका..." style="width:100%; padding:8px; font-size:12px; border:1px solid #475569; background:#0f172a; color:#fff; border-radius:4px; margin-bottom:10px; box-sizing:border-box;">
                 
-                <button onclick="verifyPublicLogin()" style="width:100%; background:#f59e0b; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">कठोर युनिक कोड जनरेट करून प्रवेश करा</button>
-                <button onclick="backToLoginChoice()" style="width:100%; background:#64748b; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
+                <button id="btnSubmitPublic" onclick="verifyPublicLogin()" style="width:100%; background:#f59e0b; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">कठोर युनिक कोड जनरेट करून प्रवेश करा</button>
+                <button id="btnBackPublic" onclick="backToLoginChoice()" style="width:100%; background:#64748b; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
             </div>
 
             <div id="recoveryFormView" style="display:none; text-align:left;">
-                <label style="font-size:11px; font-weight:bold;">तुमचा युनिक रिकव्हरी कोड टाका:</label>
+                <label id="lblRecoveryInput" style="font-size:11px; font-weight:bold;">तुमचा युनिक रिकव्हरी कोड टाका:</label>
                 <input type="text" id="recoveryCodeInput" placeholder="उदा. Sanchit-Patil-9876@MH" style="width:100%; padding:8px; font-size:12px; border:1px solid #475569; background:#0f172a; color:#fff; border-radius:4px; margin-bottom:5px; box-sizing:border-box;">
                 <div id="recoveryErrorMsg" style="color:#ef4444; font-size:11px; margin-bottom:8px;"></div>
                 
-                <button onclick="verifyAccountRecovery()" style="width:100%; background:#16a34a; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">अकाउंट परत आणा (Restore)</button>
-                <button onclick="backToLoginChoice()" style="width:100%; background:#64748b; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
+                <button id="btnSubmitRecovery" onclick="verifyAccountRecovery()" style="width:100%; background:#16a34a; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">अकाउंट परत आणा (Restore)</button>
+                <button id="btnBackRecovery" onclick="backToLoginChoice()" style="width:100%; background:#64748b; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
             </div>
         </div>
     </div>
@@ -805,102 +915,107 @@
     <div class="user-top-bar">
         <div class="user-profile-info">
             <img id="headerUserDp" src="photo1.jpg" alt="DP">
-            <span><strong>भक्त:</strong> <span id="displayUserName" style="color:#f43f5e; font-weight:bold;">भक्त</span></span>
+            <span><strong id="txtBhaktLabel">भक्त:</strong> <span id="displayUserName" style="color:#f43f5e; font-weight:bold;">भक्त</span></span>
         </div>
         <div class="top-bar-right">
+            <select id="languageSelector" class="language-select" onchange="changeLanguage(this.value)">
+                <option value="mr">मराठी</option>
+                <option value="hi">हिंदी</option>
+                <option value="en">English</option>
+            </select>
             <button class="notification-bell-btn" onclick="toggleNotifications()">🔔<span id="notifBadge" class="notification-badge">0</span></button>
-            <button onclick="logoutUser()" style="background:none; border:1px solid #f43f5e; color:#f43f5e; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">लॉग आउट</button>
+            <button id="btnLogout" onclick="logoutUser()" style="background:none; border:1px solid #f43f5e; color:#f43f5e; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">लॉग आउट</button>
         </div>
     </div>
 
     <div id="notificationDropdown" class="notification-dropdown">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:5px;">
-            <strong style="font-size:12px; color:#f43f5e;">🔔 अपडेट्स व नोटीस</strong>
-            <button onclick="clearNotifications()" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer;">सर्व हटवा</button>
+            <strong id="txtNotifHeader" style="font-size:12px; color:#f43f5e;">🔔 अपडेट्स व नोटीस</strong>
+            <button id="btnClearNotif" onclick="clearNotifications()" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer;">सर्व हटवा</button>
         </div>
         <div id="notifListContainer"></div>
     </div>
 
     <div id="sideDrawerMenu" class="side-drawer-menu">
-        <div style="font-size:13px; font-weight:bold; color:#f43f5e; border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:5px;">⚙️ ॲप सेटिंग्ज</div>
-        <button onclick="openGroupManager()">👥 कम्युनिटी व ग्रुप्स मॅनेज करा</button>
-        <button onclick="openBlockManager()">🚫 युझर ब्लॉक लिस्ट मॅनेज करा</button>
-        <button onclick="logoutUser()">🚪 लॉग आउट</button>
+        <div id="txtDrawerHeader" style="font-size:13px; font-weight:bold; color:#f43f5e; border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:5px;">⚙️ ॲप सेटिंग्ज</div>
+        <button id="btnDrawerGroups" onclick="openGroupManager()">👥 कम्युनिटी व ग्रुप्स मॅनेज करा</button>
+        <button id="btnDrawerBlock" onclick="openBlockManager()">🚫 युझर ब्लॉक लिस्ट मॅनेज करा</button>
+        <button id="btnDrawerLogout" onclick="logoutUser()">🚪 लॉग आउट</button>
     </div>
 
     <header>
         <button class="menu-hamburger-btn" onclick="toggleSideDrawer(event)">☰</button>
         <img src="photo1.jpg" alt="Mandir Logo">
-        <h1 style="font-size: 16px; margin: 8px 0 2px 0;">MH कपिलेश्वर महादेव मंदिर विल्होळे</h1>
+        <h1 id="appMainHeaderTitle" style="font-size: 16px; margin: 8px 0 2px 0;">MH कपिलेश्वर महादेव मंदिर विल्होळे</h1>
         <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
-        <p style="font-size: 11px; margin: 4px 0 0 0; opacity: 0.9;">ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
+        <p id="appMainHeaderSub" style="font-size: 11px; margin: 4px 0 0 0; opacity: 0.9;">ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
     </header>
 
     <div class="container">
 
         <div id="section-gallery" class="section-box active-section">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 style="margin:0;">१. मंदिर दर्शन गॅलरी</h2>
+                <h2 id="secTitleGallery" style="margin:0;">१. मंदिर दर्शन गॅलरी</h2>
                 <button id="addGalleryPhotoBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो जोडा</button>
                 <input type="file" id="galleryImageInput" accept="image/*" style="display:none;" onchange="uploadNewGalleryPhoto(this)">
             </div>
-            <p style="font-size:11px; color:#94a3b8; margin-top:5px;">फोटोवर क्लिक करून फुल साइज मध्ये पाहू शकता.</p>
+            <p id="txtGallerySub" style="font-size:11px; color:#94a3b8; margin-top:5px;">फोटोवर क्लिक करून फुल साइज मध्ये पाहू शकता.</p>
             <div id="galleryGridContainer" class="gallery-grid"></div>
         </div>
 
         <div id="section-schedule" class="section-box">
-            <h2>२. आरती आणि दर्शन वेळपत्रक</h2>
+            <h2 id="secTitleSchedule">२. आरती आणि दर्शन वेळपत्रक</h2>
             <div class="info-card">
-                <p><strong>प्रातःकाळ आरती:</strong> सकाळी ७:१५ वाजता (7:15 AM)</p>
-                <p><strong>संध्याकाळची आरती:</strong> संध्याकाळी ७:१५ वाजता (7:15 PM)</p>
+                <p><strong id="txtMorningAarati">प्रातःकाळ आरती:</strong> सकाळी ७:१५ वाजता (7:15 AM)</p>
+                <p><strong id="txtEveningAarati">संध्याकाळची आरती:</strong> संध्याकाळी ७:१५ वाजता (7:15 PM)</p>
             </div>
         </div>
 
         <div id="section-location" class="section-box">
-            <h2>३. पत्ता व लोकेशन</h2>
+            <h2 id="secTitleLocation">३. पत्ता व लोकेशन</h2>
             <div class="info-card">
-                <p>श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.</p>
-                <a href="https://maps.google.com/?q=Kapileshwar+Mahadev+Mandir+Vilhale+Bhusawal" target="_blank" class="map-btn">गुगल मॅपवर पहा</a>
+                <p id="txtAddressDetails">श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.</p>
+                <a id="btnGoogleMap" href="https://maps.google.com/?q=Kapileshwar+Mahadev+Mandir+Vilhale+Bhusawal" target="_blank" class="map-btn">गुगल मॅपवर पहा</a>
             </div>
         </div>
 
         <div id="section-ringtones" class="section-box">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 style="margin:0;">४. महादेवांच्या रिंगटोन्स व एसएमएस ट्यून</h2>
+                <h2 id="secTitleRingtones" style="margin:0;">४. महादेवांच्या रिंगटोन्स व एसएमएस ट्यून</h2>
                 <button id="addRingtoneBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openAddRingtoneModal()">➕ रिंगटोन ऍड करा</button>
             </div>
-            <p style="font-size:11px; color:#94a3b8; margin-top:5px;">येथून रिंगटोन ऐका आणि डाऊनलोड करा.</p>
+            <p id="txtRingtoneSub" style="font-size:11px; color:#94a3b8; margin-top:5px;">येथून रिंगटोन ऐका आणि डाऊनलोड करा.</p>
             <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन सर्च करा..." onkeyup="filterRingtones()">
             <div id="ringtoneListContainer"></div>
         </div>
 
         <div id="section-texts" class="section-box">
-            <h2>५. पवित्र ग्रंथ, आरत्या व श्लोक</h2>
+            <h2 id="secTitleTexts">५. पवित्र ग्रंथ, आरत्या व श्लोक</h2>
             <input type="text" id="textSearch" class="search-box" placeholder="🔍 आरती, भजन किंवा श्लोक येथे सर्च करा..." onkeyup="filterTexts()">
             <div id="textsListContainer"></div>
         </div>
 
         <div id="section-groups" class="section-box">
             <div class="whatsapp-tabs">
-                <button class="whatsapp-tab-btn active-w-tab" onclick="switchWhatsappTab('chats', this)">💬 चॅट्स व ग्रुप्स</button>
-                <button class="whatsapp-tab-btn" onclick="switchWhatsappTab('status', this)">🟢 स्टेटस (Status)</button>
+                <button id="tabChatBtn" class="whatsapp-tab-btn active-w-tab" onclick="switchWhatsappTab('chats', this)">💬 चॅट्स व ग्रुप्स</button>
+                <button id="tabStatusBtn" class="whatsapp-tab-btn" onclick="switchWhatsappTab('status', this)">🟢 स्टेटस (Status)</button>
             </div>
 
             <div id="whatsappTabChats" class="whatsapp-sub-section">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <h2 style="margin:0;">👥 कम्युनिटी ग्रुप्स व पर्सनल चॅट</h2>
-                    <button style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openGroupManager()">➕ नवीन ग्रुप बनवा</button>
+                    <h2 id="secTitleCommunity" style="margin:0;">👥 कम्युनिटी ग्रुप्स व पर्सनल चॅट</h2>
+                    <button id="btnCreateGroupMain" style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openGroupManager()">➕ नवीन ग्रुप बनवा</button>
                 </div>
-                <p style="font-size:11px; color:#94a3b8;">येथे ग्रुप्स आणि लोकांशी पर्सनली चॅटिंग करता येईल.</p>
+                <p id="txtCommunitySub" style="font-size:11px; color:#94a3b8;">येथे ग्रुप्स आणि लोकांशी पर्सनली चॅटिंग करता येईल.</p>
                 <div id="groupsMainListContainer"></div>
             </div>
 
             <div id="whatsappTabStatus" class="whatsapp-sub-section" style="display:none;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <h2 style="margin:0;">🟢 स्टेटस अपडेट्स</h2>
-                    <button style="background:#16a34a; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openAddStatusModal()">➕ स्टेटस ठेवा</button>
+                    <h2 id="secTitleStatus" style="margin:0;">🟢 स्टेटस अपडेट्स</h2>
+                    <button id="btnPostStatusMain" style="background:#16a34a; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openAddStatusModal()">➕ स्टेटस ठेवा</button>
                 </div>
-                <p style="font-size:11px; color:#94a3b8;">भक्तांचे व ग्रुप्सचे ताजे स्टेटस येथे पाहता येतील.</p>
+                <p id="txtStatusSub" style="font-size:11px; color:#94a3b8;">भक्तांचे व ग्रुप्सचे ताजे स्टेटस येथे पाहता येतील.</p>
                 <div id="statusListContainer"></div>
             </div>
 
@@ -908,67 +1023,105 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #475569; padding-bottom:6px; margin-bottom:8px;">
                     <span id="activeGroupTitle" style="font-weight:bold; color:#2dd4bf; font-size:14px;">चॅट रूम</span>
                     <div>
-                        <button onclick="openAddMemberModal()" style="background:#16a34a; color:white; border:none; padding:3px 8px; border-radius:3px; font-size:10px; cursor:pointer; font-weight:bold; margin-right:5px;">➕ मेंबर ऍड करा</button>
+                        <button id="btnAddMemberRoom" onclick="openAddMemberModal()" style="background:#16a34a; color:white; border:none; padding:3px 8px; border-radius:3px; font-size:10px; cursor:pointer; font-weight:bold; margin-right:5px;">➕ मेंबर ऍड करा</button>
                         <button onclick="closeGroupChat()" style="background:none; border:none; color:#ef4444; font-size:14px; cursor:pointer; font-weight:bold;">✖</button>
                     </div>
                 </div>
                 <div id="groupMessagesArea" class="chat-messages-area"></div>
                 <div class="chat-input-row">
                     <input type="text" id="groupMessageInput" placeholder="मेसेज लिहा...">
-                    <button onclick="sendGroupMessage()">पाठवा</button>
+                    <button id="btnSendGroupMsg" onclick="sendGroupMessage()">पाठवा</button>
                 </div>
             </div>
         </div>
 
         <div id="section-videos" class="section-box">
-            <h2>🎥 ऑल इंडिया व्हिडिओज आणि शॉर्ट्स</h2>
+            <h2 id="secTitleVideos">🎥 ऑल इंडिया व्हिडिओज आणि शॉर्ट्स</h2>
             <div class="video-tabs">
-                <button class="video-tab-btn active-tab" onclick="switchVideoTab('full', this)">📁 फुल व्हिडिओज</button>
-                <button class="video-tab-btn" onclick="switchVideoTab('short', this)">⚡ शॉर्ट्स</button>
+                <button id="vTabFull" class="video-tab-btn active-tab" onclick="switchVideoTab('full', this)">📁 फुल व्हिडिओज</button>
+                <button id="vTabShort" class="video-tab-btn" onclick="switchVideoTab('short', this)">⚡ शॉर्ट्स</button>
+                <button id="vTabLive" class="video-tab-btn" onclick="switchVideoTab('live', this)" style="background:#b91c1c; color:#fff;">🔴 लाईव्ह</button>
             </div>
             <div id="videosListContainer"></div>
         </div>
 
         <div id="section-donation" class="section-box">
-            <h2>७. देणगी</h2>
+            <h2 id="secTitleDonation">७. देणगी</h2>
             <div class="info-card">
-                <p>मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
+                <p id="txtDonationDetails">मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
             </div>
         </div>
 
     </div>
 
+    <!-- प्लस मेनू (क्रिएट मेनू) -->
     <div id="createMenuBox" class="create-menu">
-        <button onclick="document.getElementById('fullVideoFileInput').click()">📁 फुल व्हिडिओ टाका</button>
+        <button id="menuOptFullVideo" onclick="document.getElementById('fullVideoFileInput').click()">📁 फुल व्हिडिओ टाका</button>
         <input type="file" id="fullVideoFileInput" accept="video/*" style="display:none;" onchange="prepareVideoUpload(this, 'full')">
-        <button onclick="document.getElementById('shortVideoFileInput').click()">⚡ शॉर्ट व्हिडिओ टाका</button>
+        <button id="menuOptShortVideo" onclick="document.getElementById('shortVideoFileInput').click()">⚡ शॉर्ट व्हिडिओ टाका</button>
         <input type="file" id="shortVideoFileInput" accept="video/*" style="display:none;" onchange="prepareVideoUpload(this, 'short')">
+        <button id="menuOptGoLive" onclick="openLiveStreamSetup()" style="background:#b91c1c; color:white; font-weight:bold;">🔴 लाईव्ह स्ट्रीम सुरू करा</button>
     </div>
 
     <div id="uploadModal" class="modal">
         <div class="modal-content-box">
-            <h3 style="color:#f43f5e; margin-top:0; font-size:14px;">व्हिडिओ माहिती भरा</h3>
+            <h3 id="modalVideoInfoTitle" style="color:#f43f5e; margin-top:0; font-size:14px;">व्हिडिओ माहिती भरा</h3>
             
-            <label style="font-size:11px; font-weight:bold;">थंबनेल (Thumbnail) अपलोड करा:</label>
+            <label id="modalLblThumb" style="font-size:11px; font-weight:bold;">थंबनेल (Thumbnail) अपलोड करा:</label>
             <div class="thumbnail-upload-box" onclick="document.getElementById('thumbnailFileInput').click()">
                 <span id="thumbPlaceholderText" style="font-size:11px; color:#94a3b8;">📸 थंबनेल फोटो निवडा</span>
                 <img id="thumbPreviewImg" src="" alt="Thumbnail">
             </div>
             <input type="file" id="thumbnailFileInput" accept="image/*" style="display:none;" onchange="previewThumbnail(this)">
 
-            <label style="font-size:11px; font-weight:bold;">टायटल (Title):</label>
+            <label id="modalLblTitle" style="font-size:11px; font-weight:bold;">टायटल (Title):</label>
             <input type="text" id="inputVideoTitle" placeholder="उदा. महाकाल आरती दर्शन">
             
-            <label style="font-size:11px; font-weight:bold;">वर्णन (Description):</label>
+            <label id="modalLblDesc" style="font-size:11px; font-weight:bold;">वर्णन (Description):</label>
             <textarea id="inputVideoDesc" rows="2" placeholder="थोडक्यात माहिती लिहा..."></textarea>
             
-            <label style="font-size:11px; font-weight:bold;">हॅशटॅग (Hashtags):</label>
+            <label id="modalLblTags" style="font-size:11px; font-weight:bold;">हॅशटॅग (Hashtags):</label>
             <input type="text" id="inputVideoTags" placeholder="#Mahadev #Vilhale">
 
             <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeUploadModal()">रद्द करा</button>
-                <button class="btn-save" onclick="confirmAndUpload()">सेव्ह करा</button>
+                <button id="modalBtnCancel" class="btn-cancel" onclick="closeUploadModal()">रद्द करा</button>
+                <button id="modalBtnSave" class="btn-save" onclick="confirmAndUpload()">सेव्ह करा</button>
             </div>
+        </div>
+    </div>
+
+    <!-- लाईव्ह स्ट्रीम सेटअप मॉडेल -->
+    <div id="liveStreamModal" class="modal">
+        <div class="modal-content-box">
+            <h3 style="color:#ef4444; margin-top:0; font-size:14px;">🔴 लाईव्ह स्ट्रीम सुरू करा</h3>
+            <label style="font-size:11px; font-weight:bold;">लाईव्ह शिर्षक (Live Title):</label>
+            <input type="text" id="inputLiveTitle" placeholder="उदा. महादेवांची लाईव्ह महाआरती">
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="document.getElementById('liveStreamModal').style.display='none'">रद्द करा</button>
+                <button class="btn-save" style="background:#b91c1c;" onclick="startBroadcastLive()">लाईव्ह सुरू करा</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ॲड लाईव्ह स्ट्रीम स्क्रीन (जेव्हा युझर लाईव्ह बघतो किंवा करतो) -->
+    <div id="liveStreamRoomOverlay" class="live-stream-overlay">
+        <div class="live-stream-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span class="live-badge">LIVE</span>
+                <span id="liveRoomTitleDisplay" style="font-size:13px; font-weight:bold;">लाईव्ह स्ट्रीम</span>
+            </div>
+            <div>
+                <button id="switchCameraBtn" onclick="toggleCameraFacing()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer; margin-right:5px;">🔄 कॅमेरा बदला</button>
+                <button onclick="leaveLiveStreamRoom()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✖</button>
+            </div>
+        </div>
+        <div class="live-video-container">
+            <video id="liveBroadcastVideoElem" autoplay playsinline muted></video>
+            <div id="liveChatMessagesArea" class="live-chat-overlay-box"></div>
+        </div>
+        <div class="live-footer-controls">
+            <input type="text" id="liveChatInput" placeholder="लाईव्ह कमेंट पाठवा...">
+            <button class="live-action-btn" onclick="sendLiveChatMessage()">पाठवा</button>
         </div>
     </div>
 
@@ -1059,13 +1212,13 @@
     </div>
 
     <div class="bottom-nav">
-        <button onclick="showSection('gallery', this)" class="active"><span>🖼️</span>गॅलरी</button>
-        <button onclick="showSection('schedule', this)"><span>⏰</span>वेळपत्रक</button>
-        <button onclick="showSection('location', this)"><span>📍</span>लोकेशन</button>
+        <button onclick="showSection('gallery', this)" class="active"><span id="navIconGallery">🖼️</span><span id="navTextGallery">गॅलरी</span></button>
+        <button onclick="showSection('schedule', this)"><span id="navIconSchedule">⏰</span><span id="navTextSchedule">वेळपत्रक</span></button>
+        <button onclick="showSection('location', this)"><span id="navIconLocation">📍</span><span id="navTextLocation">लोकेशन</span></button>
         <button class="nav-center-create" onclick="toggleCreateMenu(event)">+</button>
-        <button onclick="showSection('videos', this)"><span>🎥</span>व्हिडिओज</button>
-        <button onclick="showSection('ringtones', this)"><span>🔔</span>रिंगटोन</button>
-        <button onclick="showSection('groups', this)"><span>👥</span>चॅट व ग्रुप्स</button>
+        <button onclick="showSection('videos', this)"><span id="navIconVideos">🎥</span><span id="navTextVideos">व्हिडिओज</span></button>
+        <button onclick="showSection('ringtones', this)"><span id="navIconRingtones">🔔</span><span id="navTextRingtones">रिंगटोन</span></button>
+        <button onclick="showSection('groups', this)"><span id="navIconGroups">👥</span><span id="navTextGroups">चॅट व ग्रुप्स</span></button>
     </div>
 
     <script>
@@ -1080,10 +1233,180 @@
         let globalHistoryList = [];
         let globalGalleryList = [];
         let globalRingtonesList = [];
+        let globalLiveList = [];
         let currentVideoTab = 'full';
         let isAdminLoggedIn = false;
         let activeGroupId = null;
         let activeGroupName = '';
+        let currentLang = 'mr';
+
+        // लाईव्ह स्ट्रीम व्हेरिएबल्स
+        let localMediaStream = null;
+        let activeLiveId = null;
+        let useFrontCamera = true;
+
+        const translations = {
+            mr: {
+                appTitle: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
+                bhaktLabel: "भक्त:",
+                navGallery: "गॅलरी",
+                navSchedule: "वेळपत्रक",
+                navLocation: "लोकेशन",
+                navVideos: "व्हिडिओज",
+                navRingtones: "रिंगटोन",
+                navGroups: "चॅट व ग्रुप्स",
+                secGallery: "१. मंदिर दर्शन गॅलरी",
+                gallerySub: "फोटोवर क्लिक करून फुल साइज मध्ये पाहू शकता.",
+                secSchedule: "२. आरती आणि दर्शन वेळपत्रक",
+                morningAarati: "प्रातःकाळ आरती: सकाळी ७:१५ वाजता (7:15 AM)",
+                eveningAarati: "संध्याकाळची आरती: संध्याकाळी ७:१५ वाजता (7:15 PM)",
+                secLocation: "३. पत्ता व लोकेशन",
+                addressDetails: "श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.",
+                googleMapBtn: "गुगल मॅपवर पहा",
+                secRingtones: "४. महादेवांच्या रिंगटोन्स व एसएमएस ट्यून",
+                ringtoneSub: "येथून रिंगटोन ऐका आणि डाऊनलोड करा.",
+                secTexts: "५. पवित्र ग्रंथ, आरत्या व श्लोक",
+                tabChat: "💬 चॅट्स व ग्रुप्स",
+                tabStatus: "🟢 स्टेटस (Status)",
+                secCommunity: "👥 कम्युनिटी ग्रुप्स व पर्सनल चॅट",
+                communitySub: "येथे ग्रुप्स आणि लोकांशी पर्सनली चॅटिंग करता येईल.",
+                secStatus: "🟢 स्टेटस अपडेट्स",
+                statusSub: "भक्तांचे व ग्रुप्सचे ताजे स्टेटस येथे पाहता येतील.",
+                secVideos: "🎥 ऑल इंडिया व्हिडिओज आणि शॉर्ट्स",
+                vFull: "📁 फुल व्हिडिओज",
+                vShort: "⚡ शॉर्ट्स",
+                vLive: "🔴 लाईव्ह",
+                secDonation: "७. देणगी",
+                donationDetails: "मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.",
+                menuFull: "📁 फुल व्हिडिओ टाका",
+                menuShort: "⚡ शॉर्ट व्हिडिओ टाका",
+                menuLive: "🔴 लाईव्ह स्ट्रीम सुरू करा",
+                logout: "लॉग आउट"
+            },
+            hi: {
+                appTitle: "MH कपिलेश्वर महादेव मंदिर विल्होळे",
+                bhaktLabel: "भक्त:",
+                navGallery: "गैलरी",
+                navSchedule: "समय सारणी",
+                navLocation: "लोकेशन",
+                navVideos: "वीडियो",
+                navRingtones: "रिंगटोन",
+                navGroups: "चैट और ग्रुप",
+                secGallery: "१. मंदिर दर्शन गैलरी",
+                gallerySub: "फोटो पर क्लिक करके फुल साइज में देख सकते हैं।",
+                secSchedule: "२. आरती और दर्शन समय सारणी",
+                morningAarati: "प्रातःकाल आरती: सुबह ७:१५ बजे (7:15 AM)",
+                eveningAarati: "संध्या आरती: शाम ७:१५ बजे (7:15 PM)",
+                secLocation: "३. पता और लोकेशन",
+                addressDetails: "श्री क्षेत्र कपिलेश्वर महादेव मंदिर, विल्होळे, तहसील भुसावल, जिला जळगाव - ४२५३०५.",
+                googleMapBtn: "गूगल मैप पर देखें",
+                secRingtones: "४. महादेव रिंगटोन और एसएमएस ट्यून",
+                ringtoneSub: "यहाँ से रिंगटोन सुनें और डाउनलोड करें।",
+                secTexts: "५. पवित्र ग्रंथ, आरतियाँ और श्लोक",
+                tabChat: "💬 चैट और ग्रुप",
+                tabStatus: "🟢 स्टेटस (Status)",
+                secCommunity: "👥 कम्युनिटी ग्रुप्स और पर्सनल चैट",
+                communitySub: "यहाँ ग्रुप्स और लोगों से पर्सनली चैटिंग की जा सकती है।",
+                secStatus: "🟢 स्टेटस अपडेट्स",
+                statusSub: "भक्तों और ग्रुप्स के ताजे स्टेटस यहाँ देख सकते हैं।",
+                secVideos: "🎥 ऑल इंडिया वीडियो और शॉर्ट्स",
+                vFull: "📁 फुल वीडियो",
+                vShort: "⚡ शॉर्ट्स",
+                vLive: "🔴 लाइव",
+                secDonation: "७. दान",
+                donationDetails: "मंदिर विकास और कार्यों के लिए अपना दान दे सकते हैं। अधिक जानकारी के लिए मंदिर ट्रस्ट से संपर्क करें।",
+                menuFull: "📁 फुल वीडियो डालें",
+                menuShort: "⚡ शॉर्ट वीडियो डालें",
+                menuLive: "🔴 लाइव स्ट्रीम शुरू करें",
+                logout: "लॉग आउट"
+            },
+            en: {
+                appTitle: "MH Kapileshwar Mahadev Mandir Vilhale",
+                bhaktLabel: "Bhakt:",
+                navGallery: "Gallery",
+                navSchedule: "Schedule",
+                navLocation: "Location",
+                navVideos: "Videos",
+                navRingtones: "Ringtones",
+                navGroups: "Chats & Groups",
+                secGallery: "1. Mandir Darshan Gallery",
+                gallerySub: "Click on photo to view in full size.",
+                secSchedule: "2. Aarti and Darshan Schedule",
+                morningAarati: "Morning Aarti: 7:15 AM",
+                eveningAarati: "Evening Aarti: 7:15 PM",
+                secLocation: "3. Address & Location",
+                addressDetails: "Shri Kshetra Kapileshwar Mahadev Mandir, Vilhale, Tehsil Bhusawal, Dist Jalgaon - 425305.",
+                googleMapBtn: "View on Google Map",
+                secRingtones: "4. Mahadev Ringtones & SMS Tunes",
+                ringtoneSub: "Listen and download ringtones from here.",
+                secTexts: "5. Holy Scriptures, Aartis & Slokas",
+                tabChat: "💬 Chats & Groups",
+                tabStatus: "🟢 Status",
+                secCommunity: "👥 Community Groups & Personal Chat",
+                communitySub: "Chat personally with groups and people here.",
+                secStatus: "🟢 Status Updates",
+                statusSub: "View latest status of devotees and groups here.",
+                secVideos: "🎥 All India Videos & Shorts",
+                vFull: "📁 Full Videos",
+                vShort: "⚡ Shorts",
+                vLive: "🔴 Live",
+                secDonation: "7. Donation",
+                donationDetails: "You can contribute donations for temple development. Contact temple trust for details.",
+                menuFull: "📁 Upload Full Video",
+                menuShort: "⚡ Upload Short Video",
+                menuLive: "🔴 Start Live Stream",
+                logout: "Logout"
+            }
+        };
+
+        function changeLanguage(langCode) {
+            currentLang = langCode;
+            localStorage.setItem('mandir_app_lang', langCode);
+            let t = translations[langCode];
+            
+            document.getElementById('appTitle').innerText = t.appTitle;
+            document.getElementById('appMainHeaderTitle').innerText = t.appTitle;
+            document.getElementById('txtBhaktLabel').innerText = t.bhaktLabel;
+            document.getElementById('navTextGallery').innerText = t.navGallery;
+            document.getElementById('navTextSchedule').innerText = t.navSchedule;
+            document.getElementById('navTextLocation').innerText = t.navLocation;
+            document.getElementById('navTextVideos').innerText = t.navVideos;
+            document.getElementById('navTextRingtones').innerText = t.navRingtones;
+            document.getElementById('navTextGroups').innerText = t.navGroups;
+            
+            document.getElementById('secTitleGallery').innerText = t.secGallery;
+            document.getElementById('txtGallerySub').innerText = t.gallerySub;
+            document.getElementById('secTitleSchedule').innerText = t.secSchedule;
+            document.getElementById('txtMorningAarati').innerText = t.morningAarati.split(':')[0] + ':';
+            document.getElementById('txtEveningAarati').innerText = t.eveningAarati.split(':')[0] + ':';
+            document.getElementById('secTitleLocation').innerText = t.secLocation;
+            document.getElementById('txtAddressDetails').innerText = t.addressDetails;
+            document.getElementById('btnGoogleMap').innerText = t.googleMapBtn;
+            
+            document.getElementById('secTitleRingtones').innerText = t.secRingtones;
+            document.getElementById('txtRingtoneSub').innerText = t.ringtoneSub;
+            document.getElementById('secTitleTexts').innerText = t.secTexts;
+            
+            document.getElementById('tabChatBtn').innerText = t.tabChat;
+            document.getElementById('tabStatusBtn').innerText = t.tabStatus;
+            document.getElementById('secTitleCommunity').innerText = t.secCommunity;
+            document.getElementById('txtCommunitySub').innerText = t.communitySub;
+            document.getElementById('secTitleStatus').innerText = t.secStatus;
+            document.getElementById('txtStatusSub').innerText = t.statusSub;
+            
+            document.getElementById('secTitleVideos').innerText = t.secVideos;
+            document.getElementById('vTabFull').innerText = t.vFull;
+            document.getElementById('vTabShort').innerText = t.vShort;
+            document.getElementById('vTabLive').innerText = t.vLive;
+            
+            document.getElementById('secTitleDonation').innerText = t.secDonation;
+            document.getElementById('txtDonationDetails').innerText = t.donationDetails;
+            
+            document.getElementById('menuOptFullVideo').innerText = t.menuFull;
+            document.getElementById('menuOptShortVideo').innerText = t.menuShort;
+            document.getElementById('menuOptGoLive').innerText = t.menuLive;
+            document.getElementById('btnLogout').innerText = t.logout;
+        }
 
         // सुरुवातीच्या फक्त SMS1.mp3 आणि SMS2.mp3 रिंगटोन्स
         let defaultRingtones = [
@@ -1105,6 +1428,10 @@
         ];
 
         window.onload = function() {
+            let savedLang = localStorage.getItem('mandir_app_lang') || 'mr';
+            document.getElementById('languageSelector').value = savedLang;
+            changeLanguage(savedLang);
+
             let savedName = localStorage.getItem('mandir_app_username');
             let savedDp = localStorage.getItem('mandir_app_userdp');
             let savedPhone = localStorage.getItem('mandir_app_userphone');
@@ -1334,7 +1661,7 @@
             let fileInput = document.getElementById('inputRingtoneFile');
 
             if(titleInput === '') {
-                alert('कृपया रिंगटोनचे नाव टाка!');
+                alert('कृपया रिंगटोनचे नाव टाका!');
                 return;
             }
 
@@ -1638,6 +1965,16 @@
                 renderVideosUI();
             });
 
+            onSnapshot(collection(window.db, "mandir_lives"), (snapshot) => {
+                globalLiveList = [];
+                snapshot.forEach((docSnap) => {
+                    globalLiveList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
+                });
+                if(currentVideoTab === 'live') {
+                    renderVideosUI();
+                }
+            });
+
             onSnapshot(collection(window.db, "mandir_gallery"), (snapshot) => {
                 globalGalleryList = [];
                 snapshot.forEach((docSnap) => {
@@ -1651,7 +1988,6 @@
                 snapshot.forEach((docSnap) => {
                     globalRingtonesList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
                 });
-                // जर डेटाबेसमध्ये रिंगटोन नसतील तर डिफॉल्ट दोन दाखवा
                 let combinedRingtones = globalRingtonesList.length > 0 ? globalRingtonesList : defaultRingtones;
                 renderRingtones(combinedRingtones);
             });
@@ -1788,6 +2124,36 @@
             const container = document.getElementById('videosListContainer');
             container.innerHTML = '';
             
+            if(currentVideoTab === 'live') {
+                if(globalLiveList.length === 0) {
+                    container.innerHTML = `<p style="font-size:12px; color:#94a3b8; text-align:center; padding:20px;">सध्या कोणतीही लाईव्ह स्ट्रीम सुरू नाही.</p>`;
+                    return;
+                }
+                globalLiveList.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'youtube-video-card';
+                    card.innerHTML = `
+                        <div class="yt-thumb-container" style="background:#111; display:flex; justify-content:center; align-items:center;" onclick="joinLiveStreamRoom('${item.id}', '${item.title.replace(/'/g, "\\'")}')">
+                            <div style="text-align:center; color:white;">
+                                <span style="background:#ef4444; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:bold;">🔴 LIVE STREAM</span>
+                                <h3 style="margin:10px 0 0 0; font-size:14px;">${item.title}</h3>
+                                <p style="font-size:11px; color:#cbd5e1; margin:5px 0 0 0;">होस्ट: ${item.host}</p>
+                            </div>
+                        </div>
+                        <div class="yt-card-details">
+                            <img src="${item.dp || 'photo1.jpg'}" alt="DP" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                            <div class="yt-card-meta">
+                                <h4 class="yt-card-title">${item.title}</h4>
+                                <p class="yt-card-channel">लाईव्ह प्रसारण करणारे: ${item.host}</p>
+                            </div>
+                        </div>
+                        ${isAdminLoggedIn || item.host === loggedInUserName ? `<button class="delete-btn-abs" onclick="deleteLiveStream('${item.docFirebaseId}')">🗑️</button>` : ''}
+                    `;
+                    container.appendChild(card);
+                });
+                return;
+            }
+
             let filtered = globalHistoryList.filter(item => {
                 if(currentVideoTab === 'full') return item.type === 'फुल व्हिडिओ';
                 if(currentVideoTab === 'short') return item.type === 'शॉर्ट व्हिडिओ';
@@ -1817,6 +2183,134 @@
                     ${isAdminLoggedIn ? `<button class="delete-btn-abs" onclick="deleteUploadedVideo('${item.docFirebaseId}')">🗑️</button>` : ''}
                 `;
                 container.appendChild(card);
+            });
+        }
+
+        // --- लाईव्ह स्ट्रीम फंक्शन्स ---
+        function openLiveStreamSetup() {
+            document.getElementById('createMenuBox').style.display = 'none';
+            document.getElementById('liveStreamModal').style.display = 'flex';
+        }
+
+        async function startBroadcastLive() {
+            let title = document.getElementById('inputLiveTitle').value.trim() || 'महादेवांची लाईव्ह आरती';
+            document.getElementById('liveStreamModal').style.display = 'none';
+            
+            activeLiveId = 'live_' + Date.now();
+            document.getElementById('liveRoomTitleDisplay').innerText = title;
+            document.getElementById('liveStreamRoomOverlay').style.display = 'flex';
+
+            try {
+                localMediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
+                    audio: true
+                });
+                let videoElem = document.getElementById('liveBroadcastVideoElem');
+                videoElem.srcObject = localMediaStream;
+                videoElem.muted = true; // स्वतःचा आवाज इको होऊ नये म्हणून
+            } catch(e) {
+                alert('कॅमेरा किंवा माईक परवानग्या मिळवण्यात अडचण आली: ' + e.message);
+            }
+
+            if(window.db) {
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_lives"), {
+                        id: activeLiveId,
+                        title: title,
+                        host: loggedInUserName,
+                        dp: loggedInUserDp,
+                        time: Date.now()
+                    });
+                } catch(err) { console.error(err); }
+            }
+            loadLiveChatMessages();
+        }
+
+        async function toggleCameraFacing() {
+            useFrontCamera = !useFrontCamera;
+            if(localMediaStream) {
+                localMediaStream.getTracks().forEach(track => track.stop());
+            }
+            try {
+                localMediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
+                    audio: true
+                });
+                let videoElem = document.getElementById('liveBroadcastVideoElem');
+                videoElem.srcObject = localMediaStream;
+            } catch(e) { console.error(e); }
+        }
+
+        function joinLiveStreamRoom(liveId, liveTitle) {
+            activeLiveId = liveId;
+            document.getElementById('liveRoomTitleDisplay').innerText = liveTitle;
+            document.getElementById('liveStreamRoomOverlay').style.display = 'flex';
+            
+            // दर्शक म्हणून सामील होताना कॅमेरा सुरू करण्याची गरज नाही, पण सामायिक चॅट पाहू शकतात
+            let videoElem = document.getElementById('liveBroadcastVideoElem');
+            videoElem.srcObject = null;
+            videoElem.style.background = '#111';
+            loadLiveChatMessages();
+        }
+
+        function leaveLiveStreamRoom() {
+            if(localMediaStream) {
+                localMediaStream.getTracks().forEach(track => track.stop());
+                localMediaStream = null;
+            }
+            document.getElementById('liveStreamRoomOverlay').style.display = 'none';
+            activeLiveId = null;
+        }
+
+        async function deleteLiveStream(docFirebaseId) {
+            if(window.db) {
+                const { doc, deleteDoc } = window.firebaseCols;
+                try {
+                    await deleteDoc(doc(window.db, "mandir_lives", docFirebaseId));
+                    alert('लाईव्ह स्ट्रीम बंद व डिलीट केली.');
+                } catch(e) { console.error(e); }
+            }
+        }
+
+        async function sendLiveChatMessage() {
+            let input = document.getElementById('liveChatInput');
+            let text = input.value.trim();
+            if(text !== "" && activeLiveId && window.db) {
+                const { collection, addDoc } = window.firebaseCols;
+                try {
+                    await addDoc(collection(window.db, "mandir_live_messages"), {
+                        liveId: activeLiveId,
+                        sender: loggedInUserName,
+                        text: text,
+                        time: Date.now()
+                    });
+                    input.value = '';
+                } catch(e) { console.error(e); }
+            }
+        }
+
+        function loadLiveChatMessages() {
+            if(!window.db || !activeLiveId) return;
+            const { collection, onSnapshot } = window.firebaseCols;
+            onSnapshot(collection(window.db, "mandir_live_messages"), (snapshot) => {
+                let msgs = [];
+                snapshot.forEach(docSnap => {
+                    let d = docSnap.data();
+                    if(d.liveId == activeLiveId) msgs.push(d);
+                });
+                msgs.sort((a, b) => a.time - b.time);
+                
+                let area = document.getElementById('liveChatMessagesArea');
+                if(!area) return;
+                area.innerHTML = '';
+                msgs.forEach(m => {
+                    let div = document.createElement('div');
+                    div.className = 'live-chat-msg-item';
+                    div.innerHTML = `<strong>${m.sender}:</strong> ${m.text}`;
+                    area.appendChild(div);
+                });
+                area.scrollTop = area.scrollHeight;
             });
         }
 
