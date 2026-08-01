@@ -452,6 +452,7 @@
             color: white;
         }
 
+        /* --- सुधारित छोटी आणि स्क्रोल करण्यायोग्य तळपट्टी (Bottom Nav) --- */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -460,26 +461,31 @@
             background: #0f172a;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0;
+            align-items: center;
+            padding: 5px 2px;
             box-shadow: 0 -2px 5px rgba(0,0,0,0.5);
             z-index: 999;
             border-top: 1px solid #334155;
+            overflow-x: auto; /* स्क्रोल डाऊन/साईडला करता यावे म्हणून */
+            white-space: nowrap;
         }
 
         .bottom-nav button {
             background: none;
             border: none;
-            font-size: 10px;
+            font-size: 9px;
             color: #94a3b8;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            gap: 2px;
+            gap: 1px;
+            padding: 2px 6px;
+            flex-shrink: 0;
         }
 
         .bottom-nav button span {
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .bottom-nav button.active {
@@ -490,21 +496,21 @@
         .nav-center-create {
             background: #e11d48 !important;
             color: white !important;
-            width: 42px;
-            height: 42px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 22px !important;
+            font-size: 18px !important;
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            margin-top: -8px;
+            margin-top: -4px;
         }
 
         .create-menu {
             display: none;
             position: fixed;
-            bottom: 60px;
+            bottom: 55px;
             left: 50%;
             transform: translateX(-50%);
             background: #1e293b;
@@ -735,7 +741,7 @@
             border-radius: 8px;
         }
 
-        /* लाईव्ह स्ट्रीम रूमसाठी स्टाईल */
+        /* लाईव्ह स्ट्रीम रूमसाठी स्टाईल (फक्त होस्ट कॅमेरा शेअर होईल) */
         .live-stream-overlay {
             display: none;
             position: fixed;
@@ -1103,7 +1109,7 @@
         </div>
     </div>
 
-    <!-- ॲड लाईव्ह स्ट्रीम स्क्रीन (जेव्हा युझर लाईव्ह बघतो किंवा करतो) -->
+    <!-- लाईव्ह स्ट्रीम रूम स्क्रीन (फक्त होस्टचा कॅमेरा दिसेल आणि बाकी युझर्स पाहू शकतील) -->
     <div id="liveStreamRoomOverlay" class="live-stream-overlay">
         <div class="live-stream-header">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1211,6 +1217,7 @@
         </div>
     </div>
 
+    <!-- स्क्रोल करण्यायोग्य तळपट्टी (Bottom Nav) -->
     <div class="bottom-nav">
         <button onclick="showSection('gallery', this)" class="active"><span id="navIconGallery">🖼️</span><span id="navTextGallery">गॅलरी</span></button>
         <button onclick="showSection('schedule', this)"><span id="navIconSchedule">⏰</span><span id="navTextSchedule">वेळपत्रक</span></button>
@@ -1240,7 +1247,6 @@
         let activeGroupName = '';
         let currentLang = 'mr';
 
-        // लाईव्ह स्ट्रीम व्हेरिएबल्स
         let localMediaStream = null;
         let activeLiveId = null;
         let useFrontCamera = true;
@@ -1408,7 +1414,6 @@
             document.getElementById('btnLogout').innerText = t.logout;
         }
 
-        // सुरुवातीच्या फक्त SMS1.mp3 आणि SMS2.mp3 रिंगटोन्स
         let defaultRingtones = [
             { id: 1, title: 'SMS1.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'एसएमएस रिंगटोन' },
             { id: 2, title: 'SMS2.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', category: 'एसएमएस रिंगटोन' }
@@ -2186,7 +2191,6 @@
             });
         }
 
-        // --- लाईव्ह स्ट्रीम फंक्शन्स ---
         function openLiveStreamSetup() {
             document.getElementById('createMenuBox').style.display = 'none';
             document.getElementById('liveStreamModal').style.display = 'flex';
@@ -2207,7 +2211,7 @@
                 });
                 let videoElem = document.getElementById('liveBroadcastVideoElem');
                 videoElem.srcObject = localMediaStream;
-                videoElem.muted = true; // स्वतःचा आवाज इको होऊ नये म्हणून
+                videoElem.muted = true;
             } catch(e) {
                 alert('कॅमेरा किंवा माईक परवानग्या मिळवण्यात अडचण आली: ' + e.message);
             }
@@ -2247,7 +2251,7 @@
             document.getElementById('liveRoomTitleDisplay').innerText = liveTitle;
             document.getElementById('liveStreamRoomOverlay').style.display = 'flex';
             
-            // दर्शक म्हणून सामील होताना कॅमेरा सुरू करण्याची गरज नाही, पण सामायिक चॅट पाहू शकतात
+            // दर्शक म्हणून सामील होताना फक्त होस्टचा प्रेषित केलेला कॅमेरा दिसेल
             let videoElem = document.getElementById('liveBroadcastVideoElem');
             videoElem.srcObject = null;
             videoElem.style.background = '#111';
