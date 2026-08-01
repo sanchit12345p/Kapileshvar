@@ -1,2519 +1,1812 @@
 <!DOCTYPE html>
 <html lang="mr" id="htmlRoot">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="appTitle">MH कपिलेश्वर महादेव मंदिर विल्होळे</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            color: #e2e8f0;
-            padding-bottom: 70px;
-        }
-
-        header {
-            background: linear-gradient(135deg, #0f172a, #1e293b, #b91c1c);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            position: relative;
-            border-bottom: 2px solid #e11d48;
-        }
-
-        .menu-hamburger-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
-        }
-
-        header img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 2px solid #f43f5e;
-            object-fit: cover;
-        }
-
-        .admin-brand {
-            font-size: 11px;
-            color: #fca5a5;
-            margin-top: 4px;
-            letter-spacing: 1px;
-            font-weight: bold;
-        }
-
-        .user-top-bar {
-            background: #1e1b4b;
-            padding: 8px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #312e81;
-            font-size: 13px;
-        }
-
-        .user-profile-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .user-profile-info img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid #f43f5e;
-        }
-
-        .top-bar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notification-bell-btn {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: red;
-            color: white;
-            font-size: 9px;
-            padding: 2px 5px;
-            border-radius: 50%;
-            display: none;
-        }
-
-        .notification-dropdown, .side-drawer-menu {
-            display: none;
-            position: absolute;
-            background: #1e293b;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            border-radius: 8px;
-            z-index: 1000;
-            border: 1px solid #475569;
-            color: #fff;
-        }
-
-        .notification-dropdown {
-            right: 15px;
-            top: 130px;
-            width: 280px;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .side-drawer-menu {
-            left: 15px;
-            top: 60px;
-            width: 240px;
-            padding: 10px;
-            text-align: left;
-        }
-
-        .side-drawer-menu button {
-            width: 100%;
-            padding: 8px;
-            background: none;
-            border: none;
-            text-align: left;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            border-bottom: 1px solid #334155;
-            color: #f8fafc;
-        }
-        .side-drawer-menu button:hover {
-            background: #334155;
-            color: #f43f5e;
-        }
-
-        .container {
-            padding: 15px;
-            max-width: 800px;
-            margin: auto;
-        }
-
-        .section-box {
-            display: none;
-        }
-
-        .active-section {
-            display: block;
-        }
-
-        h2 {
-            color: #f43f5e;
-            border-bottom: 2px solid #881337;
-            padding-bottom: 5px;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .gallery-card {
-            background: #1e293b;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            text-align: center;
-            position: relative;
-            cursor: pointer;
-            border: 1px solid #334155;
-        }
-
-        .gallery-card img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-        }
-
-        .gallery-card p {
-            margin: 8px 0;
-            font-size: 12px;
-            font-weight: bold;
-            color: #cbd5e1;
-        }
-
-        .delete-btn-abs {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(239, 68, 68, 0.9);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .info-card {
-            background: #1e293b;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            margin-top: 10px;
-            font-size: 13px;
-            line-height: 1.6;
-            border: 1px solid #334155;
-            color: #cbd5e1;
-        }
-
-        .map-btn {
-            display: inline-block;
-            background: #16a34a;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 10px;
-            font-size: 12px;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #475569;
-            background: #0f172a;
-            color: white;
-            border-radius: 5px;
-            margin-bottom: 12px;
-            font-size: 13px;
-            box-sizing: border-box;
-        }
-
-        .ringtone-card, .scripture-card {
-            background: #1e293b;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-            border: 1px solid #334155;
-            position: relative;
-        }
-
-        .ringtone-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .ringtone-info {
-            font-size: 13px;
-            font-weight: bold;
-            color: #f1f5f9;
-        }
-
-        .yt-listen-btn {
-            background: #e11d48;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .group-card {
-            background: #1e293b;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #334155;
-        }
-
-        .chat-room-container {
-            background: #1e293b;
-            border-radius: 8px;
-            margin-top: 10px;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            border: 1px solid #334155;
-        }
-
-        .chat-messages-area {
-            height: 250px;
-            overflow-y: auto;
-            border: 1px solid #475569;
-            padding: 8px;
-            font-size: 12px;
-            margin-bottom: 8px;
-            background: #0f172a;
-            border-radius: 6px;
-            color: #fff;
-        }
-
-        .chat-input-row {
-            display: flex;
-            gap: 5px;
-        }
-
-        .chat-input-row input {
-            flex: 1;
-            padding: 8px;
-            font-size: 12px;
-            border: 1px solid #475569;
-            background: #0f172a;
-            color: white;
-            border-radius: 4px;
-        }
-
-        .chat-input-row button {
-            background: #0d9488;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .whatsapp-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 15px;
-            background: #0f172a;
-            padding: 4px;
-            border-radius: 6px;
-        }
-        .whatsapp-tab-btn {
-            flex: 1;
-            padding: 8px;
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .whatsapp-tab-btn.active-w-tab {
-            background: #0d9488;
-            color: white;
-        }
-
-        .status-story-card {
-            background: #1e293b;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            border: 1px solid #334155;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .youtube-video-card {
-            background: #1e293b;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            position: relative;
-            border: 1px solid #334155;
-        }
-        .yt-thumb-container {
-            width: 100%;
-            height: 180px;
-            position: relative;
-            background: #000;
-            cursor: pointer;
-        }
-        .yt-thumb-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .yt-card-details {
-            display: flex;
-            padding: 10px;
-            gap: 10px;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .yt-card-meta {
-            flex: 1;
-        }
-        .yt-card-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #f8fafc;
-            margin: 0 0 4px 0;
-        }
-        .yt-card-channel {
-            font-size: 12px;
-            color: #94a3b8;
-            margin: 0;
-        }
-
-        .share-btn-action {
-            background: #16a34a;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #0f172a;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.5);
-            z-index: 999;
-            border-top: 1px solid #334155;
-        }
-
-        .bottom-nav button {
-            background: none;
-            border: none;
-            font-size: 10px;
-            color: #94a3b8;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            gap: 2px;
-        }
-
-        .bottom-nav button span {
-            font-size: 16px;
-        }
-
-        .bottom-nav button.active {
-            color: #f43f5e;
-            font-weight: bold;
-        }
-
-        .nav-center-create {
-            background: #e11d48 !important;
-            color: white !important;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px !important;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            margin-top: -8px;
-        }
-
-        .create-menu {
-            display: none;
-            position: fixed;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1e293b;
-            width: 250px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            border-radius: 8px;
-            z-index: 1000;
-            padding: 8px;
-            border: 1px solid #475569;
-            text-align: center;
-        }
-
-        .create-menu button {
-            width: 100%;
-            padding: 8px;
-            margin: 4px 0;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #f8fafc;
-            text-align: left;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.85);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content-box {
-            background: #1e293b;
-            color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 350px;
-            text-align: left;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-            border: 1px solid #475569;
-        }
-
-        .modal-content-box input, .modal-content-box textarea, .modal-content-box select {
-            width: 100%;
-            padding: 8px;
-            margin: 6px 0 12px 0;
-            border: 1px solid #475569;
-            background: #0f172a;
-            color: white;
-            border-radius: 4px;
-            font-size: 12px;
-            box-sizing: border-box;
-        }
-
-        .thumbnail-upload-box {
-            width: 100%;
-            height: 110px;
-            border: 2px dashed #e11d48;
-            border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            background: #0f172a;
-            margin-bottom: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-        .thumbnail-upload-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-
-        .modal-buttons button {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-cancel { background: #64748b; color: white; }
-        .btn-save { background: #e11d48; color: white; }
-
-        #nameGateModal, #blockedModal {
-            display: flex;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .name-gate-card {
-            background: #1e293b;
-            color: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            width: 85%;
-            max-width: 320px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.7);
-            border: 1px solid #475569;
-        }
-
-        .dp-upload-circle {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: #0f172a;
-            margin: 0 auto 12px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px dashed #e11d48;
-            cursor: pointer;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .dp-upload-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-        }
-        
-        .login-type-btn {
-            width: 100%;
-            padding: 10px;
-            margin: 6px 0;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .btn-public-type { background: #f59e0b; color: white; }
-        .btn-recovery-type { background: #16a34a; color: white; }
-
-        .youtube-player-modal {
-            display: none;
-            position: fixed;
-            z-index: 3000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.95);
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .yt-player-header {
-            padding: 12px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0,0,0,0.8);
-            color: white;
-        }
-        .yt-player-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            background: black;
-        }
-        .yt-player-body video {
-            width: 100%;
-            max-height: 50vh;
-            background: black;
-            outline: none;
-        }
-        .yt-player-footer {
-            background: #181818;
-            color: white;
-            padding: 12px;
-            max-height: 40vh;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        #photoZoomModal {
-            display: none;
-            position: fixed;
-            z-index: 4000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        #photoZoomModal img {
-            max-width: 90%;
-            max-height: 80vh;
-            border-radius: 8px;
-        }
-    </style>
-
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyDdoTltT76q_owd7-fFiMMPypbFdioAyiM",
-          authDomain: "kapileshwar-mandir.firebaseapp.com",
-          projectId: "kapileshwar-mandir",
-          storageBucket: "kapileshwar-mandir.firebasestorage.app",
-          messagingSenderId: "607915355395",
-          appId: "1:607915355395:web:fc1b297448bf345a350d36",
-          measurementId: "G-3P5K83XWNP"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.db = db;
-        window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion };
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="appTitle">MH कपिलेश्वर महादेव मंदिर विल्होळे</title>
+<style>
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+margin: 0;
+padding: 0;
+background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+color: #e2e8f0;
+padding-bottom: 70px;
+}
+​header {
+background: linear-gradient(135deg, #0f172a, #1e293b, #b91c1c);
+color: white;
+padding: 15px;
+text-align: center;
+box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+position: relative;
+border-bottom: 2px solid #e11d48;
+}
+​.menu-hamburger-btn {
+position: absolute;
+top: 15px;
+left: 15px;
+background: none;
+border: none;
+color: white;
+font-size: 22px;
+cursor: pointer;
+}
+​header img {
+width: 70px;
+height: 70px;
+border-radius: 50%;
+border: 2px solid #f43f5e;
+object-fit: cover;
+}
+​.admin-brand {
+font-size: 11px;
+color: #fca5a5;
+margin-top: 4px;
+letter-spacing: 1px;
+font-weight: bold;
+}
+​.user-top-bar {
+background: #1e1b4b;
+padding: 8px 15px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 1px solid #312e81;
+font-size: 13px;
+}
+​.user-profile-info {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+​.user-profile-info img {
+width: 32px;
+height: 32px;
+border-radius: 50%;
+object-fit: cover;
+border: 1px solid #f43f5e;
+}
+​.top-bar-right {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+​.notification-bell-btn {
+background: none;
+border: none;
+font-size: 18px;
+cursor: pointer;
+position: relative;
+}
+​.notification-badge {
+position: absolute;
+top: -5px;
+right: -5px;
+background: red;
+color: white;
+font-size: 9px;
+padding: 2px 5px;
+border-radius: 50%;
+display: none;
+}
+​.notification-dropdown, .side-drawer-menu {
+display: none;
+position: absolute;
+background: #1e293b;
+box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+border-radius: 8px;
+z-index: 1000;
+border: 1px solid #475569;
+color: #fff;
+}
+​.notification-dropdown {
+right: 15px;
+top: 130px;
+width: 280px;
+max-height: 300px;
+overflow-y: auto;
+padding: 10px;
+}
+​.side-drawer-menu {
+left: 15px;
+top: 60px;
+width: 240px;
+padding: 10px;
+text-align: left;
+}
+​.side-drawer-menu button {
+width: 100%;
+padding: 8px;
+background: none;
+border: none;
+text-align: left;
+font-size: 13px;
+font-weight: bold;
+cursor: pointer;
+border-bottom: 1px solid #334155;
+color: #f8fafc;
+}
+.side-drawer-menu button:hover {
+background: #334155;
+color: #f43f5e;
+}
+​.container {
+padding: 15px;
+max-width: 800px;
+margin: auto;
+}
+​.section-box {
+display: none;
+}
+​.active-section {
+display: block;
+}
+​h2 {
+color: #f43f5e;
+border-bottom: 2px solid #881337;
+padding-bottom: 5px;
+font-size: 18px;
+margin-top: 20px;
+}
+​.gallery-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 12px;
+margin-top: 10px;
+}
+​.gallery-card {
+background: #1e293b;
+border-radius: 8px;
+overflow: hidden;
+box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+text-align: center;
+position: relative;
+cursor: pointer;
+border: 1px solid #334155;
+}
+​.gallery-card img {
+width: 100%;
+height: 120px;
+object-fit: cover;
+}
+​.gallery-card p {
+margin: 8px 0;
+font-size: 12px;
+font-weight: bold;
+color: #cbd5e1;
+}
+​.delete-btn-abs {
+position: absolute;
+top: 5px;
+right: 5px;
+background: rgba(239, 68, 68, 0.9);
+color: white;
+border: none;
+border-radius: 50%;
+width: 24px;
+height: 24px;
+font-size: 12px;
+cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+​.info-card {
+background: #1e293b;
+padding: 15px;
+border-radius: 8px;
+box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+margin-top: 10px;
+font-size: 13px;
+line-height: 1.6;
+border: 1px solid #334155;
+color: #cbd5e1;
+}
+​.map-btn {
+display: inline-block;
+background: #16a34a;
+color: white;
+padding: 8px 15px;
+border-radius: 5px;
+text-decoration: none;
+font-weight: bold;
+margin-top: 10px;
+font-size: 12px;
+}
+​.search-box {
+width: 100%;
+padding: 10px;
+border: 1px solid #475569;
+background: #0f172a;
+color: white;
+border-radius: 5px;
+margin-bottom: 12px;
+font-size: 13px;
+box-sizing: border-box;
+}
+​.ringtone-card, .scripture-card {
+background: #1e293b;
+padding: 12px;
+border-radius: 6px;
+margin-bottom: 8px;
+box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+border: 1px solid #334155;
+position: relative;
+}
+​.ringtone-top {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+​.ringtone-info {
+font-size: 13px;
+font-weight: bold;
+color: #f1f5f9;
+}
+​.yt-listen-btn {
+background: #e11d48;
+color: white;
+border: none;
+padding: 5px 10px;
+border-radius: 4px;
+font-size: 11px;
+cursor: pointer;
+text-decoration: none;
+}
+​.group-card {
+background: #1e293b;
+padding: 12px;
+border-radius: 8px;
+margin-bottom: 10px;
+box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+display: flex;
+justify-content: space-between;
+align-items: center;
+border: 1px solid #334155;
+}
+​.chat-room-container {
+background: #1e293b;
+border-radius: 8px;
+margin-top: 10px;
+padding: 10px;
+box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+border: 1px solid #334155;
+}
+​.chat-messages-area {
+height: 250px;
+overflow-y: auto;
+border: 1px solid #475569;
+padding: 8px;
+font-size: 12px;
+margin-bottom: 8px;
+background: #0f172a;
+border-radius: 6px;
+color: #fff;
+}
+​.chat-input-row {
+display: flex;
+gap: 5px;
+}
+​.chat-input-row input {
+flex: 1;
+padding: 8px;
+font-size: 12px;
+border: 1px solid #475569;
+background: #0f172a;
+color: white;
+border-radius: 4px;
+}
+​.chat-input-row button {
+background: #0d9488;
+color: white;
+border: none;
+padding: 8px 14px;
+border-radius: 4px;
+font-size: 12px;
+cursor: pointer;
+font-weight: bold;
+}
+​.whatsapp-tabs {
+display: flex;
+gap: 5px;
+margin-bottom: 15px;
+background: #0f172a;
+padding: 4px;
+border-radius: 6px;
+}
+.whatsapp-tab-btn {
+flex: 1;
+padding: 8px;
+background: none;
+border: none;
+color: #94a3b8;
+font-weight: bold;
+font-size: 12px;
+cursor: pointer;
+border-radius: 4px;
+}
+.whatsapp-tab-btn.active-w-tab {
+background: #0d9488;
+color: white;
+}
+​.status-story-card {
+background: #1e293b;
+padding: 10px;
+border-radius: 6px;
+margin-bottom: 8px;
+border: 1px solid #334155;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+​.youtube-video-card {
+background: #1e293b;
+border-radius: 10px;
+overflow: hidden;
+margin-bottom: 15px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+position: relative;
+border: 1px solid #334155;
+}
+.yt-thumb-container {
+width: 100%;
+height: 180px;
+position: relative;
+background: #000;
+cursor: pointer;
+}
+.yt-thumb-container img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.yt-card-details {
+display: flex;
+padding: 10px;
+gap: 10px;
+align-items: center;
+justify-content: space-between;
+}
+.yt-card-meta {
+flex: 1;
+}
+.yt-card-title {
+font-size: 14px;
+font-weight: bold;
+color: #f8fafc;
+margin: 0 0 4px 0;
+}
+.yt-card-channel {
+font-size: 12px;
+color: #94a3b8;
+margin: 0;
+}
+​.share-btn-action {
+background: #16a34a;
+color: white;
+border: none;
+padding: 6px 10px;
+border-radius: 4px;
+font-size: 11px;
+font-weight: bold;
+cursor: pointer;
+}
+​.bottom-nav {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+background: #0f172a;
+display: flex;
+justify-content: space-around;
+padding: 8px 0;
+box-shadow: 0 -2px 5px rgba(0,0,0,0.5);
+z-index: 999;
+border-top: 1px solid #334155;
+}
+​.bottom-nav button {
+background: none;
+border: none;
+font-size: 10px;
+color: #94a3b8;
+display: flex;
+flex-direction: column;
+align-items: center;
+cursor: pointer;
+gap: 2px;
+}
+​.bottom-nav button span {
+font-size: 16px;
+}
+​.bottom-nav button.active {
+color: #f43f5e;
+font-weight: bold;
+}
+​.nav-center-create {
+background: #e11d48 !important;
+color: white !important;
+width: 42px;
+height: 42px;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 22px !important;
+box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+margin-top: -8px;
+}
+​.create-menu {
+display: none;
+position: fixed;
+bottom: 60px;
+left: 50%;
+transform: translateX(-50%);
+background: #1e293b;
+width: 250px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+border-radius: 8px;
+z-index: 1000;
+padding: 8px;
+border: 1px solid #475569;
+text-align: center;
+}
+​.create-menu button {
+width: 100%;
+padding: 8px;
+margin: 4px 0;
+background: #0f172a;
+border: 1px solid #334155;
+border-radius: 4px;
+font-size: 12px;
+font-weight: bold;
+cursor: pointer;
+color: #f8fafc;
+text-align: left;
+}
+​.modal {
+display: none;
+position: fixed;
+z-index: 2000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.85);
+justify-content: center;
+align-items: center;
+}
+​.modal-content-box {
+background: #1e293b;
+color: #fff;
+padding: 20px;
+border-radius: 8px;
+width: 90%;
+max-width: 350px;
+text-align: left;
+position: relative;
+max-height: 90vh;
+overflow-y: auto;
+border: 1px solid #475569;
+}
+​.modal-content-box input, .modal-content-box textarea, .modal-content-box select {
+width: 100%;
+padding: 8px;
+margin: 6px 0 12px 0;
+border: 1px solid #475569;
+background: #0f172a;
+color: white;
+border-radius: 4px;
+font-size: 12px;
+box-sizing: border-box;
+}
+​.thumbnail-upload-box {
+width: 100%;
+height: 110px;
+border: 2px dashed #e11d48;
+border-radius: 6px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+cursor: pointer;
+background: #0f172a;
+margin-bottom: 12px;
+position: relative;
+overflow: hidden;
+}
+.thumbnail-upload-box img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: none;
+position: absolute;
+top: 0;
+left: 0;
+}
+​.modal-buttons {
+display: flex;
+justify-content: flex-end;
+gap: 8px;
+}
+​.modal-buttons button {
+padding: 6px 12px;
+border: none;
+border-radius: 4px;
+font-size: 12px;
+cursor: pointer;
+font-weight: bold;
+}
+​.btn-cancel { background: #64748b; color: white; }
+.btn-save { background: #e11d48; color: white; }
+​#nameGateModal, #blockedModal {
+display: flex;
+position: fixed;
+z-index: 9999;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background: rgba(0,0,0,0.95);
+justify-content: center;
+align-items: center;
+}
+​.name-gate-card {
+background: #1e293b;
+color: #fff;
+padding: 25px;
+border-radius: 10px;
+width: 85%;
+max-width: 320px;
+text-align: center;
+box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+border: 1px solid #475569;
+}
+​.dp-upload-circle {
+width: 70px;
+height: 70px;
+border-radius: 50%;
+background: #0f172a;
+margin: 0 auto 12px auto;
+display: flex;
+justify-content: center;
+align-items: center;
+border: 2px dashed #e11d48;
+cursor: pointer;
+overflow: hidden;
+position: relative;
+}
+​.dp-upload-circle img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: none;
+}
+​.login-type-btn {
+width: 100%;
+padding: 10px;
+margin: 6px 0;
+border: none;
+border-radius: 5px;
+font-weight: bold;
+cursor: pointer;
+font-size: 13px;
+}
+.btn-public-type { background: #f59e0b; color: white; }
+.btn-recovery-type { background: #16a34a; color: white; }
+​.youtube-player-modal {
+display: none;
+position: fixed;
+z-index: 3000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.95);
+flex-direction: column;
+justify-content: space-between;
+}
+.yt-player-header {
+padding: 12px 15px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: rgba(0,0,0,0.8);
+color: white;
+}
+.yt-player-body {
+flex: 1;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+position: relative;
+background: black;
+}
+.yt-player-body video {
+width: 100%;
+max-height: 50vh;
+background: black;
+outline: none;
+}
+.yt-player-footer {
+background: #181818;
+color: white;
+padding: 12px;
+max-height: 40vh;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+​#photoZoomModal {
+display: none;
+position: fixed;
+z-index: 4000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background: rgba(0,0,0,0.95);
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+#photoZoomModal img {
+max-width: 90%;
+max-height: 80vh;
+border-radius: 8px;
+}
+</style>
+​<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+​const firebaseConfig = {
+apiKey: "AIzaSyDdoTltT76q_owd7-fFiMMPypbFdioAyiM",
+authDomain: "kapileshwar-mandir.firebaseapp.com",
+projectId: "kapileshwar-mandir",
+storageBucket: "kapileshwar-mandir.firebasestorage.app",
+messagingSenderId: "607915355395",
+appId: "1:607915355395:web:fc1b297448bf345a350d36",
+measurementId: "G-3P5K83XWNP"
+};
+​const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+​window.db = db;
+window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion };
+</script>
 </head>
 <body>
-
-    <div id="blockedModal" style="display:none;">
-        <div class="name-gate-card">
-            <h3 style="color:#ef4444; margin-top:0;">⛔ ॲपवरून ब्लॉक केले आहे</h3>
-            <p style="font-size:12px; color:#94a3b8;">तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.</p>
-        </div>
-    </div>
-
-    <div id="photoZoomModal" onclick="closePhotoZoom()">
-        <button style="position:absolute; top:20px; right:20px; background:none; border:none; color:white; font-size:28px; cursor:pointer;">✖</button>
-        <img id="zoomedImageElem" src="" alt="Zoomed Photo">
-        <p id="zoomedCaptionElem" style="color:white; margin-top:15px; font-size:14px; font-weight:bold;"></p>
-    </div>
-
-    <div id="nameGateModal">
-        <div class="name-gate-card">
-            <h3 style="color:#f43f5e; margin-top:0;">🙏 हर हर महादेव!</h3>
-            <div class="admin-brand" style="color:#94a3b8; margin-bottom:12px;">Admin By : Sanchit Vikas Patil</div>
-            <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;">पब्लिक लॉगिन किंवा अकाउंट रिकव्हरी निवडा:</p>
-            
-            <div id="loginChoiceView">
-                <button class="login-type-btn btn-public-type" onclick="selectLoginMode('public')">👤 New Public Login (नवीन पब्लिक)</button>
-                <button class="login-type-btn btn-recovery-type" onclick="selectLoginMode('recovery')">🔄 Restore Account (माझे जुने अकाउंट आणा)</button>
-            </div>
-
-            <div id="publicFormView" style="display:none; text-align:left;">
-                <label style="font-size:11px; font-weight:bold;">प्रोफाईल फोटो (DP) निवडा:</label>
-                <div class="dp-upload-circle" onclick="document.getElementById('dpFileInput').click()">
-                    <span id="dpPlaceholderText" style="font-size:10px; color:#94a3b8;">➕ फोटो</span>
-                    <img id="dpPreviewImg" src="" alt="DP">
-                </div>
-                <input type="file" id="dpFileInput" accept="image/*" style="display:none;" onchange="previewDP(this)">
-
-                <label style="font-size:11px; font-weight:bold;">मोबाईल नंबर (Valid Indian Number):</label>
-                <input type="tel" id="enteredUserPhone" placeholder="उदा. 9876543210" maxlength="10" style="width:100%; padding:8px; font-size:12px; border:1px solid #475569; background:#0f172a; color:#fff; border-radius:4px; margin-bottom:8px; box-sizing:border-box;">
-
-                <label style="font-size:11px; font-weight:bold;">नाव व आडनाव:</label>
-                <input type="text" id="enteredUserName" placeholder="पूर्ण नाव आणि आडनाव टाका..." style="width:100%; padding:8px; font-size:12px; border:1px solid #475569; background:#0f172a; color:#fff; border-radius:4px; margin-bottom:10px; box-sizing:border-box;">
-                
-                <button onclick="verifyPublicLogin()" style="width:100%; background:#f59e0b; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">कठोर युनिक कोड जनरेट करून प्रवेश करा</button>
-                <button onclick="backToLoginChoice()" style="width:100%; background:#64748b; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
-            </div>
-
-            <div id="recoveryFormView" style="display:none; text-align:left;">
-                <label style="font-size:11px; font-weight:bold;">तुमचा युनिक रिकव्हरी कोड टाका:</label>
-                <input type="text" id="recoveryCodeInput" placeholder="उदा. Sanchit-Patil-9876@MH" style="width:100%; padding:8px; font-size:12px; border:1px solid #475569; background:#0f172a; color:#fff; border-radius:4px; margin-bottom:5px; box-sizing:border-box;">
-                <div id="recoveryErrorMsg" style="color:#ef4444; font-size:11px; margin-bottom:8px;"></div>
-                
-                <button onclick="verifyAccountRecovery()" style="width:100%; background:#16a34a; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">अकाउंट परत आणा (Restore)</button>
-                <button onclick="backToLoginChoice()" style="width:100%; background:#64748b; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="user-top-bar">
-        <div class="user-profile-info">
-            <img id="headerUserDp" src="photo1.jpg" alt="DP">
-            <span><strong>भक्त:</strong> <span id="displayUserName" style="color:#f43f5e; font-weight:bold;">भक्त</span></span>
-        </div>
-        <div class="top-bar-right">
-            <button class="notification-bell-btn" onclick="toggleNotifications()">🔔<span id="notifBadge" class="notification-badge">0</span></button>
-            <button onclick="logoutUser()" style="background:none; border:1px solid #f43f5e; color:#f43f5e; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">लॉग आउट</button>
-        </div>
-    </div>
-
-    <div id="notificationDropdown" class="notification-dropdown">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:5px;">
-            <strong style="font-size:12px; color:#f43f5e;">🔔 अपडेट्स व नोटीस</strong>
-            <button onclick="clearNotifications()" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer;">सर्व हटवा</button>
-        </div>
-        <div id="notifListContainer"></div>
-    </div>
-
-    <div id="sideDrawerMenu" class="side-drawer-menu">
-        <div style="font-size:13px; font-weight:bold; color:#f43f5e; border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:5px;">⚙️ ॲप सेटिंग्ज</div>
-        <button onclick="openGroupManager()">👥 कम्युनिटी व ग्रुप्स मॅनेज करा</button>
-        <button onclick="openBlockManager()">🚫 युझर ब्लॉक लिस्ट मॅनेज करा</button>
-        <button onclick="logoutUser()">🚪 लॉग आउट</button>
-    </div>
-
-    <header>
-        <button class="menu-hamburger-btn" onclick="toggleSideDrawer(event)">☰</button>
-        <img src="photo1.jpg" alt="Mandir Logo">
-        <h1 style="font-size: 16px; margin: 8px 0 2px 0;">MH कपिलेश्वर महादेव मंदिर विल्होळे</h1>
-        <div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
-        <p style="font-size: 11px; margin: 4px 0 0 0; opacity: 0.9;">ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे<br>तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
-    </header>
-
-    <div class="container">
-
-        <div id="section-gallery" class="section-box active-section">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 style="margin:0;">१. मंदिर दर्शन गॅलरी</h2>
-                <button id="addGalleryPhotoBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो जोडा</button>
-                <input type="file" id="galleryImageInput" accept="image/*" style="display:none;" onchange="uploadNewGalleryPhoto(this)">
-            </div>
-            <p style="font-size:11px; color:#94a3b8; margin-top:5px;">फोटोवर क्लिक करून फुल साइज मध्ये पाहू शकता.</p>
-            <div id="galleryGridContainer" class="gallery-grid"></div>
-        </div>
-
-        <div id="section-schedule" class="section-box">
-            <h2>२. आरती आणि दर्शन वेळपत्रक</h2>
-            <div class="info-card">
-                <p><strong>प्रातःकाळ आरती:</strong> सकाळी ७:१५ वाजता (7:15 AM)</p>
-                <p><strong>संध्याकाळची आरती:</strong> संध्याकाळी ७:१५ वाजता (7:15 PM)</p>
-            </div>
-        </div>
-
-        <div id="section-location" class="section-box">
-            <h2>३. पत्ता व लोकेशन</h2>
-            <div class="info-card">
-                <p>श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.</p>
-                <a href="https://maps.google.com/?q=Kapileshwar+Mahadev+Mandir+Vilhale+Bhusawal" target="_blank" class="map-btn">गुगल मॅपवर पहा</a>
-            </div>
-        </div>
-
-        <div id="section-ringtones" class="section-box">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 style="margin:0;">४. महादेवांच्या रिंगटोन्स व एसएमएस ट्यून</h2>
-                <button id="addRingtoneBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openAddRingtoneModal()">➕ रिंगटोन ऍड करा</button>
-            </div>
-            <p style="font-size:11px; color:#94a3b8; margin-top:5px;">येथून रिंगटोन ऐका आणि डाऊनलोड करा.</p>
-            <input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन सर्च करा..." onkeyup="filterRingtones()">
-            <div id="ringtoneListContainer"></div>
-        </div>
-
-        <div id="section-texts" class="section-box">
-            <h2>५. पवित्र ग्रंथ, आरत्या व श्लोक</h2>
-            <input type="text" id="textSearch" class="search-box" placeholder="🔍 आरती, भजन किंवा श्लोक येथे सर्च करा..." onkeyup="filterTexts()">
-            <div id="textsListContainer"></div>
-        </div>
-
-        <div id="section-groups" class="section-box">
-            <div class="whatsapp-tabs">
-                <button class="whatsapp-tab-btn active-w-tab" onclick="switchWhatsappTab('chats', this)">💬 चॅट्स व ग्रुप्स</button>
-                <button class="whatsapp-tab-btn" onclick="switchWhatsappTab('status', this)">🟢 स्टेटस (Status)</button>
-            </div>
-
-            <div id="whatsappTabChats" class="whatsapp-sub-section">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <h2 style="margin:0;">👥 कम्युनिटी ग्रुप्स व पर्सनल चॅट</h2>
-                    <button style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openGroupManager()">➕ नवीन ग्रुप बनवा</button>
-                </div>
-                <p style="font-size:11px; color:#94a3b8;">येथे ग्रुप्स आणि लोकांशी पर्सनली चॅटिंग करता येईल.</p>
-                <div id="groupsMainListContainer"></div>
-            </div>
-
-            <div id="whatsappTabStatus" class="whatsapp-sub-section" style="display:none;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <h2 style="margin:0;">🟢 स्टेटस अपडेट्स</h2>
-                    <button style="background:#16a34a; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openAddStatusModal()">➕ स्टेटस ठेवा</button>
-                </div>
-                <p style="font-size:11px; color:#94a3b8;">भक्तांचे व ग्रुप्सचे ताजे स्टेटस येथे पाहता येतील.</p>
-                <div id="statusListContainer"></div>
-            </div>
-
-            <div id="activeGroupChatRoom" class="chat-room-container" style="display:none;">
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #475569; padding-bottom:6px; margin-bottom:8px;">
-                    <span id="activeGroupTitle" style="font-weight:bold; color:#2dd4bf; font-size:14px;">चॅट रूम</span>
-                    <div>
-                        <button onclick="openAddMemberModal()" style="background:#16a34a; color:white; border:none; padding:3px 8px; border-radius:3px; font-size:10px; cursor:pointer; font-weight:bold; margin-right:5px;">➕ मेंबर ऍड करा</button>
-                        <button onclick="closeGroupChat()" style="background:none; border:none; color:#ef4444; font-size:14px; cursor:pointer; font-weight:bold;">✖</button>
-                    </div>
-                </div>
-                <div id="groupMessagesArea" class="chat-messages-area"></div>
-                <div class="chat-input-row">
-                    <input type="text" id="groupMessageInput" placeholder="मेसेज लिहा...">
-                    <button onclick="sendGroupMessage()">पाठवा</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="section-live" class="section-box">
-            <h2>🔴 लाईव्ह स्ट्रीमिंग (Live Streams)</h2>
-            <p style="font-size:11px; color:#94a3b8;">येथे चालू असलेल्या किंवा आधीच्या लाईव्ह स्ट्रिम्स पाहू शकता.</p>
-            <div id="liveStreamsListContainer"></div>
-        </div>
-
-        <div id="section-donation" class="section-box">
-            <h2>७. देणगी</h2>
-            <div class="info-card">
-                <p>मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- प्लस बटण दाबल्यावर येणारा मेनू -->
-    <div id="createMenuBox" class="create-menu">
-        <button onclick="openLiveStreamModal()">🔴 लाईव्ह स्ट्रीम क्रिएट करा</button>
-    </div>
-
-    <!-- लाईव्ह स्ट्रीम तयार करण्याचा मॉडेल (कॅमेरा फ्रंट/बॅक स्विचिंगसह) -->
-    <div id="liveStreamModal" class="modal">
-        <div class="modal-content-box">
-            <h3 style="color:#e11d48; margin-top:0; font-size:14px;">🔴 नवीन लाईव्ह स्ट्रीम सुरू करा</h3>
-            
-            <label style="font-size:11px; font-weight:bold;">लाईव्ह थंबनेल फोटो:</label>
-            <div class="thumbnail-upload-box" onclick="document.getElementById('liveThumbInput').click()">
-                <span id="liveThumbPlaceholder" style="font-size:11px; color:#94a3b8;">📸 फोटो निवडा</span>
-                <img id="liveThumbPreview" src="" alt="Thumbnail">
-            </div>
-            <input type="file" id="liveThumbInput" accept="image/*" style="display:none;" onchange="previewLiveThumb(this)">
-
-            <label style="font-size:11px; font-weight:bold;">लाईव्ह स्ट्रीम टायटल:</label>
-            <input type="text" id="inputLiveTitle" placeholder="उदा. महाकाल लाइव्ह आरती दर्शन">
-
-            <div style="background:#0f172a; padding:10px; border-radius:6px; margin-bottom:10px; border:1px solid #475569;">
-                <label style="font-size:11px; font-weight:bold; color:#f43f5e;">कॅमेरा लाईव्ह स्ट्रीम (थेट कॅमेरा):</label>
-                <div style="margin-top:5px; display:flex; gap:5px;">
-                    <button type="button" onclick="startCameraLiveStream()" style="flex:1; background:#16a34a; color:white; border:none; padding:6px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🎥 कॅमेरा लाईव्ह सुरू करा</button>
-                    <button type="button" onclick="switchCameraFacing()" style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 कॅमेरा बदला</button>
-                </div>
-                <video id="liveCameraPreview" autoplay playsinline muted style="width:100%; height:120px; background:black; margin-top:8px; border-radius:4px; object-fit:cover; display:none;"></video>
-            </div>
-            
-            <label style="font-size:11px; font-weight:bold;">किंवा व्हिडिओ फाईल अपलोड करा (MP4):</label>
-            <input type="file" id="inputLiveVideoFile" accept="video/*" style="margin-bottom:10px;">
-
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="stopCameraAndCloseLiveModal()">रद्द करा</button>
-                <button class="btn-save" onclick="confirmCreateLiveStream()">लाईव्ह प्रसारित करा</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ॲडमिनसाठी रिंगटोन ऍड करण्याचा मॉडेल -->
-    <div id="addRingtoneModal" class="modal">
-        <div class="modal-content-box">
-            <h3 style="color:#f43f5e; margin-top:0; font-size:14px;">🎵 नवीन रिंगटोन ऍड करा</h3>
-            
-            <label style="font-size:11px; font-weight:bold;">रिंगटोन फाईल निवडा (MP3):</label>
-            <input type="file" id="inputRingtoneFile" accept="audio/mp3" style="margin-bottom:10px;">
-
-            <label style="font-size:11px; font-weight:bold;">रिंगटोनचे नाव (Title):</label>
-            <input type="text" id="inputRingtoneTitle" placeholder="उदा. SMS1.mp3">
-
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="document.getElementById('addRingtoneModal').style.display='none'">रद्द करा</button>
-                <button class="btn-save" onclick="confirmAddRingtone()">ऍड करा</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="groupManagerModal" class="modal">
-        <div class="modal-content-box">
-            <h3 style="color:#2dd4bf; margin-top:0; font-size:14px;">👥 नवीन कम्युनिटी ग्रुप किंवा पर्सनल चॅट बनवा</h3>
-            <p style="font-size:11px; color:#94a3b8;">ग्रुप किंवा व्यक्तीचे नाव टाका:</p>
-            <input type="text" id="newGroupNameInput" placeholder="नाव टाका...">
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="document.getElementById('groupManagerModal').style.display='none'">बंद करा</button>
-                <button class="btn-save" style="background:#0d9488;" onclick="createNewGroupAction()">सुरू करा</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- WhatsApp सारखा स्टेटस मॉडेल (विचार/माहिती किंवा इमेज एडिटिंग किंवा व्हिडिओ) -->
-    <div id="statusModal" class="modal">
-        <div class="modal-content-box">
-            <h3 style="color:#16a34a; margin-top:0; font-size:14px;">🟢 नवीन स्टेटस ठेवा</h3>
-            
-            <label style="font-size:11px; font-weight:bold;">स्टेटसचा प्रकार निवडा:</label>
-            <select id="statusTypeSelect" onchange="onStatusTypeChange()" style="width:100%; padding:8px; font-size:12px; background:#0f172a; color:#fff; border:1px solid #475569; border-radius:4px; margin-bottom:10px;">
-                <option value="text">✍️ विचार किंवा माहिती लिहा</option>
-                <option value="media">🖼️ इमेज (व्हॉट्सॲप एडिटिंग/नाव) किंवा 🎥 व्हिडिओ</option>
-            </select>
-
-            <div id="statusTextViewContainer">
-                <label style="font-size:11px; font-weight:bold;">तुमचे विचार किंवा माहिती:</label>
-                <textarea id="newStatusTextInput" rows="3" placeholder="हर हर महादेव! ॐ नमः शिवाय..."></textarea>
-            </div>
-
-            <div id="statusMediaViewContainer" style="display:none;">
-                <label style="font-size:11px; font-weight:bold;">इमेज किंवा व्हिडिओ फाईल निवडा:</label>
-                <input type="file" id="newStatusMediaInput" accept="image/*,video/*" onchange="previewStatusMedia(this)" style="margin-bottom:8px;">
-                
-                <div id="statusMediaPreviewBox" style="width:100%; max-height:120px; overflow:hidden; border-radius:4px; margin-bottom:8px; display:none; text-align:center; background:black;">
-                    <img id="statusImagePreview" src="" alt="Preview" style="max-width:100%; max-height:120px; object-fit:contain; display:none;">
-                    <video id="statusVideoPreview" src="" controls style="max-width:100%; max-height:120px; display:none;"></video>
-                </div>
-
-                <label style="font-size:11px; font-weight:bold;">फोटोवर लिहिण्यासाठी नाव / गाणे / ओळ (Caption):</label>
-                <input type="text" id="newStatusCaptionInput" placeholder="उदा. हर हर महादेव गाणे / तुमचे नाव...">
-            </div>
-
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="document.getElementById('statusModal').style.display='none'">बंद करा</button>
-                <button class="btn-save" style="background:#16a34a;" onclick="confirmAddStatus()">स्टेटस ठेवा</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="addMemberModal" class="modal">
-        <div class="modal-content-box">
-            <h3 style="color:#16a34a; margin-top:0; font-size:14px;">➕ ग्रुपमध्ये मेंबर ऍड करा</h3>
-            <p style="font-size:11px; color:#94a3b8;">ज्या युझरला ऍड करायचे आहे त्याचे नाव टाका:</p>
-            <input type="text" id="newMemberNameInput" placeholder="युझरचे नाव...">
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="document.getElementById('addMemberModal').style.display='none'">बंद करा</button>
-                <button class="btn-save" style="background:#16a34a;" onclick="confirmAddMemberToGroup()">ऍड करा</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="blockManagerModal" class="modal">
-        <div class="modal-content-box">
-            <h3 style="color:#ef4444; margin-top:0; font-size:14px;">🚫 युझर ब्लॉक मॅनेजर</h3>
-            <p style="font-size:11px; color:#94a3b8;">ज्या युझरला ब्लॉक करायचे आहे त्याचे नाव खाली टाका:</p>
-            <input type="text" id="blockUserNameInput" placeholder="युझरचे अचूक नाव टाका...">
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="document.getElementById('blockManagerModal').style.display='none'">बंद करा</button>
-                <button class="btn-save" style="background:#ef4444;" onclick="blockUserAction()">ब्लॉक करा</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- लाईव्ह स्ट्रीम प्लेयर व चॅटिंग मॉडेल -->
-    <div id="youtubePlayerModal" class="youtube-player-modal">
-        <div class="yt-player-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <img id="playerUploaderDp" src="photo1.jpg" alt="DP" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
-                <span id="playerUploaderName" style="font-size:13px; font-weight:bold;">नावा</span>
-            </div>
-            <button onclick="closeYoutubePlayer()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✖</button>
-        </div>
-        
-        <div class="yt-player-body">
-            <video id="advancedVideoElement" controls autoplay playsinline></video>
-        </div>
-
-        <div class="yt-player-footer">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h3 id="ytPlayerTitle" style="margin:0; font-size:14px; color:#fca5a5;">शीर्षक</h3>
-                <button onclick="likeCurrentStream()" id="streamLikeBtn" style="background:#e11d48; color:white; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">❤️ लाईक (<span id="streamLikeCount">0</span>)</button>
-            </div>
-            <div style="font-size:11px; color:#2dd4bf; font-weight:bold;">💬 लाईव्ह चॅट बॉक्स</div>
-            <div id="liveChatMessagesArea" style="height:100px; background:#0f172a; border:1px solid #475569; border-radius:4px; padding:5px; overflow-y:auto; font-size:11px;"></div>
-            <div style="display:flex; gap:5px;">
-                <input type="text" id="liveChatInput" placeholder="चॅटमध्ये मेसेज लिहा..." style="flex:1; padding:6px; font-size:11px; background:#0f172a; border:1px solid #475569; color:white; border-radius:4px;">
-                <button onclick="sendLiveChatMessage()" style="background:#0d9488; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">पाठवा</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="bottom-nav">
-        <button onclick="showSection('gallery', this)" class="active"><span>🖼️</span>गॅलरी</button>
-        <button onclick="showSection('schedule', this)"><span>⏰</span>वेळपत्रक</button>
-        <button onclick="showSection('location', this)"><span>📍</span>लोकेशन</button>
-        <button class="nav-center-create" onclick="toggleCreateMenu(event)">+</button>
-        <button onclick="showSection('live', this)"><span>🔴</span>लाईव्ह</button>
-        <button onclick="showSection('ringtones', this)"><span>🔔</span>रिंगटोन</button>
-        <button onclick="showSection('groups', this)"><span>👥</span>चॅट व ग्रुप्स</button>
-    </div>
-
-    <script>
-        let loggedInUserName = '';
-        let loggedInUserDp = '';
-        let loggedInUserPhone = '';
-        let loggedInUserCode = '';
-        let tempDpBase64 = '';
-        let globalLiveStreamsList = [];
-        let globalGalleryList = [];
-        let globalRingtonesList = [];
-        let isAdminLoggedIn = false;
-        let activeGroupId = null;
-        let activeGroupName = '';
-        let activeStreamDocId = null;
-        let pendingLiveThumbBase64 = '';
-        let activeCameraStream = null;
-        let useFrontCamera = true;
-        let recordedCameraVideoData = null;
-
-        let statusMediaBase64 = '';
-        let statusMediaType = 'text';
-
-        let defaultRingtones = [
-            { id: 1, title: 'SMS1.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'एसएमएस रिंगटोन' },
-            { id: 2, title: 'SMS2.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', category: 'एसएमएस रिंगटोन' }
-        ];
-
-        const sacredTextsData = [
-            { id: 1, title: 'श्री शिव कवच', category: 'पवित्र ग्रंथ व स्तोत्र', text: 'नमो भगवते रुद्राय...\nश्री शिवकवच स्तोत्र महादेवाच्या भक्तांचे रक्षण करते.' },
-            { id: 2, title: 'शिवलिंगाची आरती', category: 'आरत्या', text: 'जय जय श्री शिवराया...\nकरुणाकरा महदेवा आरती स्वीकार करी.' },
-            { id: 3, title: 'महामृत्युंजय मंत्र', category: 'मंत्र व श्लोक', text: 'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्। उर्वारुकमिव बन्धनान्मृत्योर्मुक्षी माऽमृतात्॥' }
-        ];
-
-        const defaultGallery = [
-            { id: 1, url: 'photo1.jpg', caption: 'मंदिर प्रवेशद्वार' },
-            { id: 2, url: 'photo2.jpg', caption: 'नंदी आणि सभामंडप' },
-            { id: 3, url: 'photo3.jpg', caption: 'प्राचीन नक्षीकाम छतावरील' },
-            { id: 4, url: 'photo4.jpg', caption: 'गाभारा दर्शन' }
-        ];
-
-        window.onload = function() {
-            let savedName = localStorage.getItem('mandir_app_username');
-            let savedDp = localStorage.getItem('mandir_app_userdp');
-            let savedPhone = localStorage.getItem('mandir_app_userphone');
-            let savedCode = localStorage.getItem('mandir_app_code');
-            let adminStatus = localStorage.getItem('mandir_is_admin') === 'true';
-            
-            isAdminLoggedIn = adminStatus;
-
-            if (savedName && savedName.trim() !== '') {
-                loggedInUserName = savedName;
-                loggedInUserDp = savedDp || 'photo1.jpg';
-                loggedInUserPhone = savedPhone || '';
-                loggedInUserCode = savedCode || '';
-                document.getElementById('displayUserName').innerText = loggedInUserName;
-                document.getElementById('headerUserDp').src = loggedInUserDp;
-                document.getElementById('nameGateModal').style.display = 'none';
-                checkIfBlockedAndProceed(loggedInUserName);
-            } else {
-                document.getElementById('nameGateModal').style.display = 'flex';
-            }
-
-            if(isAdminLoggedIn) {
-                document.getElementById('addGalleryPhotoBtn').style.display = 'block';
-                document.getElementById('addRingtoneBtn').style.display = 'block';
-            }
-
-            renderTexts(sacredTextsData);
-            initFirebaseRealtimeListeners();
-        };
-
-        function checkIfBlockedAndProceed(username) {
-            if(!window.db) return;
-            const { collection, getDocs } = window.firebaseCols;
-            getDocs(collection(window.db, "mandir_blocked")).then(snapshot => {
-                let blocked = [];
-                snapshot.forEach(docSnap => blocked.push(docSnap.data().name));
-                if(blocked.includes(username)) {
-                    document.getElementById('blockedModal').style.display = 'flex';
-                }
-            });
-        }
-
-        function selectLoginMode(mode) {
-            document.getElementById('loginChoiceView').style.display = 'none';
-            if(mode === 'public') {
-                document.getElementById('publicFormView').style.display = 'block';
-                document.getElementById('recoveryFormView').style.display = 'none';
-            } else if(mode === 'recovery') {
-                document.getElementById('publicFormView').style.display = 'none';
-                document.getElementById('recoveryFormView').style.display = 'block';
-            }
-        }
-
-        function backToLoginChoice() {
-            document.getElementById('loginChoiceView').style.display = 'block';
-            document.getElementById('publicFormView').style.display = 'none';
-            document.getElementById('recoveryFormView').style.display = 'none';
-        }
-
-        function previewDP(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    tempDpBase64 = e.target.result;
-                    const preview = document.getElementById('dpPreviewImg');
-                    preview.src = tempDpBase64;
-                    preview.style.display = 'block';
-                    document.getElementById('dpPlaceholderText').style.display = 'none';
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function previewLiveThumb(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingLiveThumbBase64 = e.target.result;
-                    const preview = document.getElementById('liveThumbPreview');
-                    preview.src = pendingLiveThumbBase64;
-                    preview.style.display = 'block';
-                    document.getElementById('liveThumbPlaceholder').style.display = 'none';
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        async function verifyPublicLogin() {
-            let inputPhone = document.getElementById('enteredUserPhone').value.trim();
-            let inputName = document.getElementById('enteredUserName').value.trim();
-            
-            let phoneRegex = /^[6-9]\d{9}$/;
-            if (!phoneRegex.test(inputPhone)) {
-                alert('कृपया वैध १० अंकी इंडियन मोबाईल नंबर टाका!');
-                return;
-            }
-
-            if (inputName === '') {
-                alert('कृपया तुमचे पूर्ण नाव व आडनाव टाका!');
-                return;
-            }
-
-            let existingPhoneList = JSON.parse(localStorage.getItem('mandir_registered_phones') || '[]');
-            if(existingPhoneList.includes(inputPhone)) {
-                alert('⚠️ सुरक्षा नियम: या मोबाईल नंबरने आधीच अकाउंट तयार केले आहे! कृपया "Restore Account" वापरा.');
-                return;
-            }
-
-            if (tempDpBase64 === '') tempDpBase64 = 'photo1.jpg';
-            
-            let nameParts = inputName.split(' ');
-            let firstName = nameParts[0] || 'User';
-            let lastName = nameParts[1] || 'Bhakt';
-            let uniqueGeneratedCode = `${firstName}-${lastName}-${inputPhone.slice(-4)}@MH`;
-            
-            if(window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                try {
-                    await addDoc(collection(window.db, "mandir_registered_users"), {
-                        phone: inputPhone,
-                        name: inputName,
-                        code: uniqueGeneratedCode,
-                        time: Date.now()
-                    });
-                } catch(e) { console.error(e); }
-            }
-
-            existingPhoneList.push(inputPhone);
-            localStorage.setItem('mandir_registered_phones', JSON.stringify(existingPhoneList));
-
-            localStorage.setItem('mandir_app_username', inputName);
-            localStorage.setItem('mandir_app_userdp', tempDpBase64);
-            localStorage.setItem('mandir_app_userphone', inputPhone);
-            localStorage.setItem('mandir_app_code', uniqueGeneratedCode);
-            localStorage.setItem('mandir_is_admin', inputPhone === '9129912991' ? 'true' : 'false');
-
-            loggedInUserName = inputName;
-            loggedInUserDp = tempDpBase64;
-            loggedInUserPhone = inputPhone;
-            loggedInUserCode = uniqueGeneratedCode;
-            isAdminLoggedIn = (inputPhone === '9129912991');
-
-            document.getElementById('displayUserName').innerText = loggedInUserName;
-            document.getElementById('headerUserDp').src = loggedInUserDp;
-            document.getElementById('nameGateModal').style.display = 'none';
-            alert(`✅ यशस्वी! तुमचा कठीण युनिक रिकव्हरी कोड हा आहे:\n\n"${uniqueGeneratedCode}"\n\nहा कोड सुरक्षित ठिकाणी लिहून ठेवा.`);
-            checkIfBlockedAndProceed(loggedInUserName);
-        }
-
-        function verifyAccountRecovery() {
-            let enteredCode = document.getElementById('recoveryCodeInput').value.trim();
-            let savedCode = localStorage.getItem('mandir_app_code');
-
-            if (enteredCode !== "" && (enteredCode === savedCode || savedCode === null)) {
-                document.getElementById('nameGateModal').style.display = 'none';
-                alert('अकाउंट यशस्वीरित्या रिस्टोर झाले आहे!');
-                location.reload();
-            } else {
-                document.getElementById('recoveryErrorMsg').innerText = "चुकीचा कोड! कृपया तुमचा अचूक रिकव्हरी कोड टाका.";
-            }
-        }
-
-        function logoutUser() {
-            localStorage.clear();
-            location.reload();
-        }
-
-        function toggleSideDrawer(event) {
-            if(event) event.stopPropagation();
-            const drawer = document.getElementById('sideDrawerMenu');
-            drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function toggleCreateMenu(event) {
-            if(event) event.stopPropagation();
-            const menu = document.getElementById('createMenuBox');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function openLiveStreamModal() {
-            document.getElementById('createMenuBox').style.display = 'none';
-            document.getElementById('liveStreamModal').style.display = 'flex';
-        }
-
-        function stopCameraAndCloseLiveModal() {
-            if(activeCameraStream) {
-                activeCameraStream.getTracks().forEach(track => track.stop());
-                activeCameraStream = null;
-            }
-            document.getElementById('liveCameraPreview').style.display = 'none';
-            document.getElementById('liveStreamModal').style.display = 'none';
-        }
-
-        async function startCameraLiveStream() {
-            try {
-                if(activeCameraStream) {
-                    activeCameraStream.getTracks().forEach(track => track.stop());
-                }
-                const constraints = {
-                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
-                    audio: true
-                };
-                activeCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-                const videoPreview = document.getElementById('liveCameraPreview');
-                videoPreview.srcObject = activeCameraStream;
-                videoPreview.style.display = 'block';
-                videoPreview.play();
-            } catch(err) {
-                alert('कॅमेरा चालू करण्यात अडचण आली: ' + err.message);
-            }
-        }
-
-        function switchCameraFacing() {
-            useFrontCamera = !useFrontCamera;
-            startCameraLiveStream();
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu') && !event.target.closest('.notification-bell-btn') && !event.target.closest('#notificationDropdown') && !event.target.closest('.menu-hamburger-btn') && !event.target.closest('#sideDrawerMenu')) {
-                document.getElementById('createMenuBox').style.display = 'none';
-                document.getElementById('notificationDropdown').style.display = 'none';
-                document.getElementById('sideDrawerMenu').style.display = 'none';
-            }
-        }
-
-        function toggleNotifications() {
-            const dropdown = document.getElementById('notificationDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function switchWhatsappTab(tabName, btnElem) {
-            const buttons = document.querySelectorAll('.whatsapp-tab-btn');
-            buttons.forEach(b => b.classList.remove('active-w-tab'));
-            if(btnElem) btnElem.classList.add('active-w-tab');
-
-            if(tabName === 'chats') {
-                document.getElementById('whatsappTabChats').style.display = 'block';
-                document.getElementById('whatsappTabStatus').style.display = 'none';
-            } else {
-                document.getElementById('whatsappTabChats').style.display = 'none';
-                document.getElementById('whatsappTabStatus').style.display = 'block';
-                loadStatusList();
-            }
-        }
-
-        function openGroupManager() {
-            document.getElementById('sideDrawerMenu').style.display = 'none';
-            document.getElementById('groupManagerModal').style.display = 'flex';
-        }
-
-        function openAddStatusModal() {
-            document.getElementById('statusModal').style.display = 'flex';
-        }
-
-        function onStatusTypeChange() {
-            let val = document.getElementById('statusTypeSelect').value;
-            if(val === 'text') {
-                document.getElementById('statusTextViewContainer').style.display = 'block';
-                document.getElementById('statusMediaViewContainer').style.display = 'none';
-                statusMediaType = 'text';
-            } else {
-                document.getElementById('statusTextViewContainer').style.display = 'none';
-                document.getElementById('statusMediaViewContainer').style.display = 'block';
-                statusMediaType = 'media';
-            }
-        }
-
-        function previewStatusMedia(input) {
-            if(input.files && input.files[0]) {
-                let file = input.files[0];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    statusMediaBase64 = e.target.result;
-                    let previewBox = document.getElementById('statusMediaPreviewBox');
-                    let imgElem = document.getElementById('statusImagePreview');
-                    let vidElem = document.getElementById('statusVideoPreview');
-                    previewBox.style.display = 'block';
-
-                    if(file.type.startsWith('image/')) {
-                        imgElem.src = statusMediaBase64;
-                        imgElem.style.display = 'block';
-                        vidElem.style.display = 'none';
-                    } else {
-                        vidElem.src = statusMediaBase64;
-                        vidElem.style.display = 'block';
-                        imgElem.style.display = 'none';
-                    }
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function openAddRingtoneModal() {
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            document.getElementById('addRingtoneModal').style.display = 'flex';
-        }
-
-        async function confirmAddRingtone() {
-            let titleInput = document.getElementById('inputRingtoneTitle').value.trim();
-            let fileInput = document.getElementById('inputRingtoneFile');
-
-            if(titleInput === '') {
-                alert('कृपया रिंगटोनचे नाव टाका!');
-                return;
-            }
-
-            if(fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    let audioBase64 = e.target.result;
-                    if(window.db) {
-                        const { collection, addDoc } = window.firebaseCols;
-                        try {
-                            await addDoc(collection(window.db, "mandir_ringtones"), {
-                                id: Date.now(),
-                                title: titleInput,
-                                audioUrl: audioBase64,
-                                category: 'एसएमएस रिंगटोन'
-                            });
-                            alert('रिंगटोन यशस्वीरित्या ऍड झाली!');
-                            document.getElementById('inputRingtoneTitle').value = '';
-                            document.getElementById('addRingtoneModal').style.display = 'none';
-                        } catch(err) { console.error(err); }
-                    }
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                alert('कृपया MP3 फाईल निवडा!');
-            }
-        }
-
-        async function deleteRingtone(docFirebaseId) {
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            if(confirm('ही रिंगटोन डिलीट करायची का?') && window.db) {
-                const { doc, deleteDoc } = window.firebaseCols;
-                try {
-                    await deleteDoc(doc(window.db, "mandir_ringtones", docFirebaseId));
-                    alert('रिंगटोन यशस्वीरित्या डिलीट केली.');
-                } catch(e) { console.error(e); }
-            }
-        }
-
-        async function createNewGroupAction() {
-            let groupName = document.getElementById('newGroupNameInput').value.trim();
-            if(groupName !== "" && window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                try {
-                    await addDoc(collection(window.db, "mandir_groups"), {
-                        id: Date.now(),
-                        name: groupName,
-                        creator: loggedInUserName,
-                        members: [loggedInUserName]
-                    });
-                    alert(`"${groupName}" ग्रुप/चॅट यशस्वीरित्या तयार करण्यात आला आहे!`);
-                    document.getElementById('newGroupNameInput').value = '';
-                    document.getElementById('groupManagerModal').style.display = 'none';
-                    loadGroupsUI();
-                } catch(e) { console.error(e); }
-            }
-        }
-
-        async function confirmAddStatus() {
-            let statusText = document.getElementById('newStatusTextInput').value.trim();
-            let captionText = document.getElementById('newStatusCaptionInput').value.trim();
-
-            if(statusMediaType === 'text' && statusText === '') {
-                alert('कृपया तुमचे विचार किंवा माहिती लिहा!');
-                return;
-            }
-
-            if(window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                try {
-                    await addDoc(collection(window.db, "mandir_statuses"), {
-                        id: Date.now(),
-                        author: loggedInUserName,
-                        dp: loggedInUserDp,
-                        type: statusMediaType,
-                        text: statusText,
-                        mediaUrl: statusMediaBase64,
-                        caption: captionText,
-                        time: Date.now()
-                    });
-                    alert('तुमचे स्टेटस यशस्वीरित्या पोस्ट झाले आहे!');
-                    document.getElementById('newStatusTextInput').value = '';
-                    document.getElementById('newStatusCaptionInput').value = '';
-                    document.getElementById('statusModal').style.display = 'none';
-                    loadStatusList();
-                } catch(e) { console.error(e); }
-            }
-        }
-
-        function loadStatusList() {
-            if(!window.db) return;
-            const { collection, getDocs } = window.firebaseCols;
-            getDocs(collection(window.db, "mandir_statuses")).then(snapshot => {
-                let container = document.getElementById('statusListContainer');
-                container.innerHTML = '';
-                if(snapshot.empty) {
-                    container.innerHTML = `<div style="text-align:center; padding:15px; color:#94a3b8; font-size:12px;">अद्याप कोणतेही स्टेटस नाही.</div>`;
-                    return;
-                }
-                snapshot.forEach(docSnap => {
-                    let s = docSnap.data();
-                    let div = document.createElement('div');
-                    div.className = 'status-story-card';
-                    
-                    let contentHTML = '';
-                    if(s.type === 'media' && s.mediaUrl) {
-                        if(s.mediaUrl.startsWith('data:video/')) {
-                            contentHTML = `<video src="${s.mediaUrl}" controls style="width:100%; max-height:150px; border-radius:4px; margin-top:4px;"></video>`;
-                        } else {
-                            contentHTML = `<img src="${s.mediaUrl}" alt="Status" style="width:100%; max-height:150px; border-radius:4px; object-fit:cover; margin-top:4px;" onclick="openPhotoZoom('${s.mediaUrl}', '${s.caption || ''}')">`;
-                        }
-                    } else {
-                        contentHTML = `<span style="font-size:12px; color:#f8fafc;">${s.text}</span>`;
-                    }
-
-                    div.innerHTML = `
-                        <div style="display:flex; align-items:flex-start; gap:10px; width:100%;">
-                            <img src="${s.dp || 'photo1.jpg'}" alt="DP" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #16a34a;">
-                            <div style="flex:1;">
-                                <strong>${s.author}</strong><br>
-                                ${contentHTML}
-                                ${s.caption ? `<div style="font-size:11px; color:#fca5a5; margin-top:3px;">🎵/✍️ ${s.caption}</div>` : ''}
-                            </div>
-                        </div>
-                        <button class="share-btn-action" onclick="shareContentText('${s.author} यांचे स्टेटस: ${s.text || s.caption || ''}')">शेअर 📤</button>
-                    `;
-                    container.appendChild(div);
-                });
-            });
-        }
-
-        function shareContentText(textToShare) {
-            if (navigator.share) {
-                navigator.share({ title: 'MH कपिलेश्वर महादेव', text: textToShare }).catch(err => console.log(err));
-            } else {
-                prompt('हा मेसेज कॉपी करा:', textToShare);
-            }
-        }
-
-        function loadGroupsUI() {
-            if(!window.db) return;
-            const { collection, getDocs } = window.firebaseCols;
-            getDocs(collection(window.db, "mandir_groups")).then(snapshot => {
-                let container = document.getElementById('groupsMainListContainer');
-                container.innerHTML = '';
-                if(snapshot.empty) {
-                    container.innerHTML = `<div style="text-align:center; padding:15px; color:#94a3b8; font-size:12px;">अद्याप कोणताही ग्रुप किंवा चॅट उपलब्ध नाही.</div>`;
-                    return;
-                }
-                snapshot.forEach(docSnap => {
-                    let data = docSnap.data();
-                    let div = document.createElement('div');
-                    div.className = 'group-card';
-                    div.innerHTML = `
-                        <div>
-                            <strong>👥 ${data.name}</strong><br>
-                            <span style="font-size:10px; color:#94a3b8;">संस्थापक/सदस्य: ${data.creator}</span>
-                        </div>
-                        <button onclick="openGroupChatRoom('${data.id}', '${data.name}')" style="background:#0d9488; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">चॅट उघडा 💬</button>
-                    `;
-                    container.appendChild(div);
-                });
-            });
-        }
-
-        function openGroupChatRoom(groupId, groupName) {
-            activeGroupId = groupId;
-            activeGroupName = groupName;
-            document.getElementById('activeGroupTitle').innerText = "💬 चॅट रूम: " + groupName;
-            document.getElementById('activeGroupChatRoom').style.display = 'block';
-            loadGroupMessages();
-        }
-
-        function closeGroupChat() {
-            activeGroupId = null;
-            document.getElementById('activeGroupChatRoom').style.display = 'none';
-        }
-
-        function openAddMemberModal() {
-            document.getElementById('addMemberModal').style.display = 'flex';
-        }
-
-        async function confirmAddMemberToGroup() {
-            let memberName = document.getElementById('newMemberNameInput').value.trim();
-            if(memberName !== "" && activeGroupId) {
-                alert(`"${memberName}" या भक्ताला चॅटमध्ये यशस्वीरित्या ऍड करण्यात आले आहे!`);
-                document.getElementById('newMemberNameInput').value = '';
-                document.getElementById('addMemberModal').style.display = 'none';
-            }
-        }
-
-        async function sendGroupMessage() {
-            let input = document.getElementById('groupMessageInput');
-            let text = input.value.trim();
-            if(text !== "" && activeGroupId && window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                try {
-                    await addDoc(collection(window.db, "mandir_group_messages"), {
-                        groupId: activeGroupId,
-                        sender: loggedInUserName,
-                        dp: loggedInUserDp,
-                        text: text,
-                        time: Date.now()
-                    });
-                    input.value = '';
-                } catch(e) { console.error(e); }
-            }
-        }
-
-        function loadGroupMessages() {
-            if(!window.db || !activeGroupId) return;
-            const { collection, onSnapshot } = window.firebaseCols;
-            onSnapshot(collection(window.db, "mandir_group_messages"), (snapshot) => {
-                let msgs = [];
-                snapshot.forEach(docSnap => {
-                    let d = docSnap.data();
-                    if(d.groupId == activeGroupId) msgs.push(d);
-                });
-                msgs.sort((a, b) => a.time - b.time);
-                
-                let area = document.getElementById('groupMessagesArea');
-                area.innerHTML = '';
-                msgs.forEach(m => {
-                    let isMe = m.sender === loggedInUserName;
-                    let bubble = document.createElement('div');
-                    bubble.style.cssText = `margin-bottom:8px; display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'};`;
-                    bubble.innerHTML = `
-                        <div style="font-size:9px; color:#94a3b8; margin-bottom:2px;">${m.sender}</div>
-                        <div style="background:${isMe ? '#0f766e' : '#334155'}; color:#fff; padding:6px 10px; border-radius:6px; max-width:80%; word-break:break-word; border:1px solid #475569;">
-                            ${m.text}
-                        </div>
-                    `;
-                    area.appendChild(bubble);
-                });
-                area.scrollTop = area.scrollHeight;
-            });
-        }
-
-        function renderRingtones(list) {
-            const container = document.getElementById('ringtoneListContainer');
-            container.innerHTML = '';
-            if(list.length === 0) {
-                container.innerHTML = `<p style="font-size:12px; color:#94a3b8; text-align:center; padding:15px;">कोणतीही रिंगटोन उपलब्ध नाही.</p>`;
-                return;
-            }
-            list.forEach(r => {
-                let card = document.createElement('div');
-                card.className = 'ringtone-card';
-                card.innerHTML = `
-                    <div class="ringtone-top">
-                        <div class="ringtone-info">🎵 ${r.title}</div>
-                        <div style="display:flex; gap:5px;">
-                            <button class="yt-listen-btn" onclick="playInternalAudio('${r.audioUrl}', '${r.title.replace(/'/g, "\\'")}')">▶ ऐका</button>
-                            <a href="${r.audioUrl}" download="${r.title}" class="yt-listen-btn" style="background:#16a34a; text-decoration:none;">📥 डाऊनलोड</a>
-                        </div>
-                    </div>
-                    ${isAdminLoggedIn && r.docFirebaseId ? `<button class="delete-btn-abs" style="top:-8px; right:-8px; width:20px; height:20px; font-size:10px;" onclick="deleteRingtone('${r.docFirebaseId}')">🗑️</button>` : ''}
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function filterRingtones() {
-            let query = document.getElementById('ringtoneSearch').value.toLowerCase();
-            let filtered = globalRingtonesList.filter(r => r.title.toLowerCase().includes(query));
-            renderRingtones(filtered);
-        }
-
-        function playInternalAudio(url, title) {
-            let audioElem = document.getElementById('internalAudioPlayer');
-            if(!audioElem) {
-                audioElem = document.createElement('audio');
-                audioElem.id = 'internalAudioPlayer';
-                audioElem.controls = true;
-                audioElem.style.cssText = "width:100%; margin-top:10px;";
-                document.body.appendChild(audioElem);
-            }
-            audioElem.src = url;
-            audioElem.play();
-            alert(`"${title}" हे ऑडिओ ट्यून आता वाजवले जात आहे.`);
-        }
-
-        function renderTexts(list) {
-            const container = document.getElementById('textsListContainer');
-            container.innerHTML = '';
-            list.forEach(t => {
-                let card = document.createElement('div');
-                card.className = 'scripture-card';
-                card.innerHTML = `
-                    <div style="font-size:10px; color:#f43f5e; font-weight:bold;">${t.category}</div>
-                    <div style="font-size:14px; font-weight:bold; margin:3px 0; color:#fff;">${t.title}</div>
-                    <div style="font-size:12px; color:#cbd5e1; white-space:pre-line;">${t.text}</div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function filterTexts() {
-            let query = document.getElementById('textSearch').value.toLowerCase();
-            let filtered = sacredTextsData.filter(t => t.title.toLowerCase().includes(query) || t.text.toLowerCase().includes(query));
-            renderTexts(filtered);
-        }
-
-        function openBlockManager() {
-            document.getElementById('sideDrawerMenu').style.display = 'none';
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            document.getElementById('blockManagerModal').style.display = 'flex';
-        }
-
-        async function blockUserAction() {
-            let nameToBlock = document.getElementById('blockUserNameInput').value.trim();
-            if(nameToBlock !== "" && window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                await addDoc(collection(window.db, "mandir_blocked"), { name: nameToBlock, id: Date.now() });
-                alert(`${nameToBlock} ब्लॉक केला आहे.`);
-                document.getElementById('blockUserNameInput').value = '';
-            }
-        }
-
-        function initFirebaseRealtimeListeners() {
-            if(!window.db) return;
-            const { collection, onSnapshot } = window.firebaseCols;
-
-            onSnapshot(collection(window.db, "mandir_live_streams"), (snapshot) => {
-                globalLiveStreamsList = [];
-                snapshot.forEach((docSnap) => {
-                    globalLiveStreamsList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
-                });
-                globalLiveStreamsList.sort((a, b) => b.id - a.id);
-                renderLiveStreamsUI();
-            });
-
-            onSnapshot(collection(window.db, "mandir_gallery"), (snapshot) => {
-                globalGalleryList = [];
-                snapshot.forEach((docSnap) => {
-                    globalGalleryList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
-                });
-                renderGalleryUI();
-            });
-
-            onSnapshot(collection(window.db, "mandir_ringtones"), (snapshot) => {
-                globalRingtonesList = [];
-                snapshot.forEach((docSnap) => {
-                    globalRingtonesList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
-                });
-                let combinedRingtones = globalRingtonesList.length > 0 ? globalRingtonesList : defaultRingtones;
-                renderRingtones(combinedRingtones);
-            });
-
-            loadGroupsUI();
-        }
-
-        async function uploadNewGalleryPhoto(input) {
-            if(!isAdminLoggedIn) return;
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    let base64Img = e.target.result;
-                    let caption = prompt('फोटोचे टायटल:', 'मंदिर दर्शन');
-                    if(caption && window.db) {
-                        const { collection, addDoc } = window.firebaseCols;
-                        await addDoc(collection(window.db, "mandir_gallery"), { id: Date.now(), url: base64Img, caption: caption });
-                    }
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        async function deleteGalleryPhoto(docFirebaseId) {
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            if(confirm('हा फोटो गॅलरीतून डिलीट करायचा का?') && window.db) {
-                const { doc, deleteDoc } = window.firebaseCols;
-                try {
-                    await deleteDoc(doc(window.db, "mandir_gallery", docFirebaseId));
-                    alert('फोटो यशस्वीरित्या डिलीट केला.');
-                } catch(e) { console.error(e); }
-            }
-        }
-
-        function renderGalleryUI() {
-            const container = document.getElementById('galleryGridContainer');
-            container.innerHTML = '';
-            let combinedGallery = [...defaultGallery, ...globalGalleryList];
-            combinedGallery.forEach((item) => {
-                const card = document.createElement('div');
-                card.className = 'gallery-card';
-                card.innerHTML = `
-                    <img src="${item.url}" alt="Gallery" onclick="openPhotoZoom('${item.url}', '${item.caption}')">
-                    <p>${item.caption}</p>
-                    ${isAdminLoggedIn && item.docFirebaseId ? `<button class="delete-btn-abs" onclick="deleteGalleryPhoto('${item.docFirebaseId}')">🗑️</button>` : ''}
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function openPhotoZoom(url, caption) {
-            document.getElementById('zoomedImageElem').src = url;
-            document.getElementById('zoomedCaptionElem').innerText = caption || 'मंदिर दर्शन';
-            document.getElementById('photoZoomModal').style.display = 'flex';
-        }
-
-        function closePhotoZoom() {
-            document.getElementById('photoZoomModal').style.display = 'none';
-        }
-
-        async function confirmCreateLiveStream() {
-            let title = document.getElementById('inputLiveTitle').value.trim();
-            let videoInput = document.getElementById('inputLiveVideoFile');
-            let thumbnail = pendingLiveThumbBase64 || 'photo1.jpg';
-
-            if(title === '') {
-                alert('कृपया लाईव्ह स्ट्रीमचे टायटल टाका!');
-                return;
-            }
-
-            let finalVideoUrl = '';
-
-            if(activeCameraStream) {
-                alert('कॅमेरा लाईव्ह स्ट्रीम सुरू होत आहे...');
-                document.getElementById('liveStreamModal').style.display = 'none';
-                if(window.db) {
-                    const { collection, addDoc } = window.firebaseCols;
-                    await addDoc(collection(window.db, "mandir_live_streams"), {
-                        id: Date.now(),
-                        title: title,
-                        videoUrl: '',
-                        isCameraStream: true,
-                        thumbnail: thumbnail,
-                        uploader: loggedInUserName,
-                        dp: loggedInUserDp,
-                        likes: 0,
-                        likedUsers: []
-                    });
-                    alert('🔴 कॅमेरा लाईव्ह स्ट्रीम यशस्वीरित्या सुरू झाली!');
-                    document.getElementById('inputLiveTitle').value = '';
-                }
-                return;
-            }
-
-            if(videoInput.files && videoInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    finalVideoUrl = e.target.result;
-                    document.getElementById('liveStreamModal').style.display = 'none';
-
-                    if(window.db) {
-                        const { collection, addDoc } = window.firebaseCols;
-                        try {
-                            await addDoc(collection(window.db, "mandir_live_streams"), {
-                                id: Date.now(),
-                                title: title,
-                                videoUrl: finalVideoUrl,
-                                thumbnail: thumbnail,
-                                uploader: loggedInUserName,
-                                dp: loggedInUserDp,
-                                likes: 0,
-                                likedUsers: []
-                            });
-                            alert('🔴 लाईव्ह स्ट्रीम यशस्वीरित्या सुरू झाली!');
-                            document.getElementById('inputLiveTitle').value = '';
-                        } catch(err) { console.error(err); }
-                    }
-                };
-                reader.readAsDataURL(videoInput.files[0]);
-            } else {
-                alert('कृपया कॅमेरा लाईव्ह सुरू करा किंवा व्हिडिओ फाईल निवडा!');
-            }
-        }
-
-        async function deleteLiveStream(docFirebaseId) {
-            if(!isAdminLoggedIn) {
-                alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
-                return;
-            }
-            if(confirm('ही लाईव्ह स्ट्रीम डिलीट करायची का?') && window.db) {
-                const { doc, deleteDoc } = window.firebaseCols;
-                try {
-                    await deleteDoc(doc(window.db, "mandir_live_streams", docFirebaseId));
-                    alert('लाईव्ह स्ट्रीम डिलीट केली.');
-                } catch(e) { console.error(e); }
-            }
-        }
-
-        function renderLiveStreamsUI() {
-            const container = document.getElementById('liveStreamsListContainer');
-            container.innerHTML = '';
-            
-            if(globalLiveStreamsList.length === 0) {
-                container.innerHTML = `<p style="font-size:12px; color:#94a3b8; text-align:center; padding:20px;">सध्या कोणतीही लाईव्ह स्ट्रीम सुरू नाही.</p>`;
-                return;
-            }
-
-            globalLiveStreamsList.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'youtube-video-card';
-                card.innerHTML = `
-                    <div class="yt-thumb-container" onclick="openLivePlayer('${item.docFirebaseId}', '${item.videoUrl || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}', ${item.likes || 0}, ${item.isCameraStream || false})">
-                        <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
-                        <span style="position:absolute; top:8px; left:8px; background:#ef4444; color:white; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:bold;">🔴 LIVE</span>
-                    </div>
-                    <div class="yt-card-details">
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            <img src="${item.dp || 'photo1.jpg'}" alt="DP" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
-                            <div class="yt-card-meta">
-                                <h4 class="yt-card-title">${item.title}</h4>
-                                <p class="yt-card-channel">प्रसारक: ${item.uploader || 'Unknown'}</p>
-                            </div>
-                        </div>
-                        <button class="share-btn-action" onclick="shareContentText('श्री क्षेत्र कपिलेश्वर महादेव मंदिर लाईव्ह पहा: ${item.title}')">शेअर 📤</button>
-                    </div>
-                    ${isAdminLoggedIn ? `<button class="delete-btn-abs" onclick="deleteLiveStream('${item.docFirebaseId}')">🗑️</button>` : ''}
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        async function openLivePlayer(docId, url, title, uploader, dp, likesCount, isCameraStream) {
-            activeStreamDocId = docId;
-            document.getElementById('ytPlayerTitle').innerText = title;
-            document.getElementById('playerUploaderName').innerText = uploader;
-            document.getElementById('playerUploaderDp').src = dp;
-            document.getElementById('streamLikeCount').innerText = likesCount;
-            
-            const videoElem = document.getElementById('advancedVideoElement');
-            
-            if(isCameraStream) {
-                try {
-                    let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                    videoElem.srcObject = stream;
-                    videoElem.style.display = 'block';
-                    videoElem.play().catch(e => console.log(e));
-                } catch(err) {
-                    alert('लाईव्ह कॅमेरा स्ट्रीम जोडताना अडचण आली.');
-                }
-            } else if(url && url.trim() !== '') {
-                videoElem.srcObject = null;
-                videoElem.src = url;
-                videoElem.style.display = 'block';
-                videoElem.play().catch(e => console.log(e));
-            } else {
-                videoElem.srcObject = null;
-                videoElem.src = '';
-                videoElem.style.display = 'none';
-            }
-            document.getElementById('youtubePlayerModal').style.display = 'flex';
-            loadLiveChatMessages();
-        }
-
-        async function likeCurrentStream() {
-            if(!activeStreamDocId || !window.db) return;
-            const { doc, getDoc, updateDoc } = window.firebaseCols;
-            let docRef = doc(window.db, "mandir_live_streams", activeStreamDocId);
-            let snap = await getDoc(docRef);
-            if(snap.exists()) {
-                let data = snap.data();
-                let likedUsers = data.likedUsers || [];
-                if(likedUsers.includes(loggedInUserName)) {
-                    alert('तुम्ही या लाईव्ह स्ट्रीमला आधीच लाईक केले आहे!');
-                    return;
-                }
-                likedUsers.push(loggedInUserName);
-                let newLikes = (data.likes || 0) + 1;
-                await updateDoc(docRef, { likes: newLikes, likedUsers: likedUsers });
-                document.getElementById('streamLikeCount').innerText = newLikes;
-            }
-        }
-
-        async function sendLiveChatMessage() {
-            let input = document.getElementById('liveChatInput');
-            let text = input.value.trim();
-            if(text !== "" && activeStreamDocId && window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                try {
-                    await addDoc(collection(window.db, "mandir_live_chats"), {
-                        streamId: activeStreamDocId,
-                        sender: loggedInUserName,
-                        dp: loggedInUserDp,
-                        text: text,
-                        time: Date.now()
-                    });
-                    input.value = '';
-                } catch(e) { console.error(e); }
-            }
-        }
-
-        function loadLiveChatMessages() {
-            if(!window.db || !activeStreamDocId) return;
-            const { collection, onSnapshot } = window.firebaseCols;
-            onSnapshot(collection(window.db, "mandir_live_chats"), (snapshot) => {
-                let msgs = [];
-                snapshot.forEach(docSnap => {
-                    let d = docSnap.data();
-                    if(d.streamId == activeStreamDocId) msgs.push(d);
-                });
-                msgs.sort((a, b) => a.time - b.time);
-                
-                let area = document.getElementById('liveChatMessagesArea');
-                area.innerHTML = '';
-                msgs.forEach(m => {
-                    let div = document.createElement('div');
-                    div.style.cssText = "margin-bottom:4px;";
-                    div.innerHTML = `<strong style="color:#2dd4bf;">${m.sender}:</strong> <span style="color:#fff;">${m.text}</span>`;
-                    area.appendChild(div);
-                });
-                area.scrollTop = area.scrollHeight;
-            });
-        }
-
-        function closeYoutubePlayer() {
-            document.getElementById('youtubePlayerModal').style.display = 'none';
-            const videoElem = document.getElementById('advancedVideoElement');
-            if(videoElem.srcObject) {
-                let tracks = videoElem.srcObject.getTracks();
-                tracks.forEach(t => t.stop());
-                videoElem.srcObject = null;
-            }
-            videoElem.pause();
-            videoElem.src = "";
-            activeStreamDocId = null;
-        }
-
-        function showSection(sectionKey, btnElem) {
-            const sections = document.querySelectorAll('.section-box');
-            sections.forEach(s => s.classList.remove('active-section'));
-            document.getElementById('section-' + sectionKey).classList.add('active-section');
-        }
-        <!DOCTYPE html>
-<html lang="mr" id="htmlRoot">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="appTitle">MH कपिलेश्वर महादेव मंदिर विल्होळे</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); color: #e2e8f0; padding-bottom: 70px; }
-        header { background: linear-gradient(135deg, #0f172a, #1e293b, #b91c1c); color: white; padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); position: relative; border-bottom: 2px solid #e11d48; }
-        .menu-hamburger-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; color: white; font-size: 22px; cursor: pointer; }
-        header img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #f43f5e; object-fit: cover; }
-        .admin-brand { font-size: 11px; color: #fca5a5; margin-top: 4px; letter-spacing: 1px; font-weight: bold; }
-        .container { padding: 15px; max-width: 800px; margin: auto; }
-        h2 { color: #f43f5e; border-bottom: 2px solid #881337; padding-bottom: 5px; font-size: 18px; margin-top: 20px; }
-        .delete-btn-abs { position: absolute; top: 5px; right: 5px; background: rgba(239, 68, 68, 0.9); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 12px; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 10; }
-        .youtube-video-card { background: #1e293b; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); position: relative; border: 1px solid #334155; }
-        .yt-thumb-container { width: 100%; height: 180px; position: relative; background: #000; cursor: pointer; }
-        .yt-thumb-container img { width: 100%; height: 100%; object-fit: cover; }
-        .yt-card-details { display: flex; padding: 10px; gap: 10px; align-items: center; justify-content: space-between; }
-        .yt-card-meta { flex: 1; }
-        .yt-card-title { font-size: 14px; font-weight: bold; color: #f8fafc; margin: 0 0 4px 0; }
-        .yt-card-channel { font-size: 12px; color: #94a3b8; margin: 0; }
-        .create-menu { display: none; position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); background: #1e293b; width: 250px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); border-radius: 8px; z-index: 1000; padding: 8px; border: 1px solid #475569; text-align: center; }
-        .create-menu button { width: 100%; padding: 8px; margin: 4px 0; background: #0f172a; border: 1px solid #334155; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; color: #f8fafc; text-align: left; }
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
-        .modal-content-box { background: #1e293b; color: #fff; padding: 20px; border-radius: 8px; width: 90%; max-width: 350px; text-align: left; position: relative; max-height: 90vh; overflow-y: auto; border: 1px solid #475569; }
-        .modal-content-box input, .modal-content-box textarea, .modal-content-box select { width: 100%; padding: 8px; margin: 6px 0 12px 0; border: 1px solid #475569; background: #0f172a; color: white; border-radius: 4px; font-size: 12px; box-sizing: border-box; }
-        .thumbnail-upload-box { width: 100%; height: 110px; border: 2px dashed #e11d48; border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; background: #0f172a; margin-bottom: 12px; position: relative; overflow: hidden; }
-        .thumbnail-upload-box img { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; }
-        .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; }
-        .modal-buttons button { padding: 6px 12px; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; }
-        .btn-cancel { background: #64748b; color: white; }
-        .btn-save { background: #e11d48; color: white; }
-        .youtube-player-modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); flex-direction: column; justify-content: space-between; }
-        .yt-player-header { padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); color: white; }
-        .yt-player-body { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; background: black; }
-        .yt-player-body video { width: 100%; max-height: 50vh; background: black; outline: none; }
-        .yt-player-footer { background: #181818; color: white; padding: 12px; max-height: 40vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .live-control-overlay { position: absolute; top: 10px; right: 10px; display: flex; gap: 10px; z-index: 3500; }
-        .switch-cam-btn { background: rgba(13, 148, 136, 0.8); color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold; }
-    </style>
-
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyDdoTltT76q_owd7-fFiMMPypbFdioAyiM",
-          authDomain: "kapileshwar-mandir.firebaseapp.com",
-          projectId: "kapileshwar-mandir",
-          storageBucket: "kapileshwar-mandir.firebasestorage.app",
-          messagingSenderId: "607915355395",
-          appId: "1:607915355395:web:fc1b297448bf345a350d36",
-          measurementId: "G-3P5K83XWNP"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.db = db;
-        window.firebaseCols = { collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc, query, where, updateDoc, arrayUnion, getDoc };
-    </script>
-</head>
-<body>
-
-    <!-- प्लस बटण दाबल्यावर येणारा मेनू -->
-    <div id="createMenuBox" class="create-menu">
-        <button onclick="openLiveStreamModal()">🔴 लाईव्ह स्ट्रीम क्रिएट करा</button>
-    </div>
-
-    <!-- लाईव्ह स्ट्रीम लिस्ट कन्टेनर -->
-    <div class="container">
-        <h2>🔴 मंदीर लाईव्ह दर्शन</h2>
-        <div id="liveStreamsListContainer"></div>
-    </div>
-
-    <!-- लाईव्ह स्ट्रीम तयार करण्याचा मॉडेल -->
-    <div id="liveStreamModal" class="modal">
-        <div class="modal-content-box">
-            <h3 style="color:#e11d48; margin-top:0; font-size:14px;">🔴 नवीन लाईव्ह स्ट्रीम सुरू करा</h3>
-            
-            <label style="font-size:11px; font-weight:bold;">लाईव्ह थंबनेल फोटो:</label>
-            <div class="thumbnail-upload-box" onclick="document.getElementById('liveThumbInput').click()">
-                <span id="liveThumbPlaceholder" style="font-size:11px; color:#94a3b8;">📸 फोटो निवडा</span>
-                <img id="liveThumbPreview" src="" alt="Thumbnail">
-            </div>
-            <input type="file" id="liveThumbInput" accept="image/*" style="display:none;" onchange="previewLiveThumb(this)">
-
-            <label style="font-size:11px; font-weight:bold;">लाईव्ह स्ट्रीम टायटल:</label>
-            <input type="text" id="inputLiveTitle" placeholder="उदा. महाकाल लाईव्ह आरती दर्शन">
-
-            <div style="background:#0f172a; padding:10px; border-radius:6px; margin-bottom:10px; border:1px solid #475569;">
-                <label style="font-size:11px; font-weight:bold; color:#f43f5e;">थेट मोबाईल कॅमेरा लाईव्ह (पर्याय १):</label>
-                <div style="margin-top:5px; display:flex; gap:5px;">
-                    <button type="button" onclick="startLocalCameraPreview()" style="flex:1; background:#16a34a; color:white; border:none; padding:6px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🎥 कॅमेरा चालू करा</button>
-                    <button type="button" onclick="switchCameraFacing()" style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 कॅमेरा बदला</button>
-                </div>
-                <video id="liveCameraPreview" autoplay playsinline muted style="width:100%; height:120px; background:black; margin-top:8px; border-radius:4px; object-fit:cover; display:none;"></video>
-            </div>
-            
-            <label style="font-size:11px; font-weight:bold;">किंवा व्हिडिओ फाईल अपलोड करा (पर्याय २ - Optional):</label>
-            <input type="file" id="inputLiveVideoFile" accept="video/*" style="margin-bottom:10px;">
-
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="stopCameraAndCloseLiveModal()">रद्द करा</button>
-                <button class="btn-save" onclick="confirmCreateLiveStream()">लाईव्ह सुरू करा</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- लाईव्ह स्ट्रीम प्लेयर व WebRTC मॉडेल -->
-    <div id="youtubePlayerModal" class="youtube-player-modal">
-        <div class="live-control-overlay" id="broadcasterControls" style="display:none;">
-            <button class="switch-cam-btn" onclick="switchCameraFacing()">🔄 कॅमेरा बदला</button>
-        </div>
-
-        <div class="yt-player-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <img id="playerUploaderDp" src="photo1.jpg" alt="DP" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
-                <span id="playerUploaderName" style="font-size:13px; font-weight:bold;">नावा</span>
-            </div>
-            <button onclick="closeLivePlayer()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✖</button>
-        </div>
-        
-        <div class="yt-player-body">
-            <video id="advancedVideoElement" controls autoplay playsinline></video>
-        </div>
-
-        <div class="yt-player-footer">
-            <h3 id="ytPlayerTitle" style="margin:0; font-size:14px; color:#fca5a5;">शीर्षक</h3>
-            <div style="font-size:11px; color:#2dd4bf; font-weight:bold;">🔴 लाईव्ह कनेक्शन सुरू आहे...</div>
-        </div>
-    </div>
-
-    <script>
-        let loggedInUserName = 'भक्त सं치가';
-        let loggedInUserDp = 'photo1.jpg';
-        let isAdminLoggedIn = true; // तुझ्यासाठी ॲडमिन चालू ठेवले आहे
-        let globalLiveStreamsList = [];
-        let activeStreamDocId = null;
-        let pendingLiveThumbBase64 = '';
-        
-        let activeCameraStream = null;
-        let useFrontCamera = true;
-        let isBroadcastingNow = false;
-        let peerConnection = null;
-
-        const rtcConfig = {
-            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-        };
-
-        function previewLiveThumb(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingLiveThumbBase64 = e.target.result;
-                    document.getElementById('liveThumbPreview.src').src = e.target.result; // correction
-                    let prev = document.getElementById('liveThumbPreview');
-                    prev.src = e.target.result;
-                    prev.style.display = 'block';
-                    document.getElementById('liveThumbPlaceholder').style.display = 'none';
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function openLiveStreamModal() {
-            document.getElementById('createMenuBox').style.display = 'none';
-            document.getElementById('liveStreamModal').style.display = 'flex';
-        }
-
-        function stopCameraAndCloseLiveModal() {
-            if(activeCameraStream) {
-                activeCameraStream.getTracks().forEach(track => track.stop());
-                activeCameraStream = null;
-            }
-            document.getElementById('liveCameraPreview').style.display = 'none';
-            document.getElementById('liveStreamModal').style.display = 'none';
-        }
-
-        async function startLocalCameraPreview() {
-            try {
-                if(activeCameraStream) {
-                    activeCameraStream.getTracks().forEach(track => track.stop());
-                }
-                const constraints = {
-                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
-                    audio: true
-                };
-                activeCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-                const videoPreview = document.getElementById('liveCameraPreview');
-                videoPreview.srcObject = activeCameraStream;
-                videoPreview.style.display = 'block';
-                videoPreview.play();
-            } catch(err) {
-                alert('कॅमेरा चालू करण्यात अडचण आली: ' + err.message);
-            }
-        }
-
-        async function switchCameraFacing() {
-            useFrontCamera = !useFrontCamera;
-            if (activeCameraStream) {
-                activeCameraStream.getTracks().forEach(t => t.stop());
-                const constraints = { video: { facingMode: useFrontCamera ? 'user' : 'environment' }, audio: true };
-                activeCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-                
-                const modalPreview = document.getElementById('liveCameraPreview');
-                if (modalPreview.style.display === 'block') {
-                    modalPreview.srcObject = activeCameraStream;
-                }
-
-                const playerVideo = document.getElementById('advancedVideoElement');
-                if (isBroadcastingNow) {
-                    playerVideo.srcObject = activeCameraStream;
-                    if(peerConnection) {
-                        const senders = peerConnection.getSenders();
-                        const videoTrack = activeCameraStream.getVideoTracks()[0];
-                        senders.find(s => s.track.kind === 'video').replaceTrack(videoTrack);
-                    }
-                }
-            }
-        }
-
-        async function confirmCreateLiveStream() {
-            let title = document.getElementById('inputLiveTitle').value.trim();
-            let videoInput = document.getElementById('inputLiveVideoFile');
-            let thumbnail = pendingLiveThumbBase64 || 'photo1.jpg';
-
-            if(title === '') {
-                alert('कृपया लाईव्ह स्ट्रीमचे टायटल टाका!');
-                return;
-            }
-
-            document.getElementById('liveStreamModal').style.display = 'none';
-
-            if(videoInput.files && videoInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    saveStreamToDB(title, e.target.result, thumbnail, false);
-                };
-                reader.readAsDataURL(videoInput.files[0]);
-            } else if (activeCameraStream) {
-                saveStreamToDB(title, '', thumbnail, true);
-            } else {
-                alert('कृपया कॅमेरा चालू करा किंवा व्हिडिओ फाईल निवडा!');
-                document.getElementById('liveStreamModal').style.display = 'flex';
-            }
-        }
-
-        async function saveStreamToDB(title, url, thumb, isCam) {
-            if(window.db) {
-                const { collection, addDoc } = window.firebaseCols;
-                try {
-                    let docRef = await addDoc(collection(window.db, "mandir_live_streams"), {
-                        id: Date.now(),
-                        title: title,
-                        videoUrl: url,
-                        isCameraStream: isCam,
-                        thumbnail: thumb,
-                        uploader: loggedInUserName,
-                        dp: loggedInUserDp,
-                        status: 'live'
-                    });
-                    
-                    alert('🔴 लाईव्ह स्ट्रीम यशस्वीरित्या सुरू झाली!');
-                    document.getElementById('inputLiveTitle').value = '';
-                    
-                    if(isCam) {
-                        openLivePlayer(docRef.id, '', title, loggedInUserName, loggedInUserDp, true, true);
-                    }
-                } catch(err) { console.error(err); }
-            }
-        }
-
-        // रियल-टाइम लाईव्ह लिस्ट लोड करण्यासाठी
-        function listenLiveStreams() {
-            if(window.db) {
-                const { collection, onSnapshot } = window.firebaseCols;
-                onSnapshot(collection(window.db, "mandir_live_streams"), (snapshot) => {
-                    globalLiveStreamsList = [];
-                    snapshot.forEach((docSnap) => {
-                        globalLiveStreamsList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
-                    });
-                    renderLiveStreamsUI();
-                });
-            }
-        }
-
-        function renderLiveStreamsUI() {
-            const container = document.getElementById('liveStreamsListContainer');
-            if(!container) return;
-            container.innerHTML = '';
-            
-            if(globalLiveStreamsList.length === 0) {
-                container.innerHTML = `<p style="font-size:12px; color:#94a3b8; text-align:center; padding:20px;">सध्या कोणतीही लाईव्ह स्ट्रीम सुरू नाही.</p>`;
-                return;
-            }
-
-            globalLiveStreamsList.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'youtube-video-card';
-                card.innerHTML = `
-                    <div class="yt-thumb-container" onclick="openLivePlayer('${item.docFirebaseId}', '${item.videoUrl || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}', ${item.isCameraStream || false}, false)">
-                        <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail">
-                        <span style="position:absolute; top:8px; left:8px; background:#ef4444; color:white; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:bold;">🔴 LIVE</span>
-                    </div>
-                    <div class="yt-card-details">
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            <img src="${item.dp || 'photo1.jpg'}" alt="DP" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
-                            <div class="yt-card-meta">
-                                <h4 class="yt-card-title">${item.title}</h4>
-                                <p class="yt-card-channel">प्रसारक: ${item.uploader || 'Unknown'}</p>
-                            </div>
-                        </div>
-                    </div>
-                    ${isAdminLoggedIn ? `<button class="delete-btn-abs" onclick="deleteLiveStream('${item.docFirebaseId}')">🗑️</button>` : ''}
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // WebRTC Signaling & Player Logic
-        async function openLivePlayer(docId, url, title, uploader, dp, isCameraStream, amIBroadcaster) {
-            activeStreamDocId = docId;
-            document.getElementById('ytPlayerTitle').innerText = title;
-            document.getElementById('playerUploaderName').innerText = uploader;
-            document.getElementById('playerUploaderDp').src = dp;
-            
-            const videoElem = document.getElementById('advancedVideoElement');
-            const broadcasterControls = document.getElementById('broadcasterControls');
-            
-            document.getElementById('youtubePlayerModal').style.display = 'flex';
-
-            if(amIBroadcaster) {
-                isBroadcastingNow = true;
-                broadcasterControls.style.display = 'flex';
-                videoElem.srcObject = activeCameraStream;
-                videoElem.muted = true;
-                videoElem.play().catch(e => console.log(e));
-
-                // WebRTC Offer तयार करून Firebase मध्ये ठेवणे
-                peerConnection = new RTCPeerConnection(rtcConfig);
-                activeCameraStream.getTracks().forEach(track => peerConnection.addTrack(track, activeCameraStream));
-
-                const offerCol = window.firebaseCols.collection(window.db, `mandir_live_streams/${docId}/offerCandidates`);
-                peerConnection.onicecandidate = event => {
-                    if (event.candidate) {
-                        window.firebaseCols.addDoc(offerCol, event.candidate.toJSON());
-                    }
-                };
-
-                const offer = await peerConnection.createOffer();
-                await peerConnection.setLocalDescription(offer);
-                await window.firebaseCols.updateDoc(window.firebaseCols.doc(window.db, "mandir_live_streams", docId), {
-                    offer: { type: offer.type, sdp: offer.sdp }
-                });
-
-                // Answer ऐकणे
-                window.firebaseCols.onSnapshot(window.firebaseCols.doc(window.db, "mandir_live_streams", docId), async (snapshot) => {
-                    const data = snapshot.data();
-                    if (data && data.answer && !peerConnection.currentRemoteDescription) {
-                        const rtcAnswer = new RTCSessionDescription(data.answer);
-                        await peerConnection.setRemoteDescription(rtcAnswer);
-                    }
-                });
-
-            } else if(isCameraStream && !amIBroadcaster) {
-                broadcasterControls.style.display = 'none';
-                isBroadcastingNow = false;
-                
-                peerConnection = new RTCPeerConnection(rtcConfig);
-                peerConnection.ontrack = event => {
-                    videoElem.srcObject = event.streams[0];
-                };
-
-                const docRef = window.firebaseCols.doc(window.db, "mandir_live_streams", docId);
-                const docSnap = await window.firebaseCols.getDoc(docRef);
-                const data = docSnap.data();
-
-                if(data && data.offer) {
-                    await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
-                    const answer = await peerConnection.createAnswer();
-                    await peerConnection.setLocalDescription(answer);
-
-                    await window.firebaseCols.updateDoc(docRef, {
-                        answer: { type: answer.type, sdp: answer.sdp }
-                    });
-
-                    const answerCol = window.firebaseCols.collection(window.db, `mandir_live_streams/${docId}/answerCandidates`);
-                    peerConnection.onicecandidate = event => {
-                        if (event.candidate) {
-                            window.firebaseCols.addDoc(answerCol, event.candidate.toJSON());
-                        }
-                    };
-                }
-            } else if(url && url.trim() !== '') {
-                broadcasterControls.style.display = 'none';
-                videoElem.srcObject = null;
-                videoElem.src = url;
-                videoElem.play().catch(e => console.log(e));
-            }
-        }
-
-        function closeLivePlayer() {
-            document.getElementById('youtubePlayerModal').style.display = 'none';
-            const videoElem = document.getElementById('advancedVideoElement');
-            if(activeCameraStream && isBroadcastingNow) {
-                activeCameraStream.getTracks().forEach(t => t.stop());
-                activeCameraStream = null;
-            }
-            if(peerConnection) {
-                peerConnection.close();
-                peerConnection = null;
-            }
-            videoElem.pause();
-            videoElem.src = "";
-            videoElem.srcObject = null;
-            isBroadcastingNow = false;
-            activeStreamDocId = null;
-        }
-
-        async function deleteLiveStream(docId) {
-            if(confirm('तुम्हाला ही लाईव्ह स्ट्रीम डिलीट करायची आहे का?')) {
-                await window.firebaseCols.deleteDoc(window.firebaseCols.doc(window.db, "mandir_live_streams", docId));
-                alert('लाईव्ह स्ट्रीम डिलीट झाली!');
-            }
-        }
-
-        window.onload = function() {
-            listenLiveStreams();
-        };
-    </script>
-</body>
-</html>
-
-    </script>
+​<div id="blockedModal" style="display:none;">
+<div class="name-gate-card">
+<h3 style="color:#ef4444; margin-top:0;">⛔ ॲपवरून ब्लॉक केले आहे</h3>
+<p style="font-size:12px; color:#94a3b8;">तुम्हाला ॲडमिनद्वारे या ॲपवरून ब्लॉक करण्यात आले आहे.</p>
+</div>
+</div>
+​<div id="photoZoomModal" onclick="closePhotoZoom()">
+<button style="position:absolute; top:20px; right:20px; background:none; border:none; color:white; font-size:28px; cursor:pointer;">✖</button>
+<img id="zoomedImageElem" src="" alt="Zoomed Photo">
+<p id="zoomedCaptionElem" style="color:white; margin-top:15px; font-size:14px; font-weight:bold;"></p>
+</div>
+​<div id="nameGateModal">
+<div class="name-gate-card">
+<h3 style="color:#f43f5e; margin-top:0;">🙏 हर हर महादेव!</h3>
+<div class="admin-brand" style="color:#94a3b8; margin-bottom:12px;">Admin By : Sanchit Vikas Patil</div>
+<p style="font-size:12px; color:#94a3b8; margin-bottom:15px;">पब्लिक लॉगिन किंवा अकाउंट रिकव्हरी निवडा:</p>
+​<div id="loginChoiceView">
+<button class="login-type-btn btn-public-type" onclick="selectLoginMode('public')">👤 New Public Login (नवीन पब्लिक)</button>
+<button class="login-type-btn btn-recovery-type" onclick="selectLoginMode('recovery')">🔄 Restore Account (माझे जुने अकाउंट आणा)</button>
+</div>
+​<div id="publicFormView" style="display:none; text-align:left;">
+<label style="font-size:11px; font-weight:bold;">प्रोफाईल फोटो (DP) निवडा:</label>
+<div class="dp-upload-circle" onclick="document.getElementById('dpFileInput').click()">
+<span id="dpPlaceholderText" style="font-size:10px; color:#94a3b8;">➕ फोटो</span>
+<img id="dpPreviewImg" src="" alt="DP">
+</div>
+<input type="file" id="dpFileInput" accept="image/*" style="display:none;" onchange="previewDP(this)">
+​<label style="font-size:11px; font-weight:bold;">मोबाईल नंबर (Valid Indian Number):</label>
+<input type="tel" id="enteredUserPhone" placeholder="उदा. 9876543210" maxlength="10" style="width:100%; padding:8px; font-size:12px; border:1px solid #475569; background:#0f172a; color:#fff; border-radius:4px; margin-bottom:8px; box-sizing:border-box;">
+​<label style="font-size:11px; font-weight:bold;">नाव व आडनाव:</label>
+<input type="text" id="enteredUserName" placeholder="पूर्ण नाव आणि आडनाव टाका..." style="width:100%; padding:8px; font-size:12px; border:1px solid #475569; background:#0f172a; color:#fff; border-radius:4px; margin-bottom:10px; box-sizing:border-box;">
+​<button onclick="verifyPublicLogin()" style="width:100%; background:#f59e0b; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">कठोर युनिक कोड जनरेट करून प्रवेश करा</button>
+<button onclick="backToLoginChoice()" style="width:100%; background:#64748b; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
+</div>
+​<div id="recoveryFormView" style="display:none; text-align:left;">
+<label style="font-size:11px; font-weight:bold;">तुमचा युनिक रिकव्हरी कोड टाका:</label>
+<input type="text" id="recoveryCodeInput" placeholder="उदा. Sanchit-Patil-9876@MH" style="width:100%; padding:8px; font-size:12px; border:1px solid #475569; background:#0f172a; color:#fff; border-radius:4px; margin-bottom:5px; box-sizing:border-box;">
+<div id="recoveryErrorMsg" style="color:#ef4444; font-size:11px; margin-bottom:8px;"></div>
+​<button onclick="verifyAccountRecovery()" style="width:100%; background:#16a34a; color:white; border:none; padding:8px; border-radius:4px; font-weight:bold; cursor:pointer;">अकाउंट परत आणा (Restore)</button>
+<button onclick="backToLoginChoice()" style="width:100%; background:#64748b; color:white; border:none; padding:6px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">मागे जा</button>
+</div>
+</div>
+</div>
+​<div class="user-top-bar">
+<div class="user-profile-info">
+<img id="headerUserDp" src="photo1.jpg" alt="DP">
+<span><strong>भक्त:</strong> <span id="displayUserName" style="color:#f43f5e; font-weight:bold;">भक्त</span></span>
+</div>
+<div class="top-bar-right">
+<button class="notification-bell-btn" onclick="toggleNotifications()">🔔<span id="notifBadge" class="notification-badge">0</span></button>
+<button onclick="logoutUser()" style="background:none; border:1px solid #f43f5e; color:#f43f5e; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">लॉग आउट</button>
+</div>
+</div>
+​<div id="notificationDropdown" class="notification-dropdown">
+<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:5px;">
+<strong style="font-size:12px; color:#f43f5e;">🔔 अपडेट्स व नोटीस</strong>
+<button onclick="clearNotifications()" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer;">सर्व हटवा</button>
+</div>
+<div id="notifListContainer"></div>
+</div>
+​<div id="sideDrawerMenu" class="side-drawer-menu">
+<div style="font-size:13px; font-weight:bold; color:#f43f5e; border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:5px;">⚙️ ॲप सेटिंग्ज</div>
+<button onclick="openGroupManager()">👥 कम्युनिटी व ग्रुप्स मॅनेज करा</button>
+<button onclick="openBlockManager()">🚫 युझर ब्लॉक लिस्ट मॅनेज करा</button>
+<button onclick="logoutUser()">🚪 लॉग आउट</button>
+</div>
+​<header>
+<button class="menu-hamburger-btn" onclick="toggleSideDrawer(event)">☰</button>
+<img src="photo1.jpg" alt="Mandir Logo">
+<h1 style="font-size: 16px; margin: 8px 0 2px 0;">MH कपिलेश्वर महादेव मंदिर विल्होळे</h1>
+<div class="admin-brand">Admin By : Sanchit Vikas Patil</div>
+<p style="font-size: 11px; margin: 4px 0 0 0; opacity: 0.9;">ट्रस्ट श्री कपिलेश्वर महादेवांचे मंदिर, विल्होळे
+तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५</p>
+</header>
+​<div class="container">
+​<div id="section-gallery" class="section-box active-section">
+<div style="display:flex; justify-content:space-between; align-items:center;">
+<h2 style="margin:0;">१. मंदिर दर्शन गॅलरी</h2>
+<button id="addGalleryPhotoBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('galleryImageInput').click()">➕ फोटो जोडा</button>
+<input type="file" id="galleryImageInput" accept="image/*" style="display:none;" onchange="uploadNewGalleryPhoto(this)">
+</div>
+<p style="font-size:11px; color:#94a3b8; margin-top:5px;">फोटोवर क्लिक करून फुल साइज मध्ये पाहू शकता.</p>
+<div id="galleryGridContainer" class="gallery-grid"></div>
+</div>
+​<div id="section-schedule" class="section-box">
+<h2>२. आरती आणि दर्शन वेळपत्रक</h2>
+<div class="info-card">
+<p><strong>प्रातःकाळ आरती:</strong> सकाळी ७:१५ वाजता (7:15 AM)</p>
+<p><strong>संध्याकाळची आरती:</strong> संध्याकाळी ७:१५ वाजता (7:15 PM)</p>
+</div>
+</div>
+​<div id="section-location" class="section-box">
+<h2>३. पत्ता व लोकेशन</h2>
+<div class="info-card">
+<p>श्री क्षेत्र कपिलेश्वर महादेवांचे मंदिर, विल्होळे, तहसील भुसावळ, जिल्हा जळगाव - ४२५३०५.</p>
+<a href="[https://maps.google.com/?q=Kapileshwar+Mahadev+Mandir+Vilhale+Bhusawal](https://maps.google.com/?q=Kapileshwar+Mahadev+Mandir+Vilhale+Bhusawal)" target="_blank" class="map-btn">गुगल मॅपवर पहा</a>
+</div>
+</div>
+​<div id="section-ringtones" class="section-box">
+<div style="display:flex; justify-content:space-between; align-items:center;">
+<h2 style="margin:0;">४. महादेवांच्या रिंगटोन्स व एसएमएस ट्यून</h2>
+<button id="addRingtoneBtn" style="display:none; background:#e11d48; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openAddRingtoneModal()">➕ रिंगटोन ऍड करा</button>
+</div>
+<p style="font-size:11px; color:#94a3b8; margin-top:5px;">येथून रिंगटोन ऐका आणि डाऊनलोड करा.</p>
+<input type="text" id="ringtoneSearch" class="search-box" placeholder="🔍 येथे रिंगटोन सर्च करा..." onkeyup="filterRingtones()">
+<div id="ringtoneListContainer"></div>
+</div>
+​<div id="section-texts" class="section-box">
+<h2>५. पवित्र ग्रंथ, आरत्या व श्लोक</h2>
+<input type="text" id="textSearch" class="search-box" placeholder="🔍 आरती, भजन किंवा श्लोक येथे सर्च करा..." onkeyup="filterTexts()">
+<div id="textsListContainer"></div>
+</div>
+​<div id="section-groups" class="section-box">
+<div class="whatsapp-tabs">
+<button class="whatsapp-tab-btn active-w-tab" onclick="switchWhatsappTab('chats', this)">💬 चॅट्स व ग्रुप्स</button>
+<button class="whatsapp-tab-btn" onclick="switchWhatsappTab('status', this)">🟢 स्टेटस (Status)</button>
+</div>
+​<div id="whatsappTabChats" class="whatsapp-sub-section">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+<h2 style="margin:0;">👥 कम्युनिटी ग्रुप्स व पर्सनल चॅट</h2>
+<button style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openGroupManager()">➕ नवीन ग्रुप बनवा</button>
+</div>
+<p style="font-size:11px; color:#94a3b8;">येथे ग्रुप्स आणि लोकांशी पर्सनली चॅटिंग करता येईल.</p>
+<div id="groupsMainListContainer"></div>
+</div>
+​<div id="whatsappTabStatus" class="whatsapp-sub-section" style="display:none;">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+<h2 style="margin:0;">🟢 स्टेटस अपडेट्स</h2>
+<button style="background:#16a34a; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="openAddStatusModal()">➕ स्टेटस ठेवा</button>
+</div>
+<p style="font-size:11px; color:#94a3b8;">भक्तांचे व ग्रुप्सचे ताजे स्टेटस येथे पाहता येतील.</p>
+<div id="statusListContainer"></div>
+</div>
+​<div id="activeGroupChatRoom" class="chat-room-container" style="display:none;">
+<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #475569; padding-bottom:6px; margin-bottom:8px;">
+<span id="activeGroupTitle" style="font-weight:bold; color:#2dd4bf; font-size:14px;">चॅट रूम</span>
+<div>
+<button onclick="openAddMemberModal()" style="background:#16a34a; color:white; border:none; padding:3px 8px; border-radius:3px; font-size:10px; cursor:pointer; font-weight:bold; margin-right:5px;">➕ मेंबर ऍड करा</button>
+<button onclick="closeGroupChat()" style="background:none; border:none; color:#ef4444; font-size:14px; cursor:pointer; font-weight:bold;">✖</button>
+</div>
+</div>
+<div id="groupMessagesArea" class="chat-messages-area"></div>
+<div class="chat-input-row">
+<input type="text" id="groupMessageInput" placeholder="मेसेज लिहा...">
+<button onclick="sendGroupMessage()">पाठवा</button>
+</div>
+</div>
+</div>
+​<div id="section-live" class="section-box">
+<h2>🔴 लाईव्ह स्ट्रीमिंग (Live Streams)</h2>
+<p style="font-size:11px; color:#94a3b8;">येथे चालू असलेल्या किंवा आधीच्या लाईव्ह स्ट्रिम्स पाहू शकता.</p>
+<div id="liveStreamsListContainer"></div>
+</div>
+​<div id="section-donation" class="section-box">
+<h2>७. देणगी</h2>
+<div class="info-card">
+<p>मंदिरे विकासासाठी व कामासाठी आपली देणगी देऊ शकता. अधिक माहितीसाठी मंदिर ट्रस्टशी संपर्क साधा.</p>
+</div>
+</div>
+​</div>
+​<!-- प्लस बटण दाबल्यावर येणारा मेनू -->
+<div id="createMenuBox" class="create-menu">
+<button onclick="openLiveStreamModal()">🔴 लाईव्ह स्ट्रीम क्रिएट करा</button>
+</div>
+​<!-- लाईव्ह स्ट्रीम तयार करण्याचा मॉडेल (कॅमेरा फ्रंट/बॅक स्विचिंगसह) -->
+<div id="liveStreamModal" class="modal">
+<div class="modal-content-box">
+<h3 style="color:#e11d48; margin-top:0; font-size:14px;">🔴 नवीन लाईव्ह स्ट्रीम सुरू करा</h3>
+​<label style="font-size:11px; font-weight:bold;">लाईव्ह थंबनेल फोटो:</label>
+<div class="thumbnail-upload-box" onclick="document.getElementById('liveThumbInput').click()">
+<span id="liveThumbPlaceholder" style="font-size:11px; color:#94a3b8;">📸 फोटो निवडा</span>
+<img id="liveThumbPreview" src="" alt="Thumbnail">
+</div>
+<input type="file" id="liveThumbInput" accept="image/*" style="display:none;" onchange="previewLiveThumb(this)">
+​<label style="font-size:11px; font-weight:bold;">लाईव्ह स्ट्रीम टायटल:</label>
+<input type="text" id="inputLiveTitle" placeholder="उदा. महाकाल लाइव्ह आरती दर्शन">
+​<div style="background:#0f172a; padding:10px; border-radius:6px; margin-bottom:10px; border:1px solid #475569;">
+<label style="font-size:11px; font-weight:bold; color:#f43f5e;">कॅमेरा लाईव्ह स्ट्रीम (थेट कॅमेरा):</label>
+<div style="margin-top:5px; display:flex; gap:5px;">
+<button type="button" onclick="startCameraLiveStream()" style="flex:1; background:#16a34a; color:white; border:none; padding:6px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🎥 कॅमेरा लाईव्ह सुरू करा</button>
+<button type="button" onclick="switchCameraFacing()" style="background:#0d9488; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🔄 कॅमेरा बदला</button>
+</div>
+<video id="liveCameraPreview" autoplay playsinline muted style="width:100%; height:120px; background:black; margin-top:8px; border-radius:4px; object-fit:cover; display:none;"></video>
+</div>
+​<label style="font-size:11px; font-weight:bold;">किंवा व्हिडिओ फाईल अपलोड करा (MP4):</label>
+<input type="file" id="inputLiveVideoFile" accept="video/*" style="margin-bottom:10px;">
+​<div class="modal-buttons">
+<button class="btn-cancel" onclick="stopCameraAndCloseLiveModal()">रद्द करा</button>
+<button class="btn-save" onclick="confirmCreateLiveStream()">लाईव्ह प्रसारित करा</button>
+</div>
+</div>
+</div>
+​<!-- ॲडमिनसाठी रिंगटोन ऍड करण्याचा मॉडेल -->
+<div id="addRingtoneModal" class="modal">
+<div class="modal-content-box">
+<h3 style="color:#f43f5e; margin-top:0; font-size:14px;">🎵 नवीन रिंगटोन ऍड करा</h3>
+​<label style="font-size:11px; font-weight:bold;">रिंगटोन फाईल निवडा (MP3):</label>
+<input type="file" id="inputRingtoneFile" accept="audio/mp3" style="margin-bottom:10px;">
+​<label style="font-size:11px; font-weight:bold;">रिंगटोनचे नाव (Title):</label>
+<input type="text" id="inputRingtoneTitle" placeholder="उदा. SMS1.mp3">
+​<div class="modal-buttons">
+<button class="btn-cancel" onclick="document.getElementById('addRingtoneModal').style.display='none'">रद्द करा</button>
+<button class="btn-save" onclick="confirmAddRingtone()">ऍड करा</button>
+</div>
+</div>
+</div>
+​<div id="groupManagerModal" class="modal">
+<div class="modal-content-box">
+<h3 style="color:#2dd4bf; margin-top:0; font-size:14px;">👥 नवीन कम्युनिटी ग्रुप किंवा पर्सनल चॅट बनवा</h3>
+<p style="font-size:11px; color:#94a3b8;">ग्रुप किंवा व्यक्तीचे नाव टाका:</p>
+<input type="text" id="newGroupNameInput" placeholder="नाव टाका...">
+<div class="modal-buttons">
+<button class="btn-cancel" onclick="document.getElementById('groupManagerModal').style.display='none'">बंद करा</button>
+<button class="btn-save" style="background:#0d9488;" onclick="createNewGroupAction()">सुरू करा</button>
+</div>
+</div>
+</div>
+​<!-- WhatsApp सारखा स्टेटस मॉडेल (विचार/माहिती किंवा इमेज एडिटिंग किंवा व्हिडिओ) -->
+<div id="statusModal" class="modal">
+<div class="modal-content-box">
+<h3 style="color:#16a34a; margin-top:0; font-size:14px;">🟢 नवीन स्टेटस ठेवा</h3>
+​<label style="font-size:11px; font-weight:bold;">स्टेटसचा प्रकार निवडा:</label>
+<select id="statusTypeSelect" onchange="onStatusTypeChange()" style="width:100%; padding:8px; font-size:12px; background:#0f172a; color:#fff; border:1px solid #475569; border-radius:4px; margin-bottom:10px;">
+<option value="text">✍️ विचार किंवा माहिती लिहा</option>
+<option value="media">🖼️ इमेज (व्हॉट्सॲप एडिटिंग/नाव) किंवा 🎥 व्हिडिओ</option>
+</select>
+​<div id="statusTextViewContainer">
+<label style="font-size:11px; font-weight:bold;">तुमचे विचार किंवा माहिती:</label>
+<textarea id="newStatusTextInput" rows="3" placeholder="हर हर महादेव! ॐ नमः शिवाय..."></textarea>
+</div>
+​<div id="statusMediaViewContainer" style="display:none;">
+<label style="font-size:11px; font-weight:bold;">इमेज किंवा व्हिडिओ फाईल निवडा:</label>
+<input type="file" id="newStatusMediaInput" accept="image/*,video/*" onchange="previewStatusMedia(this)" style="margin-bottom:8px;">
+​<div id="statusMediaPreviewBox" style="width:100%; max-height:120px; overflow:hidden; border-radius:4px; margin-bottom:8px; display:none; text-align:center; background:black;">
+<img id="statusImagePreview" src="" alt="Preview" style="max-width:100%; max-height:120px; object-fit:contain; display:none;">
+<video id="statusVideoPreview" src="" controls style="max-width:100%; max-height:120px; display:none;"></video>
+</div>
+​<label style="font-size:11px; font-weight:bold;">फोटोवर लिहिण्यासाठी नाव / गाणे / ओळ (Caption):</label>
+<input type="text" id="newStatusCaptionInput" placeholder="उदा. हर हर महादेव गाणे / तुमचे नाव...">
+</div>
+​<div class="modal-buttons">
+<button class="btn-cancel" onclick="document.getElementById('statusModal').style.display='none'">बंद करा</button>
+<button class="btn-save" style="background:#16a34a;" onclick="confirmAddStatus()">स्टेटस ठेवा</button>
+</div>
+</div>
+</div>
+​<div id="addMemberModal" class="modal">
+<div class="modal-content-box">
+<h3 style="color:#16a34a; margin-top:0; font-size:14px;">➕ ग्रुपमध्ये मेंबर ऍड करा</h3>
+<p style="font-size:11px; color:#94a3b8;">ज्या युझरला ऍड करायचे आहे त्याचे नाव टाका:</p>
+<input type="text" id="newMemberNameInput" placeholder="युझरचे नाव...">
+<div class="modal-buttons">
+<button class="btn-cancel" onclick="document.getElementById('addMemberModal').style.display='none'">बंद करा</button>
+<button class="btn-save" style="background:#16a34a;" onclick="confirmAddMemberToGroup()">ऍड करा</button>
+</div>
+</div>
+</div>
+​<div id="blockManagerModal" class="modal">
+<div class="modal-content-box">
+<h3 style="color:#ef4444; margin-top:0; font-size:14px;">🚫 युझर ब्लॉक मॅनेजर</h3>
+<p style="font-size:11px; color:#94a3b8;">ज्या युझरला ब्लॉक करायचे आहे त्याचे नाव खाली टाका:</p>
+<input type="text" id="blockUserNameInput" placeholder="युझरचे अचूक नाव टाका...">
+<div class="modal-buttons">
+<button class="btn-cancel" onclick="document.getElementById('blockManagerModal').style.display='none'">बंद करा</button>
+<button class="btn-save" style="background:#ef4444;" onclick="blockUserAction()">ब्लॉक करा</button>
+</div>
+</div>
+</div>
+​<!-- लाईव्ह स्ट्रीम प्लेयर व चॅटिंग मॉडेल -->
+<div id="youtubePlayerModal" class="youtube-player-modal">
+<div class="yt-player-header">
+<div style="display:flex; align-items:center; gap:8px;">
+<img id="playerUploaderDp" src="photo1.jpg" alt="DP" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+<span id="playerUploaderName" style="font-size:13px; font-weight:bold;">नावा</span>
+</div>
+<button onclick="closeYoutubePlayer()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✖</button>
+</div>
+​<div class="yt-player-body">
+<video id="advancedVideoElement" controls autoplay playsinline></video>
+</div>
+​<div class="yt-player-footer">
+<div style="display:flex; justify-content:space-between; align-items:center;">
+<h3 id="ytPlayerTitle" style="margin:0; font-size:14px; color:#fca5a5;">शीर्षक</h3>
+<button onclick="likeCurrentStream()" id="streamLikeBtn" style="background:#e11d48; color:white; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">❤️ लाईक (<span id="streamLikeCount">0</span>)</button>
+</div>
+<div style="font-size:11px; color:#2dd4bf; font-weight:bold;">💬 लाईव्ह चॅट बॉक्स</div>
+<div id="liveChatMessagesArea" style="height:100px; background:#0f172a; border:1px solid #475569; border-radius:4px; padding:5px; overflow-y:auto; font-size:11px;"></div>
+<div style="display:flex; gap:5px;">
+<input type="text" id="liveChatInput" placeholder="चॅटमध्ये मेसेज लिहा..." style="flex:1; padding:6px; font-size:11px; background:#0f172a; border:1px solid #475569; color:white; border-radius:4px;">
+<button onclick="sendLiveChatMessage()" style="background:#0d9488; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">पाठवा</button>
+</div>
+</div>
+</div>
+​<div class="bottom-nav">
+<button onclick="showSection('gallery', this)" class="active"><span>🖼️</span>गॅलरी</button>
+<button onclick="showSection('schedule', this)"><span>⏰</span>वेळपत्रक</button>
+<button onclick="showSection('location', this)"><span>📍</span>लोकेशन</button>
+<button class="nav-center-create" onclick="toggleCreateMenu(event)">+</button>
+<button onclick="showSection('live', this)"><span>🔴</span>लाईव्ह</button>
+<button onclick="showSection('ringtones', this)"><span>🔔</span>रिंगटोन</button>
+<button onclick="showSection('groups', this)"><span>👥</span>चॅट व ग्रुप्स</button>
+</div>
+​<script>
+let loggedInUserName = '';
+let loggedInUserDp = '';
+let loggedInUserPhone = '';
+let loggedInUserCode = '';
+let tempDpBase64 = '';
+let globalLiveStreamsList = [];
+let globalGalleryList = [];
+let globalRingtonesList = [];
+let isAdminLoggedIn = false;
+let activeGroupId = null;
+let activeGroupName = '';
+let activeStreamDocId = null;
+let pendingLiveThumbBase64 = '';
+let activeCameraStream = null;
+let useFrontCamera = true;
+let recordedCameraVideoData = null;
+​let statusMediaBase64 = '';
+let statusMediaType = 'text';
+​let defaultRingtones = [
+{ id: 1, title: 'SMS1.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', category: 'एसएमएस रिंगटोन' },
+{ id: 2, title: 'SMS2.mp3', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', category: 'एसएमएस रिंगटोन' }
+];
+​const sacredTextsData = [
+{ id: 1, title: 'श्री शिव कवच', category: 'पवित्र ग्रंथ व स्तोत्र', text: 'नमो भगवते रुद्राय...\nश्री शिवकवच स्तोत्र महादेवाच्या भक्तांचे रक्षण करते.' },
+{ id: 2, title: 'शिवलिंगाची आरती', category: 'आरत्या', text: 'जय जय श्री शिवराया...\nकरुणाकरा महदेवा आरती स्वीकार करी.' },
+{ id: 3, title: 'महामृत्युंजय मंत्र', category: 'मंत्र व श्लोक', text: 'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्। उर्वारुकमिव बन्धनान्मृत्योर्मुक्षी माऽमृतात्॥' }
+];
+​const defaultGallery = [
+{ id: 1, url: 'photo1.jpg', caption: 'मंदिर प्रवेशद्वार' },
+{ id: 2, url: 'photo2.jpg', caption: 'नंदी आणि सभामंडप' },
+{ id: 3, url: 'photo3.jpg', caption: 'प्राचीन नक्षीकाम छतावरील' },
+{ id: 4, url: 'photo4.jpg', caption: 'गाभारा दर्शन' }
+];
+​window.onload = function() {
+let savedName = localStorage.getItem('mandir_app_username');
+let savedDp = localStorage.getItem('mandir_app_userdp');
+let savedPhone = localStorage.getItem('mandir_app_userphone');
+let savedCode = localStorage.getItem('mandir_app_code');
+let adminStatus = localStorage.getItem('mandir_is_admin') === 'true';
+​isAdminLoggedIn = adminStatus;
+​if (savedName && savedName.trim() !== '') {
+loggedInUserName = savedName;
+loggedInUserDp = savedDp || 'photo1.jpg';
+loggedInUserPhone = savedPhone || '';
+loggedInUserCode = savedCode || '';
+document.getElementById('displayUserName').innerText = loggedInUserName;
+document.getElementById('headerUserDp').src = loggedInUserDp;
+document.getElementById('nameGateModal').style.display = 'none';
+checkIfBlockedAndProceed(loggedInUserName);
+} else {
+document.getElementById('nameGateModal').style.display = 'flex';
+}
+​if(isAdminLoggedIn) {
+document.getElementById('addGalleryPhotoBtn').style.display = 'block';
+document.getElementById('addRingtoneBtn').style.display = 'block';
+}
+​renderTexts(sacredTextsData);
+initFirebaseRealtimeListeners();
+};
+​function checkIfBlockedAndProceed(username) {
+if(!window.db) return;
+const { collection, getDocs } = window.firebaseCols;
+getDocs(collection(window.db, "mandir_blocked")).then(snapshot => {
+let blocked = [];
+snapshot.forEach(docSnap => blocked.push(docSnap.data().name));
+if(blocked.includes(username)) {
+document.getElementById('blockedModal').style.display = 'flex';
+}
+});
+}
+​function selectLoginMode(mode) {
+document.getElementById('loginChoiceView').style.display = 'none';
+if(mode === 'public') {
+document.getElementById('publicFormView').style.display = 'block';
+document.getElementById('recoveryFormView').style.display = 'none';
+} else if(mode === 'recovery') {
+document.getElementById('publicFormView').style.display = 'none';
+document.getElementById('recoveryFormView').style.display = 'block';
+}
+}
+​function backToLoginChoice() {
+document.getElementById('loginChoiceView').style.display = 'block';
+document.getElementById('publicFormView').style.display = 'none';
+document.getElementById('recoveryFormView').style.display = 'none';
+}
+​function previewDP(input) {
+if (input.files && input.files[0]) {
+const reader = new FileReader();
+reader.onload = function(e) {
+tempDpBase64 = e.target.result;
+const preview = document.getElementById('dpPreviewImg');
+preview.src = tempDpBase64;
+preview.style.display = 'block';
+document.getElementById('dpPlaceholderText').style.display = 'none';
+}
+reader.readAsDataURL(input.files[0]);
+}
+}
+​function previewLiveThumb(input) {
+if (input.files && input.files[0]) {
+const reader = new FileReader();
+reader.onload = function(e) {
+pendingLiveThumbBase64 = e.target.result;
+const preview = document.getElementById('liveThumbPreview');
+preview.src = pendingLiveThumbBase64;
+preview.style.display = 'block';
+document.getElementById('liveThumbPlaceholder').style.display = 'none';
+}
+reader.readAsDataURL(input.files[0]);
+}
+}
+​async function verifyPublicLogin() {
+let inputPhone = document.getElementById('enteredUserPhone').value.trim();
+let inputName = document.getElementById('enteredUserName').value.trim();
+​let phoneRegex = /^[6-9]\d{9}$/;
+if (!phoneRegex.test(inputPhone)) {
+alert('कृपया वैध १० अंकी इंडियन मोबाईल नंबर टाका!');
+return;
+}
+​if (inputName === '') {
+alert('कृपया तुमचे पूर्ण नाव व आडनाव टाका!');
+return;
+}
+​let existingPhoneList = JSON.parse(localStorage.getItem('mandir_registered_phones') || '[]');
+if(existingPhoneList.includes(inputPhone)) {
+alert('⚠️ सुरक्षा नियम: या मोबाईल नंबरने आधीच अकाउंट तयार केले आहे! कृपया "Restore Account" वापरा.');
+return;
+}
+​if (tempDpBase64 === '') tempDpBase64 = 'photo1.jpg';
+​let nameParts = inputName.split(' ');
+let firstName = nameParts[0] || 'User';
+let lastName = nameParts[1] || 'Bhakt';
+let uniqueGeneratedCode = ${firstName}-${lastName}-${inputPhone.slice(-4)}@MH;
+​if(window.db) {
+const { collection, addDoc } = window.firebaseCols;
+try {
+await addDoc(collection(window.db, "mandir_registered_users"), {
+phone: inputPhone,
+name: inputName,
+code: uniqueGeneratedCode,
+time: Date.now()
+});
+} catch(e) { console.error(e); }
+}
+​existingPhoneList.push(inputPhone);
+localStorage.setItem('mandir_registered_phones', JSON.stringify(existingPhoneList));
+​localStorage.setItem('mandir_app_username', inputName);
+localStorage.setItem('mandir_app_userdp', tempDpBase64);
+localStorage.setItem('mandir_app_userphone', inputPhone);
+localStorage.setItem('mandir_app_code', uniqueGeneratedCode);
+localStorage.setItem('mandir_is_admin', inputPhone === '9129912991' ? 'true' : 'false');
+​loggedInUserName = inputName;
+loggedInUserDp = tempDpBase64;
+loggedInUserPhone = inputPhone;
+loggedInUserCode = uniqueGeneratedCode;
+isAdminLoggedIn = (inputPhone === '9129912991');
+​document.getElementById('displayUserName').innerText = loggedInUserName;
+document.getElementById('headerUserDp').src = loggedInUserDp;
+document.getElementById('nameGateModal').style.display = 'none';
+alert(✅ यशस्वी! तुमचा कठीण युनिक रिकव्हरी कोड हा आहे:\n\n"${uniqueGeneratedCode}"\n\nहा कोड सुरक्षित ठिकाणी लिहून ठेवा.);
+checkIfBlockedAndProceed(loggedInUserName);
+}
+​function verifyAccountRecovery() {
+let enteredCode = document.getElementById('recoveryCodeInput').value.trim();
+let savedCode = localStorage.getItem('mandir_app_code');
+​if (enteredCode !== "" && (enteredCode === savedCode || savedCode === null)) {
+document.getElementById('nameGateModal').style.display = 'none';
+alert('अकाउंट यशस्वीरित्या रिस्टोर झाले आहे!');
+location.reload();
+} else {
+document.getElementById('recoveryErrorMsg').innerText = "चुकीचा कोड! कृपया तुमचा अचूक रिकव्हरी कोड टाका.";
+}
+}
+​function logoutUser() {
+localStorage.clear();
+location.reload();
+}
+​function toggleSideDrawer(event) {
+if(event) event.stopPropagation();
+const drawer = document.getElementById('sideDrawerMenu');
+drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
+}
+​function toggleCreateMenu(event) {
+if(event) event.stopPropagation();
+const menu = document.getElementById('createMenuBox');
+menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+​function openLiveStreamModal() {
+document.getElementById('createMenuBox').style.display = 'none';
+document.getElementById('liveStreamModal').style.display = 'flex';
+}
+​function stopCameraAndCloseLiveModal() {
+if(activeCameraStream) {
+activeCameraStream.getTracks().forEach(track => track.stop());
+activeCameraStream = null;
+}
+document.getElementById('liveCameraPreview').style.display = 'none';
+document.getElementById('liveStreamModal').style.display = 'none';
+}
+​async function startCameraLiveStream() {
+try {
+if(activeCameraStream) {
+activeCameraStream.getTracks().forEach(track => track.stop());
+}
+const constraints = {
+video: { facingMode: useFrontCamera ? 'user' : 'environment' },
+audio: true
+};
+activeCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+const videoPreview = document.getElementById('liveCameraPreview');
+videoPreview.srcObject = activeCameraStream;
+videoPreview.style.display = 'block';
+videoPreview.play();
+} catch(err) {
+alert('कॅमेरा चालू करण्यात अडचण आली: ' + err.message);
+}
+}
+​function switchCameraFacing() {
+useFrontCamera = !useFrontCamera;
+startCameraLiveStream();
+}
+​window.onclick = function(event) {
+if (!event.target.matches('.nav-center-create') && !event.target.closest('.create-menu') && !event.target.closest('.notification-bell-btn') && !event.target.closest('#notificationDropdown') && !event.target.closest('.menu-hamburger-btn') && !event.target.closest('#sideDrawerMenu')) {
+document.getElementById('createMenuBox').style.display = 'none';
+document.getElementById('notificationDropdown').style.display = 'none';
+document.getElementById('sideDrawerMenu').style.display = 'none';
+}
+}
+​function toggleNotifications() {
+const dropdown = document.getElementById('notificationDropdown');
+dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+​function switchWhatsappTab(tabName, btnElem) {
+const buttons = document.querySelectorAll('.whatsapp-tab-btn');
+buttons.forEach(b => b.classList.remove('active-w-tab'));
+if(btnElem) btnElem.classList.add('active-w-tab');
+​if(tabName === 'chats') {
+document.getElementById('whatsappTabChats').style.display = 'block';
+document.getElementById('whatsappTabStatus').style.display = 'none';
+} else {
+document.getElementById('whatsappTabChats').style.display = 'none';
+document.getElementById('whatsappTabStatus').style.display = 'block';
+loadStatusList();
+}
+}
+​function openGroupManager() {
+document.getElementById('sideDrawerMenu').style.display = 'none';
+document.getElementById('groupManagerModal').style.display = 'flex';
+}
+​function openAddStatusModal() {
+document.getElementById('statusModal').style.display = 'flex';
+}
+​function onStatusTypeChange() {
+let val = document.getElementById('statusTypeSelect').value;
+if(val === 'text') {
+document.getElementById('statusTextViewContainer').style.display = 'block';
+document.getElementById('statusMediaViewContainer').style.display = 'none';
+statusMediaType = 'text';
+} else {
+document.getElementById('statusTextViewContainer').style.display = 'none';
+document.getElementById('statusMediaViewContainer').style.display = 'block';
+statusMediaType = 'media';
+}
+}
+​function previewStatusMedia(input) {
+if(input.files && input.files[0]) {
+let file = input.files[0];
+const reader = new FileReader();
+reader.onload = function(e) {
+statusMediaBase64 = e.target.result;
+let previewBox = document.getElementById('statusMediaPreviewBox');
+let imgElem = document.getElementById('statusImagePreview');
+let vidElem = document.getElementById('statusVideoPreview');
+previewBox.style.display = 'block';
+​if(file.type.startsWith('image/')) {
+imgElem.src = statusMediaBase64;
+imgElem.style.display = 'block';
+vidElem.style.display = 'none';
+} else {
+vidElem.src = statusMediaBase64;
+vidElem.style.display = 'block';
+imgElem.style.display = 'none';
+}
+}
+reader.readAsDataURL(file);
+}
+}
+​function openAddRingtoneModal() {
+if(!isAdminLoggedIn) {
+alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
+return;
+}
+document.getElementById('addRingtoneModal').style.display = 'flex';
+}
+​async function confirmAddRingtone() {
+let titleInput = document.getElementById('inputRingtoneTitle').value.trim();
+let fileInput = document.getElementById('inputRingtoneFile');
+​if(titleInput === '') {
+alert('कृपया रिंगटोनचे नाव टाका!');
+return;
+}
+​if(fileInput.files && fileInput.files[0]) {
+const reader = new FileReader();
+reader.onload = async function(e) {
+let audioBase64 = e.target.result;
+if(window.db) {
+const { collection, addDoc } = window.firebaseCols;
+try {
+await addDoc(collection(window.db, "mandir_ringtones"), {
+id: Date.now(),
+title: titleInput,
+audioUrl: audioBase64,
+category: 'एसएमएस रिंगटोन'
+});
+alert('रिंगटोन यशस्वीरित्या ऍड झाली!');
+document.getElementById('inputRingtoneTitle').value = '';
+document.getElementById('addRingtoneModal').style.display = 'none';
+} catch(err) { console.error(err); }
+}
+};
+reader.readAsDataURL(fileInput.files[0]);
+} else {
+alert('कृपया MP3 फाईल निवडा!');
+}
+}
+​async function deleteRingtone(docFirebaseId) {
+if(!isAdminLoggedIn) {
+alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
+return;
+}
+if(confirm('ही रिंगटोन डिलीट करायची का?') && window.db) {
+const { doc, deleteDoc } = window.firebaseCols;
+try {
+await deleteDoc(doc(window.db, "mandir_ringtones", docFirebaseId));
+alert('रिंगटोन यशस्वीरित्या डिलीट केली.');
+} catch(e) { console.error(e); }
+}
+}
+​async function createNewGroupAction() {
+let groupName = document.getElementById('newGroupNameInput').value.trim();
+if(groupName !== "" && window.db) {
+const { collection, addDoc } = window.firebaseCols;
+try {
+await addDoc(collection(window.db, "mandir_groups"), {
+id: Date.now(),
+name: groupName,
+creator: loggedInUserName,
+members: [loggedInUserName]
+});
+alert("${groupName}" ग्रुप/चॅट यशस्वीरित्या तयार करण्यात आला आहे!);
+document.getElementById('newGroupNameInput').value = '';
+document.getElementById('groupManagerModal').style.display = 'none';
+loadGroupsUI();
+} catch(e) { console.error(e); }
+}
+}
+​async function confirmAddStatus() {
+let statusText = document.getElementById('newStatusTextInput').value.trim();
+let captionText = document.getElementById('newStatusCaptionInput').value.trim();
+​if(statusMediaType === 'text' && statusText === '') {
+alert('कृपया तुमचे विचार किंवा माहिती लिहा!');
+return;
+}
+​if(window.db) {
+const { collection, addDoc } = window.firebaseCols;
+try {
+await addDoc(collection(window.db, "mandir_statuses"), {
+id: Date.now(),
+author: loggedInUserName,
+dp: loggedInUserDp,
+type: statusMediaType,
+text: statusText,
+mediaUrl: statusMediaBase64,
+caption: captionText,
+time: Date.now()
+});
+alert('तुमचे स्टेटस यशस्वीरित्या पोस्ट झाले आहे!');
+document.getElementById('newStatusTextInput').value = '';
+document.getElementById('newStatusCaptionInput').value = '';
+document.getElementById('statusModal').style.display = 'none';
+loadStatusList();
+} catch(e) { console.error(e); }
+}
+}
+​function loadStatusList() {
+if(!window.db) return;
+const { collection, getDocs } = window.firebaseCols;
+getDocs(collection(window.db, "mandir_statuses")).then(snapshot => {
+let container = document.getElementById('statusListContainer');
+container.innerHTML = '';
+if(snapshot.empty) {
+container.innerHTML = <div style="text-align:center; padding:15px; color:#94a3b8; font-size:12px;">अद्याप कोणतेही स्टेटस नाही.</div>;
+return;
+}
+snapshot.forEach(docSnap => {
+let s = docSnap.data();
+let div = document.createElement('div');
+div.className = 'status-story-card';
+​let contentHTML = '';
+if(s.type === 'media' && s.mediaUrl) {
+if(s.mediaUrl.startsWith('data:video/')) {
+contentHTML = <video src="${s.mediaUrl}" controls style="width:100%; max-height:150px; border-radius:4px; margin-top:4px;"></video>;
+} else {
+contentHTML = <img src="${s.mediaUrl}" alt="Status" style="width:100%; max-height:150px; border-radius:4px; object-fit:cover; margin-top:4px;" onclick="openPhotoZoom('${s.mediaUrl}', '${s.caption || ''}')">;
+}
+} else {
+contentHTML = <span style="font-size:12px; color:#f8fafc;">${s.text}</span>;
+}
+​div.innerHTML = <div style="display:flex; align-items:flex-start; gap:10px; width:100%;"> <img src="${s.dp || 'photo1.jpg'}" alt="DP" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #16a34a;"> <div style="flex:1;"> <strong>${s.author}</strong><br> ${contentHTML} ${s.caption ?<div style="font-size:11px; color:#fca5a5; margin-top:3px;">🎵/✍️ ${s.caption}</div>: ''} </div> </div> <button class="share-btn-action" onclick="shareContentText('${s.author} यांचे स्टेटस: ${s.text || s.caption || ''}')">शेअर 📤</button>;
+container.appendChild(div);
+});
+});
+}
+​function shareContentText(textToShare) {
+if (navigator.share) {
+navigator.share({ title: 'MH कपिलेश्वर महादेव', text: textToShare }).catch(err => console.log(err));
+} else {
+prompt('हा मेसेज कॉपी करा:', textToShare);
+}
+}
+​function loadGroupsUI() {
+if(!window.db) return;
+const { collection, getDocs } = window.firebaseCols;
+getDocs(collection(window.db, "mandir_groups")).then(snapshot => {
+let container = document.getElementById('groupsMainListContainer');
+container.innerHTML = '';
+if(snapshot.empty) {
+container.innerHTML = <div style="text-align:center; padding:15px; color:#94a3b8; font-size:12px;">अद्याप कोणताही ग्रुप किंवा चॅट उपलब्ध नाही.</div>;
+return;
+}
+snapshot.forEach(docSnap => {
+let data = docSnap.data();
+let div = document.createElement('div');
+div.className = 'group-card';
+div.innerHTML = <div> <strong>👥 ${data.name}</strong><br> <span style="font-size:10px; color:#94a3b8;">संस्थापक/सदस्य: ${data.creator}</span> </div> <button onclick="openGroupChatRoom('${data.id}', '${data.name}')" style="background:#0d9488; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">चॅट उघडा 💬</button>;
+container.appendChild(div);
+});
+});
+}
+​function openGroupChatRoom(groupId, groupName) {
+activeGroupId = groupId;
+activeGroupName = groupName;
+document.getElementById('activeGroupTitle').innerText = "💬 चॅट रूम: " + groupName;
+document.getElementById('activeGroupChatRoom').style.display = 'block';
+loadGroupMessages();
+}
+​function closeGroupChat() {
+activeGroupId = null;
+document.getElementById('activeGroupChatRoom').style.display = 'none';
+}
+​function openAddMemberModal() {
+document.getElementById('addMemberModal').style.display = 'flex';
+}
+​async function confirmAddMemberToGroup() {
+let memberName = document.getElementById('newMemberNameInput').value.trim();
+if(memberName !== "" && activeGroupId) {
+alert("${memberName}" या भक्ताला चॅटमध्ये यशस्वीरित्या ऍड करण्यात आले आहे!);
+document.getElementById('newMemberNameInput').value = '';
+document.getElementById('addMemberModal').style.display = 'none';
+}
+}
+​async function sendGroupMessage() {
+let input = document.getElementById('groupMessageInput');
+let text = input.value.trim();
+if(text !== "" && activeGroupId && window.db) {
+const { collection, addDoc } = window.firebaseCols;
+try {
+await addDoc(collection(window.db, "mandir_group_messages"), {
+groupId: activeGroupId,
+sender: loggedInUserName,
+dp: loggedInUserDp,
+text: text,
+time: Date.now()
+});
+input.value = '';
+} catch(e) { console.error(e); }
+}
+}
+​function loadGroupMessages() {
+if(!window.db || !activeGroupId) return;
+const { collection, onSnapshot } = window.firebaseCols;
+onSnapshot(collection(window.db, "mandir_group_messages"), (snapshot) => {
+let msgs = [];
+snapshot.forEach(docSnap => {
+let d = docSnap.data();
+if(d.groupId == activeGroupId) msgs.push(d);
+});
+msgs.sort((a, b) => a.time - b.time);
+​let area = document.getElementById('groupMessagesArea');
+area.innerHTML = '';
+msgs.forEach(m => {
+let isMe = m.sender === loggedInUserName;
+let bubble = document.createElement('div');
+bubble.style.cssText = margin-bottom:8px; display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'};;
+bubble.innerHTML = <div style="font-size:9px; color:#94a3b8; margin-bottom:2px;">${m.sender}</div> <div style="background:${isMe ? '#0f766e' : '#334155'}; color:#fff; padding:6px 10px; border-radius:6px; max-width:80%; word-break:break-word; border:1px solid #475569;"> ${m.text} </div>;
+area.appendChild(bubble);
+});
+area.scrollTop = area.scrollHeight;
+});
+}
+​function renderRingtones(list) {
+const container = document.getElementById('ringtoneListContainer');
+container.innerHTML = '';
+if(list.length === 0) {
+container.innerHTML = <p style="font-size:12px; color:#94a3b8; text-align:center; padding:15px;">कोणतीही रिंगटोन उपलब्ध नाही.</p>;
+return;
+}
+list.forEach(r => {
+let card = document.createElement('div');
+card.className = 'ringtone-card';
+card.innerHTML = <div class="ringtone-top"> <div class="ringtone-info">🎵 ${r.title}</div> <div style="display:flex; gap:5px;"> <button class="yt-listen-btn" onclick="playInternalAudio('${r.audioUrl}', '${r.title.replace(/'/g, "\\'")}')">▶ ऐका</button> <a href="${r.audioUrl}" download="${r.title}" class="yt-listen-btn" style="background:#16a34a; text-decoration:none;">📥 डाऊनलोड</a> </div> </div> ${isAdminLoggedIn && r.docFirebaseId ?<button class="delete-btn-abs" style="top:-8px; right:-8px; width:20px; height:20px; font-size:10px;" onclick="deleteRingtone('${r.docFirebaseId}')">🗑️</button>: ''};
+container.appendChild(card);
+});
+}
+​function filterRingtones() {
+let query = document.getElementById('ringtoneSearch').value.toLowerCase();
+let filtered = globalRingtonesList.filter(r => r.title.toLowerCase().includes(query));
+renderRingtones(filtered);
+}
+​function playInternalAudio(url, title) {
+let audioElem = document.getElementById('internalAudioPlayer');
+if(!audioElem) {
+audioElem = document.createElement('audio');
+audioElem.id = 'internalAudioPlayer';
+audioElem.controls = true;
+audioElem.style.cssText = "width:100%; margin-top:10px;";
+document.body.appendChild(audioElem);
+}
+audioElem.src = url;
+audioElem.play();
+alert("${title}" हे ऑडिओ ट्यून आता वाजवले जात आहे.);
+}
+​function renderTexts(list) {
+const container = document.getElementById('textsListContainer');
+container.innerHTML = '';
+list.forEach(t => {
+let card = document.createElement('div');
+card.className = 'scripture-card';
+card.innerHTML = <div style="font-size:10px; color:#f43f5e; font-weight:bold;">${t.category}</div> <div style="font-size:14px; font-weight:bold; margin:3px 0; color:#fff;">${t.title}</div> <div style="font-size:12px; color:#cbd5e1; white-space:pre-line;">${t.text}</div>;
+container.appendChild(card);
+});
+}
+​function filterTexts() {
+let query = document.getElementById('textSearch').value.toLowerCase();
+let filtered = sacredTextsData.filter(t => t.title.toLowerCase().includes(query) || t.text.toLowerCase().includes(query));
+renderTexts(filtered);
+}
+​function openBlockManager() {
+document.getElementById('sideDrawerMenu').style.display = 'none';
+if(!isAdminLoggedIn) {
+alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
+return;
+}
+document.getElementById('blockManagerModal').style.display = 'flex';
+}
+​async function blockUserAction() {
+let nameToBlock = document.getElementById('blockUserNameInput').value.trim();
+if(nameToBlock !== "" && window.db) {
+const { collection, addDoc } = window.firebaseCols;
+await addDoc(collection(window.db, "mandir_blocked"), { name: nameToBlock, id: Date.now() });
+alert(${nameToBlock} ब्लॉक केला आहे.);
+document.getElementById('blockUserNameInput').value = '';
+}
+}
+​function initFirebaseRealtimeListeners() {
+if(!window.db) return;
+const { collection, onSnapshot } = window.firebaseCols;
+​onSnapshot(collection(window.db, "mandir_live_streams"), (snapshot) => {
+globalLiveStreamsList = [];
+snapshot.forEach((docSnap) => {
+globalLiveStreamsList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
+});
+globalLiveStreamsList.sort((a, b) => b.id - a.id);
+renderLiveStreamsUI();
+});
+​onSnapshot(collection(window.db, "mandir_gallery"), (snapshot) => {
+globalGalleryList = [];
+snapshot.forEach((docSnap) => {
+globalGalleryList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
+});
+renderGalleryUI();
+});
+​onSnapshot(collection(window.db, "mandir_ringtones"), (snapshot) => {
+globalRingtonesList = [];
+snapshot.forEach((docSnap) => {
+globalRingtonesList.push({ docFirebaseId: docSnap.id, ...docSnap.data() });
+});
+let combinedRingtones = globalRingtonesList.length > 0 ? globalRingtonesList : defaultRingtones;
+renderRingtones(combinedRingtones);
+});
+​loadGroupsUI();
+}
+​async function uploadNewGalleryPhoto(input) {
+if(!isAdminLoggedIn) return;
+if (input.files && input.files[0]) {
+const reader = new FileReader();
+reader.onload = async function(e) {
+let base64Img = e.target.result;
+let caption = prompt('फोटोचे टायटल:', 'मंदिर दर्शन');
+if(caption && window.db) {
+const { collection, addDoc } = window.firebaseCols;
+await addDoc(collection(window.db, "mandir_gallery"), { id: Date.now(), url: base64Img, caption: caption });
+}
+};
+reader.readAsDataURL(input.files[0]);
+}
+}
+​async function deleteGalleryPhoto(docFirebaseId) {
+if(!isAdminLoggedIn) {
+alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
+return;
+}
+if(confirm('हा फोटो गॅलरीतून डिलीट करायचा का?') && window.db) {
+const { doc, deleteDoc } = window.firebaseCols;
+try {
+await deleteDoc(doc(window.db, "mandir_gallery", docFirebaseId));
+alert('फोटो यशस्वीरित्या डिलीट केला.');
+} catch(e) { console.error(e); }
+}
+}
+​function renderGalleryUI() {
+const container = document.getElementById('galleryGridContainer');
+container.innerHTML = '';
+let combinedGallery = [...defaultGallery, ...globalGalleryList];
+combinedGallery.forEach((item) => {
+const card = document.createElement('div');
+card.className = 'gallery-card';
+card.innerHTML = <img src="${item.url}" alt="Gallery" onclick="openPhotoZoom('${item.url}', '${item.caption}')"> <p>${item.caption}</p> ${isAdminLoggedIn && item.docFirebaseId ?<button class="delete-btn-abs" onclick="deleteGalleryPhoto('${item.docFirebaseId}')">🗑️</button>: ''};
+container.appendChild(card);
+});
+}
+​function openPhotoZoom(url, caption) {
+document.getElementById('zoomedImageElem').src = url;
+document.getElementById('zoomedCaptionElem').innerText = caption || 'मंदिर दर्शन';
+document.getElementById('photoZoomModal').style.display = 'flex';
+}
+​function closePhotoZoom() {
+document.getElementById('photoZoomModal').style.display = 'none';
+}
+​async function confirmCreateLiveStream() {
+let title = document.getElementById('inputLiveTitle').value.trim();
+let videoInput = document.getElementById('inputLiveVideoFile');
+let thumbnail = pendingLiveThumbBase64 || 'photo1.jpg';
+​if(title === '') {
+alert('कृपया लाईव्ह स्ट्रीमचे टायटल टाका!');
+return;
+}
+​let finalVideoUrl = '';
+​if(activeCameraStream) {
+alert('कॅमेरा लाईव्ह स्ट्रीम सुरू होत आहे...');
+document.getElementById('liveStreamModal').style.display = 'none';
+if(window.db) {
+const { collection, addDoc } = window.firebaseCols;
+await addDoc(collection(window.db, "mandir_live_streams"), {
+id: Date.now(),
+title: title,
+videoUrl: '',
+isCameraStream: true,
+thumbnail: thumbnail,
+uploader: loggedInUserName,
+dp: loggedInUserDp,
+likes: 0,
+likedUsers: []
+});
+alert('🔴 कॅमेरा लाईव्ह स्ट्रीम यशस्वीरित्या सुरू झाली!');
+document.getElementById('inputLiveTitle').value = '';
+}
+return;
+}
+​if(videoInput.files && videoInput.files[0]) {
+const reader = new FileReader();
+reader.onload = async function(e) {
+finalVideoUrl = e.target.result;
+document.getElementById('liveStreamModal').style.display = 'none';
+​if(window.db) {
+const { collection, addDoc } = window.firebaseCols;
+try {
+await addDoc(collection(window.db, "mandir_live_streams"), {
+id: Date.now(),
+title: title,
+videoUrl: finalVideoUrl,
+thumbnail: thumbnail,
+uploader: loggedInUserName,
+dp: loggedInUserDp,
+likes: 0,
+likedUsers: []
+});
+alert('🔴 लाईव्ह स्ट्रीम यशस्वीरित्या सुरू झाली!');
+document.getElementById('inputLiveTitle').value = '';
+} catch(err) { console.error(err); }
+}
+};
+reader.readAsDataURL(videoInput.files[0]);
+} else {
+alert('कृपया कॅमेरा लाईव्ह सुरू करा किंवा व्हिडिओ फाईल निवडा!');
+}
+}
+​async function deleteLiveStream(docFirebaseId) {
+if(!isAdminLoggedIn) {
+alert('हा अधिकार फक्त ॲडमिनसाठी आहे!');
+return;
+}
+if(confirm('ही लाईव्ह स्ट्रीम डिलीट करायची का?') && window.db) {
+const { doc, deleteDoc } = window.firebaseCols;
+try {
+await deleteDoc(doc(window.db, "mandir_live_streams", docFirebaseId));
+alert('लाईव्ह स्ट्रीम डिलीट केली.');
+} catch(e) { console.error(e); }
+}
+}
+​function renderLiveStreamsUI() {
+const container = document.getElementById('liveStreamsListContainer');
+container.innerHTML = '';
+​if(globalLiveStreamsList.length === 0) {
+container.innerHTML = <p style="font-size:12px; color:#94a3b8; text-align:center; padding:20px;">सध्या कोणतीही लाईव्ह स्ट्रीम सुरू नाही.</p>;
+return;
+}
+​globalLiveStreamsList.forEach(item => {
+const card = document.createElement('div');
+card.className = 'youtube-video-card';
+card.innerHTML = <div class="yt-thumb-container" onclick="openLivePlayer('${item.docFirebaseId}', '${item.videoUrl || ''}', '${item.title.replace(/'/g, "\\'")}', '${item.uploader.replace(/'/g, "\\'")}', '${item.dp || 'photo1.jpg'}', ${item.likes || 0}, ${item.isCameraStream || false})"> <img src="${item.thumbnail || 'photo1.jpg'}" alt="Thumbnail"> <span style="position:absolute; top:8px; left:8px; background:#ef4444; color:white; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:bold;">🔴 LIVE</span> </div> <div class="yt-card-details"> <div style="display:flex; gap:10px; align-items:center;"> <img src="${item.dp || 'photo1.jpg'}" alt="DP" style="width:36px; height:36px; border-radius:50%; object-fit:cover;"> <div class="yt-card-meta"> <h4 class="yt-card-title">${item.title}</h4> <p class="yt-card-channel">प्रसारक: ${item.uploader || 'Unknown'}</p> </div> </div> <button class="share-btn-action" onclick="shareContentText('श्री क्षेत्र कपिलेश्वर महादेव मंदिर लाईव्ह पहा: ${item.title}')">शेअर 📤</button> </div> ${isAdminLoggedIn ?<button class="delete-btn-abs" onclick="deleteLiveStream('${item.docFirebaseId}')">🗑️</button>: ''};
+container.appendChild(card);
+});
+}
+​async function openLivePlayer(docId, url, title, uploader, dp, likesCount, isCameraStream) {
+activeStreamDocId = docId;
+document.getElementById('ytPlayerTitle').innerText = title;
+document.getElementById('playerUploaderName').innerText = uploader;
+document.getElementById('playerUploaderDp').src = dp;
+document.getElementById('streamLikeCount').innerText = likesCount;
+​const videoElem = document.getElementById('advancedVideoElement');
+​if(isCameraStream) {
+try {
+let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+videoElem.srcObject = stream;
+videoElem.style.display = 'block';
+videoElem.play().catch(e => console.log(e));
+} catch(err) {
+alert('लाईव्ह कॅमेरा स्ट्रीम जोडताना अडचण आली.');
+}
+} else if(url && url.trim() !== '') {
+videoElem.srcObject = null;
+videoElem.src = url;
+videoElem.style.display = 'block';
+videoElem.play().catch(e => console.log(e));
+} else {
+videoElem.srcObject = null;
+videoElem.src = '';
+videoElem.style.display = 'none';
+}
+document.getElementById('youtubePlayerModal').style.display = 'flex';
+loadLiveChatMessages();
+}
+​async function likeCurrentStream() {
+if(!activeStreamDocId || !window.db) return;
+const { doc, getDoc, updateDoc } = window.firebaseCols;
+let docRef = doc(window.db, "mandir_live_streams", activeStreamDocId);
+let snap = await getDoc(docRef);
+if(snap.exists()) {
+let data = snap.data();
+let likedUsers = data.likedUsers || [];
+if(likedUsers.includes(loggedInUserName)) {
+alert('तुम्ही या लाईव्ह स्ट्रीमला आधीच लाईक केले आहे!');
+return;
+}
+likedUsers.push(loggedInUserName);
+let newLikes = (data.likes || 0) + 1;
+await updateDoc(docRef, { likes: newLikes, likedUsers: likedUsers });
+document.getElementById('streamLikeCount').innerText = newLikes;
+}
+}
+​async function sendLiveChatMessage() {
+let input = document.getElementById('liveChatInput');
+let text = input.value.trim();
+if(text !== "" && activeStreamDocId && window.db) {
+const { collection, addDoc } = window.firebaseCols;
+try {
+await addDoc(collection(window.db, "mandir_live_chats"), {
+streamId: activeStreamDocId,
+sender: loggedInUserName,
+dp: loggedInUserDp,
+text: text,
+time: Date.now()
+});
+input.value = '';
+} catch(e) { console.error(e); }
+}
+}
+​function loadLiveChatMessages() {
+if(!window.db || !activeStreamDocId) return;
+const { collection, onSnapshot } = window.firebaseCols;
+onSnapshot(collection(window.db, "mandir_live_chats"), (snapshot) => {
+let msgs = [];
+snapshot.forEach(docSnap => {
+let d = docSnap.data();
+if(d.streamId == activeStreamDocId) msgs.push(d);
+});
+msgs.sort((a, b) => a.time - b.time);
+​let area = document.getElementById('liveChatMessagesArea');
+area.innerHTML = '';
+msgs.forEach(m => {
+let div = document.createElement('div');
+div.style.cssText = "margin-bottom:4px;";
+div.innerHTML = <strong style="color:#2dd4bf;">${m.sender}:</strong> <span style="color:#fff;">${m.text}</span>;
+area.appendChild(div);
+});
+area.scrollTop = area.scrollHeight;
+});
+}
+​function closeYoutubePlayer() {
+document.getElementById('youtubePlayerModal').style.display = 'none';
+const videoElem = document.getElementById('advancedVideoElement');
+if(videoElem.srcObject) {
+let tracks = videoElem.srcObject.getTracks();
+tracks.forEach(t => t.stop());
+videoElem.srcObject = null;
+}
+videoElem.pause();
+videoElem.src = "";
+activeStreamDocId = null;
+}
+​function showSection(sectionKey, btnElem) {
+const sections = document.querySelectorAll('.section-box');
+sections.forEach(s => s.classList.remove('active-section'));
+document.getElementById('section-' + sectionKey).classList.add('active-section');
+}
+</script>
 </body>
 </html>
