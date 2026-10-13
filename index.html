@@ -1,52 +1,266 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#123b7a">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><met
+a name="theme-color" content="#123b7a"><link rel="manifest" href="manifest.json">
 <title>Fall Manage</title>
 <style>
-:root{--blue:#1649a3;--blue2:#2367d1;--ink:#172033;--muted:#667085;--bg:#f3f6fb;--line:#e3e8f0;--green:#14804a;--red:#c93636}*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:520px;min-height:100dvh;margin:auto;background:white;position:relative;box-shadow:0 0 35px #13294b12}.screen{display:none;min-height:100dvh;padding:24px 20px 30px}.screen.active{display:flex;flex-direction:column}.splash{align-items:center;justify-content:center;background:linear-gradient(145deg,#102b62,#2367d1);color:white}.logo{width:86px;height:86px;border-radius:26px;background:white;color:var(--blue);display:grid;place-items:center;font-size:27px;font-weight:900;box-shadow:0 15px 35px #061b4b55}.splash h1{margin:18px 0 4px}.muted{color:var(--muted)}h1,h2,h3,p{margin-top:0}h2{font-size:25px;line-height:1.2;margin-bottom:8px}h3{font-size:17px;margin-bottom:8px}.subtitle{color:var(--muted);margin-bottom:22px}.field{margin:0 0 14px}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:#344054}.field input,.field select,.field textarea{width:100%;border:1px solid #d7deea;border-radius:12px;padding:13px 14px;background:#fbfcff;color:var(--ink);outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #2367d11a}.btn{border:0;border-radius:12px;padding:13px 16px;background:var(--blue2);color:white;font-weight:750;width:100%;margin-top:8px}.btn.secondary{background:#edf2fa;color:#25416f}.btn.danger{background:#fff0f0;color:var(--red)}.btn.small{width:auto;padding:8px 11px;margin:4px 4px 0 0;font-size:13px}.row{display:flex;gap:10px}.row>*{flex:1;min-width:0}.card{background:white;border:1px solid var(--line);border-radius:17px;padding:16px;margin:0 0 13px;box-shadow:0 5px 18px #172b4d08}.notice{font-size:12px;color:#8a4b08;background:#fff6e5;padding:11px;border-radius:10px;margin:10px 0 16px}.error{display:none;color:var(--red);font-size:13px;margin-top:6px}.topbar{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;background:var(--blue);color:white;position:sticky;top:0;z-index:3}.brand{font-weight:850;font-size:18px}.avatar{width:38px;height:38px;border-radius:50%;background:#ffffff25;display:grid;place-items:center;color:white;border:1px solid #ffffff66;overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover}.dash{display:none;padding:18px 16px 94px}.dash.active{display:block}.welcome{background:linear-gradient(135deg,#143a82,#2670df);color:white;border-radius:18px;padding:19px;margin-bottom:16px}.welcome p{margin:5px 0 0;color:#e0eaff}.search{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;margin-bottom:14px}.product{display:grid;grid-template-columns:94px 1fr;gap:13px;align-items:center}.product img{width:94px;height:94px;object-fit:cover;border-radius:12px;background:#eef2f7}.price{font-size:19px;font-weight:850}.badge{display:inline-block;border-radius:99px;padding:4px 9px;font-size:11px;font-weight:800;background:#edf2fa;color:#42526e}.badge.pending{background:#fff4d6;color:#885900}.badge.confirmed{background:#e0f7e9;color:#087443}.badge.cancelled{background:#ffe6e6;color:#b42318}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);height:70px;padding-bottom:env(safe-area-inset-bottom);display:flex;background:#fff;border-top:1px solid var(--line);z-index:5}.bottom button{flex:1;border:0;background:white;color:#788398;font-size:11px;font-weight:700}.bottom button span{display:block;font-size:21px;margin-bottom:1px}.bottom button.active{color:var(--blue2)}.hidden{display:none!important}.profile-photo{display:flex;align-items:center;gap:14px;margin:5px 0 18px}.profile-photo img{width:70px;height:70px;border-radius:50%;object-fit:cover;background:#edf2fa}.order-actions{display:flex;flex-wrap:wrap;gap:5px}.empty{text-align:center;color:var(--muted);padding:25px 8px}.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}.stat{background:#f3f7ff;border-radius:13px;padding:12px}.stat b{display:block;font-size:22px}.stat small{color:var(--muted)}.section-title{display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px}.tiny{font-size:12px;color:var(--muted)}
+:root{--blue:#1649a3;--blue2:#2367d1;--ink:#172033;--muted:#667085;--bg:#f3f6fb;--line:#e3e8f0;--green:#14804a;-
+-red:#c93636}*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-s
+erif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{
+width:100%;max-width:none;min-height:100vh;min-height:100dvh;margin:0;background:white;position:relative;box-sha
+dow:none}.screen{display:none;min-height:100dvh;padding:24px 20px 30px}.screen.active{display:flex;flex-directio
+n:column}.splash{align-items:center;justify-content:center;background:linear-gradient(145deg,#102b62,#2367d1);co
+lor:white}.logo{width:86px;height:86px;border-radius:26px;background:white;color:var(--blue);display:grid;place-
+items:center;font-size:27px;font-weight:900;box-shadow:0 15px 35px #061b4b55}.splash h1{margin:18px 0 4px}.muted
+{color:var(--muted)}h1,h2,h3,p{margin-top:0}h2{font-size:25px;line-height:1.2;margin-bottom:8px}h3{font-size:17p
+x;margin-bottom:8px}.subtitle{color:var(--muted);margin-bottom:22px}.field{margin:0 0 14px}.field label{display:
+block;font-weight:700;font-size:13px;margin-bottom:6px;color:#344054}.field input,.field select,.field textarea{
+width:100%;border:1px solid #d7deea;border-radius:12px;padding:13px 14px;background:#fbfcff;color:var(--ink);out
+line:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue2);box-shadow:0 0 
+0 3px #2367d11a}.btn{border:0;border-radius:12px;padding:13px 16px;background:var(--blue2);color:white;font-weig
+ht:750;width:100%;margin-top:8px}.btn.secondary{background:#edf2fa;color:#25416f}.btn.danger{background:#fff0f0;
+color:var(--red)}.btn.small{width:auto;padding:8px 11px;margin:4px 4px 0 0;font-size:13px}.row{display:flex;gap:
+10px}.row>*{flex:1;min-width:0}.card{background:white;border:1px solid var(--line);border-radius:17px;padding:16
+px;margin:0 0 13px;box-shadow:0 5px 18px #172b4d08}.notice{font-size:12px;color:#8a4b08;background:#fff6e5;paddi
+ng:11px;border-radius:10px;margin:10px 0 16px}.error{display:none;color:var(--red);font-size:13px;margin-top:6px
+}.topbar{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;background:var(--blue);
+color:white;position:sticky;top:0;z-index:3}.brand{font-weight:850;font-size:18px}.avatar{width:38px;height:38px
+;border-radius:50%;background:#ffffff25;display:grid;place-items:center;color:white;border:1px solid #ffffff66;o
+verflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover}.dash{display:none;padding:18px 16px 94px}.da
+sh.active{display:block}.welcome{background:linear-gradient(135deg,#143a82,#2670df);color:white;border-radius:18
+px;padding:19px;margin-bottom:16px}.welcome p{margin:5px 0 0;color:#e0eaff}.search{width:100%;padding:13px;borde
+r:1px solid var(--line);border-radius:12px;margin-bottom:14px}.product{display:grid;grid-template-columns:94px 1
+fr;gap:13px;align-items:center}.product img{width:94px;height:94px;object-fit:cover;border-radius:12px;backgroun
+d:#eef2f7}.price{font-size:19px;font-weight:850}.badge{display:inline-block;border-radius:99px;padding:4px 9px;f
+ont-size:11px;font-weight:800;background:#edf2fa;color:#42526e}.badge.pending{background:#fff4d6;color:#885900}.
+badge.confirmed{background:#e0f7e9;color:#087443}.badge.cancelled{background:#ffe6e6;color:#b42318}.bottom{posit
+ion:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;height:70px;padding-bottom:env(safe-area-inset
+-bottom);display:flex;background:#fff;border-top:1px solid var(--line);z-index:5}.bottom button{flex:1;border:0;
+background:white;color:#788398;font-size:11px;font-weight:700}.bottom button span{display:block;font-size:21px;m
+argin-bottom:1px}.bottom button.active{color:var(--blue2)}.hidden{display:none!important}.profile-photo{display:
+flex;align-items:center;gap:14px;margin:5px 0 18px}.profile-photo img{width:70px;height:70px;border-radius:50%;o
+bject-fit:cover;background:#edf2fa}.order-actions{display:flex;flex-wrap:wrap;gap:5px}.empty{text-align:center;c
+olor:var(--muted);padding:25px 8px}.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bot
+tom:14px}.stat{background:#f3f7ff;border-radius:13px;padding:12px}.stat b{display:block;font-size:22px}.stat sma
+ll{color:var(--muted)}.section-title{display:flex;align-items:center;justify-content:space-between;margin:8px 0 
+12px}.tiny{font-size:12px;color:var(--muted)}
 </style></head>
 <body><main class="app">
-<section id="splash" class="screen splash active"><div class="logo">FM</div><h1>Fall Manage</h1><div style="color:#dbe8ff">Simple. Smart. Professional.</div></section>
-<section id="login" class="screen"><div style="margin-top:8vh"><div class="logo" style="background:var(--blue);color:white;width:62px;height:62px;border-radius:18px;font-size:22px;margin-bottom:25px">FM</div><h2>Welcome back</h2><p class="subtitle">Sign in to continue to Fall Manage.</p><div class="field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" placeholder="you@example.com"></div><div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter password"><div id="loginError" class="error">Email or password is incorrect.</div></div><button class="btn" id="loginBtn">Continue</button><button class="btn secondary" id="showSignup">Create customer account</button><div class="notice">Prototype notice: this standalone demo does not verify real email passwords. Never enter your email-provider password here. Real sign-in needs a secure authentication service.</div><button class="btn secondary" id="managerDemo">Manager sign-in</button></div></section>
-<section id="signup" class="screen"><h2>Create account</h2><p class="subtitle">Create a Fall Manage customer account.</p><div class="field"><label>Full name</label><input id="suName" autocomplete="name" placeholder="Your full name"></div><div class="field"><label>Email</label><input id="suEmail" type="email" autocomplete="email" placeholder="you@example.com"></div><div class="field"><label>Create password (6+ characters)</label><input id="suPass" type="password" autocomplete="new-password" placeholder="Create a password"></div><div class="field"><label>Confirm password</label><input id="suConfirm" type="password" autocomplete="new-password" placeholder="Re-enter password"><div id="signupError" class="error"></div></div><button class="btn" id="signupBtn">Create account</button><button class="btn secondary" data-screen="login">Back to login</button><p class="tiny">Demo accounts are stored only in this browser. For production, use a backend/auth provider.</p></section>
-<section id="profileSetup" class="screen"><h2>Complete your profile</h2><p class="subtitle">Add delivery and contact details.</p><div class="profile-photo"><img id="setupPreview" alt="Profile photo"><div><label for="setupPhoto"><b>Add profile photo</b></label><input id="setupPhoto" type="file" accept="image/*" capture="user"></div></div><div class="field"><label>Full name *</label><input id="pName" autocomplete="name"></div><div class="row"><div class="field"><label>Date of birth</label><input id="pDob" type="date"></div><div class="field"><label>Country *</label><select id="pCountry"><option value="">Loading countries…</option></select></div></div><div class="field"><label>State / province *</label><select id="pState"><option value="">Choose country first</option></select></div><div class="field"><label>District / city</label><input id="pDistrict" placeholder="District or city"></div><div class="row"><div class="field"><label>Taluka / county</label><input id="pTaluka" placeholder="Taluka"></div><div class="field"><label>Village / locality</label><input id="pVillage" placeholder="Village or locality"></div></div><div class="field"><label>Full delivery address *</label><textarea id="pAddress" rows="2" placeholder="House number, street, landmark"></textarea></div><div class="field"><label>Permissions (optional)</label><button class="btn secondary" id="locationBtn" type="button">📍 Allow location</button><p id="locationStatus" class="tiny">Location is requested only when you tap the button.</p></div><button class="btn" id="saveProfile">Save and continue</button><button class="btn secondary" id="logoutSetup">Sign out</button><p class="tiny">Photo and location are optional. Browser permissions can be changed in device settings.</p></section>
-<section id="dashboard" class="screen" style="padding:0"><header class="topbar"><div class="brand">Fall Manage</div><button class="avatar" id="topAvatar" aria-label="Open profile">FM</button></header>
-<div id="homeTab" class="dash active"><div class="welcome"><div style="font-size:12px;opacity:.8">YOUR SHOPPING SPACE</div><h2 style="color:white;margin:5px 0" id="helloName">Welcome!</h2><p>Discover products and track your orders.</p></div><input class="search" id="productSearch" placeholder="🔍 Search products"><div class="section-title"><h3>Products</h3><span class="tiny" id="productCount">0 items</span></div><div id="products"></div></div>
-<div id="ordersTab" class="dash"><h2>My Orders</h2><p class="subtitle">Order requests and delivery updates.</p><div id="customerOrders"></div></div>
-<div id="managerTab" class="dash"><h2>Manager console</h2><p class="subtitle">Manage products and customer order requests.</p><div class="statgrid"><div class="stat"><b id="statProducts">0</b><small>Products</small></div><div class="stat"><b id="statOrders">0</b><small>Orders</small></div><div class="stat"><b id="statPending">0</b><small>Pending</small></div></div><div class="card"><h3>Publish a product</h3><div class="field"><label>Product name *</label><input id="newName" placeholder="Product name"></div><div class="row"><div class="field"><label>Original price ₹</label><input id="newOriginal" type="number" min="0" placeholder="1999"></div><div class="field"><label>Offer price ₹ *</label><input id="newPrice" type="number" min="0" placeholder="999"></div></div><div class="field"><label>Product image (optional)</label><input id="newImage" type="file" accept="image/*"></div><button class="btn" id="addProduct">Publish product</button></div><div class="section-title"><h3>All order requests</h3></div><div id="managerOrders"></div><div class="section-title"><h3>Published products</h3></div><div id="managerProducts"></div></div>
-<div id="profileTab" class="dash"><h2>Profile & Settings</h2><p class="subtitle">Your account and app information.</p><div class="card"><div class="profile-photo"><img id="profilePreview" alt="Profile photo"><div><b id="profileName">Your profile</b><div class="tiny" id="profileEmail"></div></div></div><label class="btn secondary" for="changePhoto" style="display:block;text-align:center;cursor:pointer">Add / change photo</label><input id="changePhoto" class="hidden" type="file" accept="image/*" capture="user"><button class="btn secondary" id="editProfile">Edit profile details</button></div><div class="card"><h3>App information</h3><p class="tiny">Fall Manage · Version 1.0.0</p><p class="tiny">Independent storefront prototype. Not affiliated with Flipkart or any other marketplace.</p></div><div class="card"><h3>Privacy & permissions</h3><p class="tiny">Camera/photo and location access are requested only after you choose those features. Contacts are not requested.</p><button class="btn secondary" id="requestLocationAgain">📍 Update my location</button></div><button class="btn danger" id="logout">Sign out</button></div>
-<nav class="bottom"><button class="active" data-tab="homeTab"><span>⌂</span>Home</button><button data-tab="ordersTab"><span>▣</span>Orders</button><button id="managerNav" class="hidden" data-tab="managerTab"><span>⚙</span>Manager</button><button data-tab="profileTab"><span>◉</span>Profile</button></nav></section>
+<section id="splash" class="screen splash active"><h1>Fall Manage</h1><div style="color:#dbe8ff">Simple. Smart. 
+Professional.</div></section>
+<section id="login" class="screen"><div style="margin-top:8vh"><h2>Welcome back</h2><p class="subtitle">Sign in 
+to continue to Fall Manage.</p><div class="field"><label for="loginEmail">Email address</label><input id="loginE
+mail" type="email" autocomplete="username" placeholder="you@example.com"></div><div class="field"><label for="lo
+ginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" placehold
+er="Enter password"><div id="loginError" class="error">Email or password is incorrect.</div></div><button class=
+"btn" id="loginBtn">Continue</button><button class="btn secondary" id="showSignup">Create customer account</butt
+on><div class="notice">Prototype notice: this standalone demo does not verify real email passwords. Never enter 
+your email-provider password here. Real sign-in needs a secure authentication service.</div><button class="btn s
+econdary" id="managerDemo">Manager sign-in</button></div></section>
+<section id="signup" class="screen"><h2>Create account</h2><p class="subtitle">Create a Fall Manage customer acc
+ount.</p><div class="field"><label>Full name</label><input id="suName" autocomplete="name" placeholder="Your ful
+l name"></div><div class="field"><label>Email</label><input id="suEmail" type="email" autocomplete="email" place
+holder="you@example.com"></div><div class="field"><label>Create password (6+ characters)</label><input id="suPas
+s" type="password" autocomplete="new-password" placeholder="Create a password"></div><div class="field"><label>C
+onfirm password</label><input id="suConfirm" type="password" autocomplete="new-password" placeholder="Re-enter p
+assword"><div id="signupError" class="error"></div></div><button class="btn" id="signupBtn">Create account</butt
+on><button class="btn secondary" data-screen="login">Back to login</button><p class="tiny">Demo accounts are sto
+red only in this browser. For production, use a backend/auth provider.</p></section>
+<section id="profileSetup" class="screen"><h2>Complete your profile</h2><p class="subtitle">Add delivery and con
+tact details.</p><div class="profile-photo"><img id="setupPreview" alt="Profile photo"><div><label for="setupPho
+to"><b>Add profile photo</b></label><input id="setupPhoto" type="file" accept="image/*" capture="user"></div></d
+iv><div class="field"><label>Full name *</label><input id="pName" autocomplete="name"></div><div class="row"><di
+v class="field"><label>Date of birth</label><input id="pDob" type="date"></div><div class="field"><label>Country
+ *</label><select id="pCountry"><option value="">Loading countries…</option></select></div></div><div class="fie
+ld"><label>State / province *</label><select id="pState"><option value="">Choose country first</option></select>
+</div><div class="field"><label>District / city</label><input id="pDistrict" placeholder="District or city"></di
+v><div class="row"><div class="field"><label>Taluka / county</label><input id="pTaluka" placeholder="Taluka"></d
+iv><div class="field"><label>Village / locality</label><input id="pVillage" placeholder="Village or locality"></
+div></div><div class="field"><label>Full delivery address *</label><textarea id="pAddress" rows="2" placeholder=
+"House number, street, landmark"></textarea></div><div class="field"><label>Permissions (optional)</label><butto
+n class="btn secondary" id="locationBtn" type="button">■ Allow location</button><p id="locationStatus" class="ti
+ny">Location is requested only when you tap the button.</p></div><button class="btn" id="saveProfile">Save and c
+ontinue</button><button class="btn secondary" id="logoutSetup">Sign out</button><p class="tiny">Photo and locati
+on are optional. Browser permissions can be changed in device settings.</p></section>
+<section id="dashboard" class="screen" style="padding:0"><header class="topbar"><div class="brand">Fall Manage</
+div><button class="avatar" id="topAvatar" aria-label="Open profile">FM</button></header>
+<div id="homeTab" class="dash active"><div class="welcome"><div style="font-size:12px;opacity:.8">YOUR SHOPPING 
+SPACE</div><h2 style="color:white;margin:5px 0" id="helloName">Welcome!</h2><p>Discover products and track your 
+orders.</p></div><input class="search" id="productSearch" placeholder="■ Search products"><div class="section-ti
+tle"><h3>Products</h3><span class="tiny" id="productCount">0 items</span></div><div id="products"></div></div>
+<div id="ordersTab" class="dash"><h2>My Orders</h2><p class="subtitle">Order requests and delivery updates.</p><
+div id="customerOrders"></div></div>
+<div id="managerTab" class="dash"><h2>Manager console</h2><p class="subtitle">Manage products and customer order
+ requests.</p><div class="statgrid"><div class="stat"><b id="statProducts">0</b><small>Products</small></div><di
+v class="stat"><b id="statOrders">0</b><small>Orders</small></div><div class="stat"><b id="statPending">0</b><sm
+all>Pending</small></div></div><div class="card"><h3>Publish a product</h3><div class="field"><label>Product nam
+e *</label><input id="newName" placeholder="Product name"></div><div class="row"><div class="field"><label>Origi
+nal price ■</label><input id="newOriginal" type="number" min="0" placeholder="1999"></div><div class="field"><la
+bel>Offer price ■ *</label><input id="newPrice" type="number" min="0" placeholder="999"></div></div><div class="
+field"><label>Product image (optional)</label><input id="newImage" type="file" accept="image/*"></div><button cl
+ass="btn" id="addProduct">Publish product</button></div><div class="section-title"><h3>All order requests</h3></
+div><div id="managerOrders"></div><div class="section-title"><h3>Published products</h3></div><div id="managerPr
+oducts"></div></div>
+<div id="profileTab" class="dash"><h2>Profile & Settings</h2><p class="subtitle">Your account and app informatio
+  n.</p><div class="card"><div class="profile-photo"><img id="profilePreview" alt="Profile photo"><div><b id="prof
+ileName">Your profile</b><div class="tiny" id="profileEmail"></div></div></div><label class="btn secondary" for=
+"changePhoto" style="display:block;text-align:center;cursor:pointer">Add / change photo</label><input id="change
+Photo" class="hidden" type="file" accept="image/*" capture="user"><button class="btn secondary" id="editProfile"
+>Edit profile details</button></div><div class="card"><h3>App information</h3><p class="tiny">Fall Manage · Vers
+ion 1.0.0</p><p class="tiny">Independent storefront prototype. Not affiliated with Flipkart or any other marketp
+lace.</p></div><div class="card"><h3>Privacy & permissions</h3><p class="tiny">Camera/photo and location access 
+are requested only after you choose those features. Contacts are not requested.</p><button class="btn secondary"
+ id="requestLocationAgain">■ Update my location</button></div><button class="btn danger" id="logout">Sign out</b
+utton></div>
+<nav class="bottom"><button class="active" data-tab="homeTab"><span>■</span>Home</button><button data-tab="order
+sTab"><span>■</span>Orders</button><button id="managerNav" class="hidden" data-tab="managerTab"><span>■</span>Ma
+nager</button><button data-tab="profileTab"><span>■</span>Profile</button></nav></section>
 </main>
 <script>
 'use strict';
-const $=id=>document.getElementById(id);const STORE='fallmanage_demo_v2';let db={users:[],products:[],orders:[],session:null,profile:null};let current=null;let isManager=false;let profilePhoto='';let pendingPhoto='';
+const $=id=>document.getElementById(id);const STORE='fallmanage_demo_v2';let db={users:[],products:[],orders:[],
+session:null,profile:null};let current=null;let isManager=false;let profilePhoto='';let pendingPhoto='';
 // DEMO ONLY: these credentials are intentionally not a production security system.
-const DEMO_MANAGER_EMAIL='manager@fallmanage.demo';const DEMO_MANAGER_PASSWORD='FM-Demo-2026!';
-function loadDB(){try{const saved=JSON.parse(localStorage.getItem(STORE)||'{}');db={...db,...saved};}catch(e){console.warn('Could not load local data',e)}}function saveDB(){localStorage.setItem(STORE,JSON.stringify(db))}
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id))}function error(id,msg){$(id).textContent=msg;$(id).style.display='block'}function hideError(id){$(id).style.display='none'}function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function money(v){return '₹'+Number(v||0).toLocaleString('en-IN')}
-function dataURL(file,cb){if(!file)return;if(file.size>2*1024*1024){alert('Please choose an image smaller than 2 MB.');return}const r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(file)}
+const DEMO_MANAGER_USERNAME='Sanchitpatil@100';const DEMO_MANAGER_PASSWORD='Sanchit3464';
+function loadDB(){try{const saved=JSON.parse(localStorage.getItem(STORE)||'{}');db={...db,...saved};}catch(e){co
+nsole.warn('Could not load local data',e)}}function saveDB(){localStorage.setItem(STORE,JSON.stringify(db))}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id))}functi
+on error(id,msg){$(id).textContent=msg;$(id).style.display='block'}function hideError(id){$(id).style.display='n
+one'}function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&
+quot;',"'":'&#39;'}[c]))}function money(v){return '■'+Number(v||0).toLocaleString('en-IN')}
+function dataURL(file,cb){if(!file)return;if(file.size>2*1024*1024){alert('Please choose an image smaller than 2
+ MB.');return}const r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(file)}
 setTimeout(()=>{if(db.session){restoreSession()}else show('login')},650);
-$('showSignup').onclick=()=>show('signup');document.querySelectorAll('[data-screen]').forEach(b=>b.onclick=()=>show(b.dataset.screen));
-$('signupBtn').onclick=()=>{hideError('signupError');const name=$('suName').value.trim(),email=$('suEmail').value.trim().toLowerCase(),pass=$('suPass').value,confirm=$('suConfirm').value;if(!name||!/^\S+@\S+\.\S+$/.test(email)||pass.length<6||pass!==confirm){error('signupError','Enter a name, valid email, password of at least 6 characters, and matching confirmation.');return}if(email===DEMO_MANAGER_EMAIL||db.users.some(u=>u.email===email)){error('signupError','This email is already registered.');return}const user={id:crypto.randomUUID(),name,email,password:pass,profile:null,photo:''};db.users.push(user);db.session=user.id;current=user;isManager=false;saveDB();startProfile()};
-$('loginBtn').onclick=()=>{hideError('loginError');const email=$('loginEmail').value.trim().toLowerCase(),pass=$('loginPassword').value;const user=db.users.find(u=>u.email===email&&u.password===pass);if(!user){error('loginError','Wrong email or password. Use your Fall Manage demo account—not your email-provider password.');return}current=user;isManager=false;db.session=user.id;saveDB();user.profile?enterDashboard():startProfile()};
-$('managerDemo').onclick=()=>{const email=prompt('Demo manager email:');if(email===null)return;const pass=prompt('Demo manager password:');if(pass===null)return;if(email.trim().toLowerCase()!==DEMO_MANAGER_EMAIL||pass!==DEMO_MANAGER_PASSWORD){alert('Wrong manager email or password.');return}isManager=true;current={id:'demo-manager',name:'Manager',email:DEMO_MANAGER_EMAIL,profile:{name:'Manager'},photo:''};db.session='demo-manager';saveDB();enterDashboard()};
-function restoreSession(){if(db.session==='demo-manager'){isManager=true;current={id:'demo-manager',name:'Manager',email:DEMO_MANAGER_EMAIL,profile:{name:'Manager'},photo:''};enterDashboard();return}current=db.users.find(u=>u.id===db.session)||null;if(!current){db.session=null;saveDB();show('login');return}isManager=false;current.profile?enterDashboard():startProfile()}
-function startProfile(){show('profileSetup');$('pName').value=current?.profile?.name||current?.name||'';$('pDob').value=current?.profile?.dob||'';$('pAddress').value=current?.profile?.address||'';profilePhoto=current?.photo||'';setPhoto($('setupPreview'),profilePhoto);loadCountries()}
+$('showSignup').onclick=()=>show('signup');document.querySelectorAll('[data-screen]').forEach(b=>b.onclick=()=>s
+how(b.dataset.screen));
+$('signupBtn').onclick=()=>{hideError('signupError');const name=$('suName').value.trim(),email=$('suEmail').valu
+e.trim().toLowerCase(),pass=$('suPass').value,confirm=$('suConfirm').value;if(!name||!/^\S+@\S+\.\S+$/.test(emai
+l)||pass.length<6||pass!==confirm){error('signupError','Enter a name, valid email, password of at least 6 charac
+ters, and matching confirmation.');return}if(db.users.some(u=>u.email===email)){error('signupError','This email 
+is already registered.');return}const user={id:crypto.randomUUID(),name,email,password:pass,profile:null,photo:'
+'};db.users.push(user);db.session=user.id;current=user;isManager=false;saveDB();startProfile()};
+$('loginBtn').onclick=()=>{hideError('loginError');const email=$('loginEmail').value.trim().toLowerCase(),pass=$
+('loginPassword').value;const user=db.users.find(u=>u.email===email&&u.password===pass);if(!user){error('loginEr
+ror','Wrong email or password. Use your Fall Manage demo account—not your email-provider password.');return}curr
+ent=user;isManager=false;db.session=user.id;saveDB();user.profile?enterDashboard():startProfile()};
+$('managerDemo').onclick=()=>{const username=prompt('Manager username:');if(username===null)return;const pass=pr
+ompt('Manager password:');if(pass===null)return;if(username.trim()!==DEMO_MANAGER_USERNAME||pass!==DEMO_MANAGER_
+PASSWORD){alert('Wrong username or password.');return}isManager=true;current={id:'demo-manager',name:'Sanchit Pa
+til',username:DEMO_MANAGER_USERNAME,email:'',profile:{name:'Sanchit Patil'},photo:''};db.session='demo-manager';
+saveDB();enterDashboard()};
+function restoreSession(){if(db.session==='demo-manager'){isManager=true;current={id:'demo-manager',name:'Sanchi
+t Patil',username:DEMO_MANAGER_USERNAME,email:'',profile:{name:'Sanchit Patil'},photo:''};enterDashboard();retur
+n}current=db.users.find(u=>u.id===db.session)||null;if(!current){db.session=null;saveDB();show('login');return}i
+sManager=false;current.profile?enterDashboard():startProfile()}
+function startProfile(){show('profileSetup');$('pName').value=current?.profile?.name||current?.name||'';$('pDob'
+).value=current?.profile?.dob||'';$('pAddress').value=current?.profile?.address||'';profilePhoto=current?.photo|
+|'';setPhoto($('setupPreview'),profilePhoto);loadCountries()}
 $('setupPhoto').onchange=e=>dataURL(e.target.files[0],v=>{pendingPhoto=v;setPhoto($('setupPreview'),v)});
-function setPhoto(el,src){el.src=src||'';el.style.visibility=src?'visible':'hidden';if(!src)el.style.background='#edf2fa'}
-async function loadCountries(){const sel=$('pCountry');if(sel.dataset.loaded==='1')return;sel.innerHTML='<option value="">Select country</option>';try{const res=await fetch('https://countriesnow.space/api/v0.1/countries/positions');if(!res.ok)throw 0;const j=await res.json();(j.data||[]).map(x=>x.name).sort().forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o)});sel.dataset.loaded='1'}catch(e){['India','United States','United Kingdom','Canada','Australia'].forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o)});sel.dataset.loaded='1';$('locationStatus').textContent='Country list loaded in fallback mode. Internet may be required for full lists.'}if(current?.profile){sel.value=current.profile.country||'India';await loadStates();$('pState').value=current.profile.state||'';$('pDistrict').value=current.profile.district||'';$('pTaluka').value=current.profile.taluka||'';$('pVillage').value=current.profile.village||''}}
-$('pCountry').onchange=()=>loadStates();async function loadStates(){const country=$('pCountry').value,sel=$('pState');sel.innerHTML='<option value="">Loading states / provinces…</option>';if(!country){sel.innerHTML='<option value="">Choose country first</option>';return}try{const res=await fetch('https://countriesnow.space/api/v0.1/countries/states',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({country})});const j=await res.json();const states=(j.data?.states||[]).map(s=>s.name).sort();sel.innerHTML='<option value="">Select state / province</option>';if(states.length){states.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o)})}else sel.innerHTML+='<option value="Not listed">Not listed — type below in address</option>'}catch(e){sel.innerHTML='<option value="">Could not load — enter state in address</option>'}}
-$('locationBtn').onclick=()=>requestLocation();$('requestLocationAgain').onclick=()=>requestLocation();function requestLocation(){if(!navigator.geolocation){$('locationStatus').textContent='This browser does not support location.';return} $('locationStatus').textContent='Waiting for location permission…';navigator.geolocation.getCurrentPosition(pos=>{$('locationStatus').textContent=`Location permission granted. Coordinates: ${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)} (saved in this session only).`;if(current){current.geo={lat:pos.coords.latitude,lon:pos.coords.longitude};if(!isManager){const u=db.users.find(x=>x.id===current.id);if(u){u.geo=current.geo;saveDB()}}}},err=>{$('locationStatus').textContent=err.code===1?'Location permission denied. You can allow it in browser settings.':'Could not get location. Try again when location is enabled.'},{enableHighAccuracy:true,timeout:10000})}
-$('saveProfile').onclick=()=>{const name=$('pName').value.trim(),country=$('pCountry').value,state=$('pState').value,address=$('pAddress').value.trim();if(!name||!country||!state||!address){alert('Please fill in full name, country, state/province, and delivery address.');return}const profile={name,dob:$('pDob').value,country,state,district:$('pDistrict').value.trim(),taluka:$('pTaluka').value.trim(),village:$('pVillage').value.trim(),address};if(!isManager){current.profile=profile;if(pendingPhoto)current.photo=pendingPhoto;db.users=db.users.map(u=>u.id===current.id?current:u);saveDB()}else{current.profile=profile;if(pendingPhoto)current.photo=pendingPhoto}enterDashboard()};$('logoutSetup').onclick=logout;
-function enterDashboard(){show('dashboard');$('helloName').textContent='Hi, '+(current?.profile?.name||current?.name||'there')+'!';$('profileName').textContent=current?.profile?.name||current?.name||'Manager';$('profileEmail').textContent=current?.email||'';setPhoto($('profilePreview'),current?.photo||'');setPhoto($('topAvatar'),current?.photo||'');if(!current?.photo)$('topAvatar').textContent=(current?.name||'FM').slice(0,2).toUpperCase();$('managerNav').classList.toggle('hidden',!isManager);renderAll();switchTab('homeTab')}
-$('topAvatar').onclick=()=>switchTab('profileTab');document.querySelectorAll('.bottom button[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));function switchTab(id){document.querySelectorAll('.dash').forEach(d=>d.classList.toggle('active',d.id===id));document.querySelectorAll('.bottom button[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));if(id==='managerTab'&&!isManager){switchTab('homeTab');return}renderAll()}
-$('changePhoto').onchange=e=>dataURL(e.target.files[0],v=>{if(current){current.photo=v;if(!isManager){db.users=db.users.map(u=>u.id===current.id?current:u);saveDB()}else current.photo=v;enterDashboard();switchTab('profileTab')}});$('editProfile').onclick=()=>{startProfile()};$('logout').onclick=logout;function logout(){db.session=null;saveDB();current=null;isManager=false;show('login')}
-$('addProduct').onclick=()=>{if(!isManager)return;const name=$('newName').value.trim(),price=Number($('newPrice').value),original=Number($('newOriginal').value||0),file=$('newImage').files[0];if(!name||!Number.isFinite(price)||price<=0||original<0){alert('Enter a product name and valid offer price.');return}const save=img=>{db.products.unshift({id:crypto.randomUUID(),name,price,original,image:img||'',createdAt:new Date().toISOString(),active:true});saveDB();$('newName').value='';$('newPrice').value='';$('newOriginal').value='';$('newImage').value='';renderAll();alert('Product published.')};if(file)dataURL(file,save);else save('')};
-function renderProducts(){const query=$('productSearch').value.toLowerCase();const items=db.products.filter(p=>p.active&&p.name.toLowerCase().includes(query));$('productCount').textContent=items.length+' items';$('products').innerHTML=items.length?items.map(p=>`<div class="card product"><img src="${p.image||''}" alt="${escapeHTML(p.name)}" onerror="this.style.visibility='hidden'"><div><h3>${escapeHTML(p.name)}</h3><div class="price">${money(p.price)}</div>${p.original>p.price?`<div class="tiny"><s>${money(p.original)}</s> · ${Math.round((p.original-p.price)/p.original*100)}% off</div>`:''}<button class="btn small" onclick="placeOrder('${p.id}')">Request order</button></div></div>`).join(''):'<div class="card empty">No products published yet.<br><span class="tiny">The manager can add products from the Manager tab.</span></div>';const mgr=$('managerProducts');mgr.innerHTML=db.products.length?db.products.map(p=>`<div class="card"><b>${escapeHTML(p.name)}</b><div class="tiny">${money(p.price)} · ${p.active?'Published':'Hidden'}</div><button class="btn small secondary" onclick="toggleProduct('${p.id}')">${p.active?'Hide':'Publish'}</button><button class="btn small danger" onclick="deleteProduct('${p.id}')">Delete</button></div>`).join(''):'<div class="empty">No products published.</div>'}
-window.placeOrder=id=>{const p=db.products.find(x=>x.id===id&&x.active);if(!p)return;if(isManager){alert('Switch to a customer account to test placing a customer order.');return}if(!current?.profile){alert('Complete your profile first.');return}if(!confirm(`Send order request for ${p.name} at ${money(p.price)}? The order is not confirmed until the manager accepts it.`))return;db.orders.unshift({id:crypto.randomUUID(),productId:p.id,product:p.name,price:p.price,userId:current.id,userName:current.profile.name,userEmail:current.email,status:'Pending',createdAt:new Date().toISOString(),deliveryDate:null});saveDB();renderAll();switchTab('ordersTab');alert('Order request sent. It is pending manager confirmation.')};window.toggleProduct=id=>{const p=db.products.find(x=>x.id===id);if(p){p.active=!p.active;saveDB();renderAll()}};window.deleteProduct=id=>{if(!confirm('Delete this product? Existing order records will remain.'))return;db.products=db.products.filter(p=>p.id!==id);saveDB();renderAll()};
-function renderOrders(){const mine=isManager?db.orders:db.orders.filter(o=>o.userId===current?.id);$('customerOrders').innerHTML=mine.length?mine.map(o=>orderCard(o,false)).join(''):'<div class="card empty">No orders yet.<br><span class="tiny">Order requests will appear here.</span></div>';const all=db.orders;$('managerOrders').innerHTML=all.length?all.map(o=>orderCard(o,true)).join(''):'<div class="card empty">No customer order requests yet.</div>';}
-function orderCard(o,manager){const statusClass=o.status==='Confirmed'?'confirmed':o.status==='Cancelled'?'cancelled':'pending';const date=o.deliveryDate?new Date(o.deliveryDate+'T12:00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'Set when confirming';let actions='';if(manager&&o.status==='Pending')actions=`<button class="btn small" onclick="confirmOrder('${o.id}')">Confirm & set date</button><button class="btn small danger" onclick="cancelOrder('${o.id}')">Cancel</button>`;else if(!manager&&o.status==='Pending')actions=`<button class="btn small danger" onclick="cancelOrder('${o.id}')">Cancel request</button>`;return `<div class="card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><h3>${escapeHTML(o.product)}</h3><span class="badge ${statusClass}">${escapeHTML(o.status)}</span></div><div class="price">${money(o.price)}</div><p class="tiny">Order ID: ${escapeHTML(o.id.slice(0,8).toUpperCase())}<br>Requested: ${new Date(o.createdAt).toLocaleDateString()}${manager?`<br>Customer: ${escapeHTML(o.userName)} · ${escapeHTML(o.userEmail)}`:''}<br>${o.status==='Confirmed'?'Estimated delivery: '+date:o.status==='Cancelled'?'This order was cancelled.':'Awaiting manager decision.'}</p><div class="order-actions">${actions}</div></div>`}
-window.confirmOrder=id=>{const o=db.orders.find(x=>x.id===id);if(!o||o.status!=='Pending'||!isManager)return;const suggested=new Date();suggested.setDate(suggested.getDate()+6);const defaultDate=suggested.toISOString().slice(0,10);const date=prompt('Enter estimated delivery date (YYYY-MM-DD):',defaultDate);if(date===null)return;if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(new Date(date+'T12:00:00').getTime())){alert('Enter a valid date in YYYY-MM-DD format.');return}o.status='Confirmed';o.deliveryDate=date;o.confirmedAt=new Date().toISOString();saveDB();renderAll()};window.cancelOrder=id=>{const o=db.orders.find(x=>x.id===id);if(!o||o.status!=='Pending')return;if(!isManager&&o.userId!==current?.id)return;if(!confirm('Cancel this pending order request?'))return;o.status='Cancelled';o.cancelledAt=new Date().toISOString();saveDB();renderAll()};function renderAll(){renderProducts();renderOrders();$('statProducts').textContent=db.products.filter(p=>p.active).length;$('statOrders').textContent=db.orders.length;$('statPending').textContent=db.orders.filter(o=>o.status==='Pending').length}
+function setPhoto(el,src){el.src=src||'';el.style.visibility=src?'visible':'hidden';if(!src)el.style.background=
+'#edf2fa'}
+async function loadCountries(){const sel=$('pCountry');if(sel.dataset.loaded==='1')return;sel.innerHTML='<option
+ value="">Select country</option>';try{const res=await fetch('https://countriesnow.space/api/v0.1/countries/posi
+tions');if(!res.ok)throw 0;const j=await res.json();(j.data||[]).map(x=>x.name).sort().forEach(n=>{const o=docum
+ent.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o)});sel.dataset.loaded='1'}catch(e){['Ind
+ia','United States','United Kingdom','Canada','Australia'].forEach(n=>{const o=document.createElement('option');
+o.value=n;o.textContent=n;sel.appendChild(o)});sel.dataset.loaded='1';$('locationStatus').textContent='Country l
+ist loaded in fallback mode. Internet may be required for full lists.'}if(current?.profile){sel.value=current.pr
+ofile.country||'India';await loadStates();$('pState').value=current.profile.state||'';$('pDistrict').value=curre
+nt.profile.district||'';$('pTaluka').value=current.profile.taluka||'';$('pVillage').value=current.profile.villag
+e||''}}
+$('pCountry').onchange=()=>loadStates();async function loadStates(){const country=$('pCountry').value,sel=$('pSt
+ate');sel.innerHTML='<option value="">Loading states / provinces…</option>';if(!country){sel.innerHTML='<option 
+value="">Choose country first</option>';return}try{const res=await fetch('https://countriesnow.space/api/v0.1/co
+untries/states',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({country})});cons
+t j=await res.json();const states=(j.data?.states||[]).map(s=>s.name).sort();sel.innerHTML='<option value="">Sel
+ect state / province</option>';if(states.length){states.forEach(n=>{const o=document.createElement('option');o.v
+alue=n;o.textContent=n;sel.appendChild(o)})}else sel.innerHTML+='<option value="Not listed">Not listed — type be
+low in address</option>'}catch(e){sel.innerHTML='<option value="">Could not load — enter state in address</optio
+n>'}}
+$('locationBtn').onclick=()=>requestLocation();$('requestLocationAgain').onclick=()=>requestLocation();function 
+requestLocation(){if(!navigator.geolocation){$('locationStatus').textContent='This browser does not support loca
+tion.';return} $('locationStatus').textContent='Waiting for location permission…';navigator.geolocation.getCurre
+ntPosition(pos=>{$('locationStatus').textContent=`Location permission granted. Coordinates: ${pos.coords.latitud
+e.toFixed(5)}, ${pos.coords.longitude.toFixed(5)} (saved in this session only).`;if(current){current.geo={lat:po
+s.coords.latitude,lon:pos.coords.longitude};if(!isManager){const u=db.users.find(x=>x.id===current.id);if(u){u.g
+eo=current.geo;saveDB()}}}},err=>{$('locationStatus').textContent=err.code===1?'Location permission denied. You 
+can allow it in browser settings.':'Could not get location. Try again when location is enabled.'},{enableHighAcc
+uracy:true,timeout:10000})}
+$('saveProfile').onclick=()=>{const name=$('pName').value.trim(),country=$('pCountry').value,state=$('pState').v
+alue,address=$('pAddress').value.trim();if(!name||!country||!state||!address){alert('Please fill in full name, c
+ountry, state/province, and delivery address.');return}const profile={name,dob:$('pDob').value,country,state,dis
+trict:$('pDistrict').value.trim(),taluka:$('pTaluka').value.trim(),village:$('pVillage').value.trim(),address};i
+f(!isManager){current.profile=profile;if(pendingPhoto)current.photo=pendingPhoto;db.users=db.users.map(u=>u.id==
+=current.id?current:u);saveDB()}else{current.profile=profile;if(pendingPhoto)current.photo=pendingPhoto}enterDas
+hboard()};$('logoutSetup').onclick=logout;
+function enterDashboard(){show('dashboard');$('helloName').textContent='Hi, '+(current?.profile?.name||current?.
+name||'there')+'!';$('profileName').textContent=current?.profile?.name||current?.name||'Manager';$('profileEmail
+').textContent=current?.email||'';setPhoto($('profilePreview'),current?.photo||'');setPhoto($('topAvatar'),curre
+nt?.photo||'');if(!current?.photo)$('topAvatar').textContent=(current?.name||'FM').slice(0,2).toUpperCase();$('m
+anagerNav').classList.toggle('hidden',!isManager);renderAll();switchTab('homeTab')}
+$('topAvatar').onclick=()=>switchTab('profileTab');document.querySelectorAll('.bottom button[data-tab]').forEach
+(b=>b.onclick=()=>switchTab(b.dataset.tab));function switchTab(id){document.querySelectorAll('.dash').forEach(d=
+>d.classList.toggle('active',d.id===id));document.querySelectorAll('.bottom button[data-tab]').forEach(b=>b.clas
+sList.toggle('active',b.dataset.tab===id));if(id==='managerTab'&&!isManager){switchTab('homeTab');return}renderA
+ll()}
+$('changePhoto').onchange=e=>dataURL(e.target.files[0],v=>{if(current){current.photo=v;if(!isManager){db.users=d
+b.users.map(u=>u.id===current.id?current:u);saveDB()}else current.photo=v;enterDashboard();switchTab('profileTab
+')}});$('editProfile').onclick=()=>{startProfile()};$('logout').onclick=logout;function logout(){db.session=null
+;saveDB();current=null;isManager=false;show('login')}
+$('addProduct').onclick=()=>{if(!isManager)return;const name=$('newName').value.trim(),price=Number($('newPrice'
+).value),original=Number($('newOriginal').value||0),file=$('newImage').files[0];if(!name||!Number.isFinite(price
+)||price<=0||original<0){alert('Enter a product name and valid offer price.');return}const save=img=>{db.product
+                                                                                                      s.unshift({id:crypto.randomUUID(),name,price,original,image:img||'',createdAt:new Date().toISOString(),active:tr
+ue});saveDB();$('newName').value='';$('newPrice').value='';$('newOriginal').value='';$('newImage').value='';rend
+erAll();alert('Product published.')};if(file)dataURL(file,save);else save('')};
+function renderProducts(){const query=$('productSearch').value.toLowerCase();const items=db.products.filter(p=>p
+.active&&p.name.toLowerCase().includes(query));$('productCount').textContent=items.length+' items';$('products')
+.innerHTML=items.length?items.map(p=>`<div class="card product"><img src="${p.image||''}" alt="${escapeHTML(p.na
+me)}" onerror="this.style.visibility='hidden'"><div><h3>${escapeHTML(p.name)}</h3><div class="price">${money(p.p
+rice)}</div>${p.original>p.price?`<div class="tiny"><s>${money(p.original)}</s> · ${Math.round((p.original-p.pri
+ce)/p.original*100)}% off</div>`:''}<button class="btn small" onclick="placeOrder('${p.id}')">Request order</but
+ton></div></div>`).join(''):'<div class="card empty">No products published yet.<br><span class="tiny">The manage
+r can add products from the Manager tab.</span></div>';const mgr=$('managerProducts');mgr.innerHTML=db.products.
+length?db.products.map(p=>`<div class="card"><b>${escapeHTML(p.name)}</b><div class="tiny">${money(p.price)} · $
+{p.active?'Published':'Hidden'}</div><button class="btn small secondary" onclick="toggleProduct('${p.id}')">${p.
+active?'Hide':'Publish'}</button><button class="btn small danger" onclick="deleteProduct('${p.id}')">Delete</but
+ton></div>`).join(''):'<div class="empty">No products published.</div>'}
+window.placeOrder=id=>{const p=db.products.find(x=>x.id===id&&x.active);if(!p)return;if(isManager){alert('Switch
+ to a customer account to test placing a customer order.');return}if(!current?.profile){alert('Complete your pro
+file first.');return}if(!confirm(`Send order request for ${p.name} at ${money(p.price)}? The order is not confir
+med until the manager accepts it.`))return;db.orders.unshift({id:crypto.randomUUID(),productId:p.id,product:p.na
+me,price:p.price,userId:current.id,userName:current.profile.name,userEmail:current.email,status:'Pending',create
+dAt:new Date().toISOString(),deliveryDate:null});saveDB();renderAll();switchTab('ordersTab');alert('Order reques
+t sent. It is pending manager confirmation.')};window.toggleProduct=id=>{const p=db.products.find(x=>x.id===id);
+if(p){p.active=!p.active;saveDB();renderAll()}};window.deleteProduct=id=>{if(!confirm('Delete this product? Exis
+ting order records will remain.'))return;db.products=db.products.filter(p=>p.id!==id);saveDB();renderAll()};
+function renderOrders(){const mine=isManager?db.orders:db.orders.filter(o=>o.userId===current?.id);$('customerOr
+ders').innerHTML=mine.length?mine.map(o=>orderCard(o,false)).join(''):'<div class="card empty">No orders yet.<br
+><span class="tiny">Order requests will appear here.</span></div>';const all=db.orders;$('managerOrders').innerH
+TML=all.length?all.map(o=>orderCard(o,true)).join(''):'<div class="card empty">No customer order requests yet.</
+div>';}
+function orderCard(o,manager){const statusClass=o.status==='Confirmed'?'confirmed':o.status==='Cancelled'?'cance
+lled':'pending';const date=o.deliveryDate?new Date(o.deliveryDate+'T12:00:00').toLocaleDateString(undefined,{day
+:'numeric',month:'short',year:'numeric'}):'Set when confirming';let actions='';if(manager&&o.status==='Pending')
+actions=`<button class="btn small" onclick="confirmOrder('${o.id}')">Confirm & set date</button><button class="b
+tn small danger" onclick="cancelOrder('${o.id}')">Cancel</button>`;else if(!manager&&o.status==='Pending')action
+s=`<button class="btn small danger" onclick="cancelOrder('${o.id}')">Cancel request</button>`;return `<div class
+="card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><h3>${escapeHTML(o.pro
+duct)}</h3><span class="badge ${statusClass}">${escapeHTML(o.status)}</span></div><div class="price">${money(o.p
+rice)}</div><p class="tiny">Order ID: ${escapeHTML(o.id.slice(0,8).toUpperCase())}<br>Requested: ${new Date(o.cr
+eatedAt).toLocaleDateString()}${manager?`<br>Customer: ${escapeHTML(o.userName)} · ${escapeHTML(o.userEmail)}`:'
+'}<br>${o.status==='Confirmed'?'Estimated delivery: '+date:o.status==='Cancelled'?'This order was cancelled.':'A
+waiting manager decision.'}</p><div class="order-actions">${actions}</div></div>`}
+window.confirmOrder=id=>{const o=db.orders.find(x=>x.id===id);if(!o||o.status!=='Pending'||!isManager)return;con
+st suggested=new Date();suggested.setDate(suggested.getDate()+6);const defaultDate=suggested.toISOString().slice
+(0,10);const date=prompt('Enter estimated delivery date (YYYY-MM-DD):',defaultDate);if(date===null)return;if(!/^
+\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(new Date(date+'T12:00:00').getTime())){alert('Enter a valid date in
+ YYYY-MM-DD format.');return}o.status='Confirmed';o.deliveryDate=date;o.confirmedAt=new Date().toISOString();sav
+eDB();renderAll()};window.cancelOrder=id=>{const o=db.orders.find(x=>x.id===id);if(!o||o.status!=='Pending')retu
+rn;if(!isManager&&o.userId!==current?.id)return;if(!confirm('Cancel this pending order request?'))return;o.statu
+s='Cancelled';o.cancelledAt=new Date().toISOString();saveDB();renderAll()};function renderAll(){renderProducts()
+;renderOrders();$('statProducts').textContent=db.products.filter(p=>p.active).length;$('statOrders').textContent
+=db.orders.length;$('statPending').textContent=db.orders.filter(o=>o.status==='Pending').length}
 $('productSearch').oninput=renderProducts;
 </script></body></html>
