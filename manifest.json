@@ -1,19 +1,25 @@
 {
-  "name": "Fall Manage",
-  "short_name": "FallManage",
-  "description": "Fall Manage product and order management app",
-  "start_url": "./index.html",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#ffffff",
-  "theme_color": "#123b7a",
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+ "name": "Fall Manage",
+ "short_name": "FallManage",
+ "description": "Fall Manage product and order management app",
+ "start_url": "./index.html",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#ffffff",
+ "theme_color": "#123b7a",
+ "icons": [
+ {
+ "src": "./icons/icon-192.png",
+ "sizes": "192x192",
+ "type": "image/png",
+ "purpose": "any"
+ },
+ {
+ "src": "./icons/icon-512.png",
+ "sizes": "512x512",
+ "type": "image/png",
+ "purpose": "any"
+ }
+ ]
 }
